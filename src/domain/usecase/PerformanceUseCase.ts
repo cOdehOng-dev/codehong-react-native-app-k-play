@@ -1,4 +1,4 @@
-import { PerformanceListParams } from '../../data/remote/KopisApiService';
+import { PerformanceListParams } from '../model/PerformanceListParams';
 import { PerformanceInfoItem } from '../model/PerformanceInfoItem';
 import { PerformanceRepository } from '../repository/PerformanceRepository';
 

@@ -10,9 +10,9 @@ import {
 import { usePerformanceList } from '../hooks/usePerformanceList';
 import { PerformanceInfoItem } from '../../domain/model/PerformanceInfoItem';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { KCISA_CLIENT_ID, KOKOR_CLIENT_ID } from '@env';
+import { KOKOR_CLIENT_ID } from '@env';
 
-const PerformanceItem: React.FC<{ item: PerformanceInfoItem }> = ({ item }) => (
+const PerformanceItem = ({ item }: { item: PerformanceInfoItem }) => (
   <View style={styles.card}>
     <Text style={styles.title}>{item.name}</Text>
     <Text style={styles.meta}>
@@ -31,7 +31,7 @@ const PerformanceItem: React.FC<{ item: PerformanceInfoItem }> = ({ item }) => (
   </View>
 );
 
-export const PerformanceListScreen: React.FC = () => {
+export const PerformanceListScreen = () => {
   const { performances, loading, error, fetch } = usePerformanceList();
 
   const handleFetch = () => {

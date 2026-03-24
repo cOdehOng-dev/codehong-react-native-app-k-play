@@ -1,4 +1,3 @@
-import { DtoMapper } from './Mapper';
 import { PerformanceItemDto } from '../model/performance/list/PerformanceItemDto';
 import { PerformanceInfoItem } from '../../domain/model/PerformanceInfoItem';
 
@@ -24,28 +23,19 @@ function toShortAreaName(area?: string): string | undefined {
   return area;
 }
 
-const PerformanceInfoMapper: DtoMapper<PerformanceItemDto | null | undefined, PerformanceInfoItem> = {
-  asDomain(dto: PerformanceItemDto | null | undefined): PerformanceInfoItem {
-    if (!dto) return {};
-
-    return {
-      id: dto.id,
-      name: dto.name,
-      startDate: dto.startDate,
-      endDate: dto.endDate,
-      placeName: dto.facilityName,
-      posterUrl: dto.posterUrl,
-      area: toShortAreaName(dto.area),
-      genre: dto.genre,
-      openRun: dto.openRun,
-      state: dto.state,
-      awards: dto.awards?.split('&lt;br&gt;')[0],
-    };
-  },
-};
-
 export function asDomain(dto?: PerformanceItemDto | null): PerformanceInfoItem {
-  return PerformanceInfoMapper.asDomain(dto);
+  if (!dto) return {};
+  return {
+    id: dto.id,
+    name: dto.name,
+    startDate: dto.startDate,
+    endDate: dto.endDate,
+    placeName: dto.facilityName,
+    posterUrl: dto.posterUrl,
+    area: toShortAreaName(dto.area),
+    genre: dto.genre,
+    openRun: dto.openRun,
+    state: dto.state,
+    awards: dto.awards?.split('&lt;br&gt;')[0],
+  };
 }
-
-export default PerformanceInfoMapper;

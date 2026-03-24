@@ -1,26 +1,11 @@
 import axios from 'axios';
-import {
-  parsePerformanceListResponseDto,
-  PerformanceListResponseDto,
-} from '../model/performance/list/PerformanceListResponseDto';
+import { parsePerformanceListResponseDto, PerformanceListResponseDto } from '../model/performance/list/PerformanceListResponseDto';
 import { BASE_URL } from '../../domain/consts';
+import { PerformanceListParams } from '../../domain/model/PerformanceListParams';
 
 const kopisApi = axios.create({
   baseURL: BASE_URL,
 });
-
-export interface PerformanceListParams {
-  service: string;
-  startDate: string;
-  endDate: string;
-  currentPage: string;
-  rowsPerPage: string;
-  performanceState?: string;
-  signGuCode?: string;
-  signGuCodeSub?: string;
-  kidState?: string;
-  genreCode?: string;
-}
 
 export const getPerformanceList = async (
   params: PerformanceListParams,

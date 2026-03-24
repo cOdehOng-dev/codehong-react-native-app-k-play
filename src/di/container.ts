@@ -1,6 +1,6 @@
-import { PerformanceRemoteDataSource } from '../../data/datasource/PerformanceRemoteDataSource';
-import { PerformanceRepositoryImpl } from '../../data/repository/PerformanceRepositoryImpl';
-import { PerformanceUseCase } from '../../domain/usecase/PerformanceUseCase';
+import { PerformanceRemoteDataSource } from '../data/datasource/PerformanceRemoteDataSource';
+import { PerformanceRepositoryImpl } from '../data/repository/PerformanceRepositoryImpl';
+import { PerformanceUseCase } from '../domain/usecase/PerformanceUseCase';
 
 const performanceRemoteDataSource = new PerformanceRemoteDataSource();
 const performanceRepository = new PerformanceRepositoryImpl(
