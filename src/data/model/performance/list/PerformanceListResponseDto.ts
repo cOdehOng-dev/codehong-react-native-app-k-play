@@ -22,7 +22,7 @@ export function parsePerformanceListResponseDto(xml: string): PerformanceListRes
       startDate: item.prfpdfrom,
       endDate: item.prfpdto,
       facilityName: item.fcltynm,
-      posterUrl: item.poster,
+      posterUrl: item.poster?.trim(),
       area: item.area,
       genre: item.genrenm,
       openRun: item.openrun,

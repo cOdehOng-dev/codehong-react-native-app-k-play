@@ -11,7 +11,6 @@ import HomeScreen from '../HomeScreen';
 import FavoriteScreen from '../FavoriteScreen';
 import MyZoneScreen from '../MyZoneScreen';
 import SettingScreen from '../SettingScreen';
-import { PerformanceListScreen } from '../PerformanceListScreen';
 
 export type RootStackProps = {
   Home: undefined;
@@ -65,7 +64,7 @@ function RootStack() {
       />
       <Stack.Screen
         name="MyZone"
-        component={PerformanceListScreen}
+        component={MyZoneScreen}
         options={{
           headerShown: false,
           title: '내주변',

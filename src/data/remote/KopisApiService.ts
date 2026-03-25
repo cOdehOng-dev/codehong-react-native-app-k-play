@@ -1,11 +1,9 @@
-import axios from 'axios';
-import { parsePerformanceListResponseDto, PerformanceListResponseDto } from '../model/performance/list/PerformanceListResponseDto';
-import { BASE_URL } from '../../domain/consts';
 import { PerformanceListParams } from '../../domain/model/PerformanceListParams';
-
-const kopisApi = axios.create({
-  baseURL: BASE_URL,
-});
+import { kopisApi } from '../api/instance';
+import {
+  parsePerformanceListResponseDto,
+  PerformanceListResponseDto,
+} from '../model/performance/list/PerformanceListResponseDto';
 
 export const getPerformanceList = async (
   params: PerformanceListParams,

@@ -4,31 +4,39 @@ import { useDI } from '../../di/DIContext';
 import { PerformanceListParams } from '../../domain/model/PerformanceListParams';
 
 interface State {
-  performances: PerformanceInfoItem[];
+  performanceList: PerformanceInfoItem[];
   loading: boolean;
   error: string | null;
 }
 
-export const usePerformanceList = () => {
+export function usePerformanceList() {
   const { performanceListUseCase } = useDI();
   const [state, setState] = useState<State>({
-    performances: [],
+    performanceList: [],
     loading: false,
     error: null,
   });
 
-  const fetch = useCallback(
+  const callPerformanceListApi = useCallback(
     async (params: PerformanceListParams) => {
       setState(s => ({ ...s, loading: true, error: null }));
       try {
-        const performances = await performanceListUseCase.getPerformanceList(
+        const performanceList = await performanceListUseCase.getPerformanceList(
           params,
         );
-        console.log('[usePerformanceList] 응답 데이터:', JSON.stringify(performances, null, 2));
-        setState({ performances, loading: false, error: null });
-      } catch (e) {
+        console.log(
+          '[usePerformanceList] 응답 데이터:',
+          JSON.stringify(performanceList, null, 2),
+        );
         setState({
-          performances: [],
+          performanceList: performanceList,
+          loading: false,
+          error: null,
+        });
+      } catch (e) {
+        console.log('[usePerformanceList] 에러:', e);
+        setState({
+          performanceList: [],
           loading: false,
           error: (e as Error).message,
         });
@@ -37,5 +45,5 @@ export const usePerformanceList = () => {
     [performanceListUseCase],
   );
 
-  return { ...state, fetch };
-};
+  return { ...state, callPerformanceListApi };
+}
