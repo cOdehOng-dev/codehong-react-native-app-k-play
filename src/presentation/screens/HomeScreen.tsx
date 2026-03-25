@@ -29,7 +29,7 @@ function HomeScreen() {
   const [isLoading, setIsLoading] = useState(false);
   const genreTabList = GenreCodes;
 
-  const fetchPerformances = useCallback(
+  const fetchMyAreaPerformance = useCallback(
     (signGuCode: string) => {
       const { startDate, endDate } = getCurrentMonthRange();
       callPerformanceListApi({
@@ -57,9 +57,9 @@ function HomeScreen() {
         const regionCode = hasPermission
           ? await getRegionCodeFromLocation()
           : RegionCode.SEOUL.code;
-        fetchPerformances(regionCode);
+        fetchMyAreaPerformance(regionCode);
       } catch {
-        fetchPerformances(RegionCode.SEOUL.code);
+        fetchMyAreaPerformance(RegionCode.SEOUL.code);
       }
     })();
   }, []);
@@ -77,11 +77,11 @@ function HomeScreen() {
     }
     try {
       const regionCode = await getRegionCodeFromLocation();
-      fetchPerformances(regionCode);
+      fetchMyAreaPerformance(regionCode);
     } catch {
       Alert.alert('오류', '현재 위치를 가져올 수 없습니다.');
     }
-  }, [fetchPerformances, getRegionCodeFromLocation]);
+  }, [fetchMyAreaPerformance, getRegionCodeFromLocation]);
 
   return (
     <SafeAreaView style={styles.block}>
