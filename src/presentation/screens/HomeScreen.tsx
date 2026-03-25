@@ -21,6 +21,8 @@ import {
   GenreCodes,
 } from '../../domain/type/GenreCode';
 import GenreListContent from '../components/GenreListContent';
+import MonthRankContent from '../components/MonthRankContent';
+import { RankTab, RankTabList } from '../../domain/type/RankTab';
 
 function HomeScreen() {
   const [currentMonth] = useState(getCurrentMonth(false));
@@ -28,6 +30,7 @@ function HomeScreen() {
     usePerformanceList();
   const [isLoading, setIsLoading] = useState(false);
   const genreTabList = GenreCodes;
+  const tabList = RankTabList;
 
   const fetchMyAreaPerformance = useCallback(
     (signGuCode: string) => {
@@ -96,6 +99,14 @@ function HomeScreen() {
         myAreaList={performanceList}
         loading={isLoading}
         onClickRefresh={handleRefresh}
+      />
+      <MonthRankContent
+        currentMonth={currentMonth}
+        loading={false}
+        tabList={tabList}
+        selectedTab={RankTab.TOP_1_10}
+        onSelectTab={tab => {}}
+        onClickProduct={() => {}}
       />
     </SafeAreaView>
   );

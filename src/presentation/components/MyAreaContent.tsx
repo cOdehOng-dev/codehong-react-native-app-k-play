@@ -102,9 +102,6 @@ const styles = StyleSheet.create({
     width: 18,
     height: 18,
   },
-  mt: {
-    marginTop: 20,
-  },
   skeletonContainer: {
     flexDirection: 'row',
     paddingHorizontal: 16,
