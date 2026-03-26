@@ -1,4 +1,4 @@
-import { Alert, StyleSheet } from 'react-native';
+import { Alert, ScrollView, StyleSheet } from 'react-native';
 import React, { useCallback, useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { usePerformanceList } from '../hooks/usePerformanceList';
@@ -22,13 +22,27 @@ import {
 } from '../../domain/type/GenreCode';
 import GenreListContent from '../components/GenreListContent';
 import MonthRankContent from '../components/MonthRankContent';
-import { RankTab, RankTabList } from '../../domain/type/RankTab';
+import { RankTab, RankTabItem, RankTabList } from '../../domain/type/RankTab';
+import { useBoxOfficeList } from '../hooks/useBoxOfficeList';
 
 function HomeScreen() {
   const [currentMonth] = useState(getCurrentMonth(false));
+
   const { performanceList, loading, error, callPerformanceListApi } =
     usePerformanceList();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isMyAreaLoading, setIsMyAreaLoading] = useState(false);
+
+  const {
+    boxofficeList,
+    isLoading: isBoxOfficeLoading,
+    error: boxOfficeError,
+    callBoxofficeList,
+  } = useBoxOfficeList();
+  const [isBoxOfficeDataLoading, setIsBoxOfficeDataLoading] = useState(false);
+  const [selectedMonthRankTab, setSelectedMonthRankTab] = useState<RankTabItem>(
+    RankTab.TOP_1_10,
+  );
+
   const genreTabList = GenreCodes;
   const tabList = RankTabList;
 
@@ -53,6 +67,15 @@ function HomeScreen() {
     return nameToRegionCode(address.region1).code;
   }, []);
 
+  const fetchMonthRank = useCallback(() => {
+    const { startDate, endDate } = getCurrentMonthRange();
+    callBoxofficeList({
+      service: KOKOR_CLIENT_ID,
+      startDate,
+      endDate,
+    });
+  }, [callBoxofficeList]);
+
   useEffect(() => {
     (async () => {
       try {
@@ -65,14 +88,19 @@ function HomeScreen() {
         fetchMyAreaPerformance(RegionCode.SEOUL.code);
       }
     })();
+    fetchMonthRank();
   }, []);
 
   useEffect(() => {
-    setIsLoading(loading);
+    setIsMyAreaLoading(loading);
   }, [loading]);
 
+  useEffect(() => {
+    setIsBoxOfficeDataLoading(isBoxOfficeLoading);
+  }, [isBoxOfficeLoading]);
+
   const handleRefresh = useCallback(async () => {
-    setIsLoading(true);
+    setIsMyAreaLoading(true);
     const hasPermission = await requestLocationPermission();
     if (!hasPermission) {
       Alert.alert('위치 권한 없음', '설정에서 위치 권한을 허용해주세요.');
@@ -87,27 +115,33 @@ function HomeScreen() {
   }, [fetchMyAreaPerformance, getRegionCodeFromLocation]);
 
   return (
-    <SafeAreaView style={styles.block}>
-      <GenreListContent
-        genreList={genreTabList}
-        onClickGenre={(genreCode: GenreCodeItem) =>
-          Alert.alert('장르 선택', `선택한 장르: ${genreCode.displayName}`)
-        }
-      />
-      <MyAreaContent
-        currentMonth={currentMonth}
-        myAreaList={performanceList}
-        loading={isLoading}
-        onClickRefresh={handleRefresh}
-      />
-      <MonthRankContent
-        currentMonth={currentMonth}
-        loading={false}
-        tabList={tabList}
-        selectedTab={RankTab.TOP_1_10}
-        onSelectTab={tab => {}}
-        onClickProduct={() => {}}
-      />
+    <SafeAreaView style={styles.block} edges={['top']}>
+      <ScrollView>
+        <GenreListContent
+          genreList={genreTabList}
+          onClickGenre={(genreCode: GenreCodeItem) =>
+            Alert.alert('장르 선택', `선택한 장르: ${genreCode.displayName}`)
+          }
+        />
+        <MyAreaContent
+          currentMonth={currentMonth}
+          myAreaList={performanceList}
+          loading={isMyAreaLoading}
+          onClickRefresh={handleRefresh}
+        />
+        <MonthRankContent
+          currentMonth={currentMonth}
+          loading={isBoxOfficeDataLoading}
+          tabList={tabList}
+          rankList={boxofficeList}
+          selectedTab={selectedMonthRankTab}
+          onSelectTab={tab => {
+            console.log(`선택한 탭 = ${tab.display}`);
+            setSelectedMonthRankTab(tab);
+          }}
+          onClickProduct={() => {}}
+        />
+      </ScrollView>
     </SafeAreaView>
   );
 }

@@ -1,5 +1,10 @@
-import { PerformanceListParams } from '../../domain/model/PerformanceListParams';
+import { PerformanceListParams } from './../../domain/model/apiparams/PerformanceListParams';
+import { BoxOfficeParams } from '../../domain/model/apiparams/BoxOfficeParams';
 import { kopisApi } from '../api/instance';
+import {
+  BoxOfficeResponseDto,
+  parseBoxOfficeResponseDto,
+} from '../model/boxoffice/BoxOfficeResponseDto';
 import {
   parsePerformanceListResponseDto,
   PerformanceListResponseDto,
@@ -25,4 +30,20 @@ export const getPerformanceList = async (
   });
 
   return parsePerformanceListResponseDto(response.data);
+};
+
+export const getBoxOffice = async (
+  params: BoxOfficeParams,
+): Promise<BoxOfficeResponseDto> => {
+  const response = await kopisApi.get<string>('/openApi/restful/boxoffice', {
+    params: {
+      service: params.service,
+      stdate: params.startDate,
+      eddate: params.endDate,
+      catecode: params.catecode,
+      area: params.area,
+    },
+    responseType: 'text',
+  });
+  return parseBoxOfficeResponseDto(response.data);
 };

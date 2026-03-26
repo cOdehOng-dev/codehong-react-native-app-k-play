@@ -54,17 +54,6 @@ function ScrollTab({
     };
   };
 
-  //   const width = layoutParamToStyle(option.width);
-
-  //   const outerStyle: ViewStyle = {
-  //     marginTop: option.margin.top,
-  //     marginBottom: option.margin.bottom,
-  //     marginLeft: option.margin.left,
-  //     marginRight: option.margin.right,
-  //     ...(isMatchParent(option.width) ? { alignSelf: 'stretch' } : {}),
-  //     ...(width !== undefined && !isMatchParent(option.width) ? { width } : {}),
-  //   };
-
   return (
     <View
       style={styles.block}

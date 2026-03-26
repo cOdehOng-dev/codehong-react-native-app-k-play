@@ -1,6 +1,6 @@
 import { getPerformanceList } from './../remote/KopisApiService';
 import { PerformanceListResponseDto } from './../model/performance/list/PerformanceListResponseDto';
-import { PerformanceListParams } from '../../domain/model/PerformanceListParams';
+import { PerformanceListParams } from '../../domain/model/apiparams/PerformanceListParams';
 
 export class PerformanceRemoteDataSource {
   async getPerformanceList(

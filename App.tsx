@@ -7,9 +7,9 @@
 
 import { NavigationContainer } from '@react-navigation/native';
 import { StatusBar } from 'react-native';
-import RootStack from './src/presentation/screens/stack/RootStack';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { DIProvider } from './src/di/DIContext';
+import RootStack from './src/presentation/screens/stack/RootStack';
 
 function App() {
   return (

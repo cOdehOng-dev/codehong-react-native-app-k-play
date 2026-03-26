@@ -1,7 +1,7 @@
 import { PerformanceInfoItem } from '../../domain/model/PerformanceInfoItem';
 import { PerformanceRemoteDataSource } from '../datasource/PerformanceRemoteDataSource';
 import { asDomain } from '../mapper/PerformanceInfoMapper';
-import { PerformanceListParams } from '../../domain/model/PerformanceListParams';
+import { PerformanceListParams } from '../../domain/model/apiparams/PerformanceListParams';
 import { PerformanceRepository } from './../../domain/repository/PerformanceRepository';
 export class PerformanceRepositoryImpl implements PerformanceRepository {
   constructor(private readonly remoteDataSource: PerformanceRemoteDataSource) {}

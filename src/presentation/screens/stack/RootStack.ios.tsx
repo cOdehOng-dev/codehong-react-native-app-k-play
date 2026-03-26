@@ -3,9 +3,8 @@ import {
   NativeStackNavigationProp,
   NativeStackScreenProps,
 } from '@react-navigation/native-stack';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createNativeBottomTabNavigator } from '@react-navigation/bottom-tabs/unstable';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import HomeScreen from '../HomeScreen';
 import FavoriteScreen from '../FavoriteScreen';
@@ -24,27 +23,19 @@ export type RootStackNavigationProp = NativeStackNavigationProp<RootStackProps>;
 export type RootStackScreenProps<Screen extends keyof RootStackProps> =
   NativeStackScreenProps<RootStackProps, Screen>;
 
-const Stack = createBottomTabNavigator<RootStackProps>();
+const Stack = createNativeBottomTabNavigator<RootStackProps>();
 
-const ICON_SIZE = 20;
-
-function getTabIcon(materialName: string) {
-  return ({ color }: { color: string }) => (
-    <MaterialIcons name={materialName} size={ICON_SIZE} color={color} />
-  );
+function getTabIcon(sfSymbol: string) {
+  return { type: 'sfSymbol' as const, name: sfSymbol as any };
 }
 
 function RootStack() {
-  const { bottom } = useSafeAreaInsets();
-
   return (
     <Stack.Navigator
       screenOptions={{
         tabBarActiveTintColor: '#FF8224',
         tabBarInactiveTintColor: '#000000',
-        tabBarStyle: { height: 58 + bottom, paddingBottom: bottom },
-        tabBarItemStyle: { paddingBottom: 0 },
-        tabBarShowLabel: true,
+        tabBarActiveIndicatorEnabled: false,
       }}
     >
       <Stack.Screen
@@ -53,7 +44,7 @@ function RootStack() {
         options={{
           headerShown: false,
           tabBarLabel: '홈',
-          tabBarIcon: getTabIcon('home'),
+          tabBarIcon: getTabIcon('house.fill'),
         }}
       />
       <Stack.Screen
@@ -62,7 +53,7 @@ function RootStack() {
         options={{
           headerShown: false,
           tabBarLabel: '내주변',
-          tabBarIcon: getTabIcon('location-on'),
+          tabBarIcon: getTabIcon('location.fill'),
         }}
       />
       <Stack.Screen
@@ -71,7 +62,7 @@ function RootStack() {
         options={{
           headerShown: false,
           tabBarLabel: '찜',
-          tabBarIcon: getTabIcon('favorite'),
+          tabBarIcon: getTabIcon('heart.fill'),
         }}
       />
       <Stack.Screen
@@ -80,7 +71,7 @@ function RootStack() {
         options={{
           headerShown: false,
           tabBarLabel: '설정',
-          tabBarIcon: getTabIcon('settings'),
+          tabBarIcon: getTabIcon('gearshape.fill'),
         }}
       />
     </Stack.Navigator>

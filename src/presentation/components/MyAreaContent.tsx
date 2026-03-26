@@ -53,14 +53,14 @@ function MyAreaContent({
         </Pressable>
       </View>
       {loading ? (
-        <View style={[styles.list, styles.skeletonContainer]}>
+        <View style={[styles.mt, styles.skeletonContainer]}>
           {Array.from({ length: 4 }).map((_, i) => (
             <PerformanceInfoSkeleton key={i} />
           ))}
         </View>
       ) : (
         <FlatList
-          style={styles.list}
+          style={styles.mt}
           contentContainerStyle={styles.listContainer}
           horizontal
           showsHorizontalScrollIndicator={false}
@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     backgroundColor: '#FFFFFF',
   },
-  list: {
+  mt: {
     marginTop: 14,
   },
   listContainer: {

@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react';
 import { PerformanceInfoItem } from '../../domain/model/PerformanceInfoItem';
 import { useDI } from '../../di/DIContext';
-import { PerformanceListParams } from '../../domain/model/PerformanceListParams';
+import { PerformanceListParams } from '../../domain/model/apiparams/PerformanceListParams';
 
 interface State {
   performanceList: PerformanceInfoItem[];

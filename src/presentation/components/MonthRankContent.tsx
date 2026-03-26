@@ -3,24 +3,43 @@ import React from 'react';
 import PerformanceInfoSkeleton from './skeleton/PerformanceInfoSkeleton';
 import { RankTabItem, RankTabList } from '../../domain/type/RankTab';
 import ScrollTab from './ScrollTab';
+import { BoxOfficeItem } from '../../domain/model/BoxOfficeItem';
+import RankPerformanceInfoContent from './RankPerformanceInfoContent';
 
 type Props = {
   currentMonth: string;
   loading: boolean;
   tabList: RankTabItem[];
   selectedTab: RankTabItem;
+  rankList: BoxOfficeItem[];
   onSelectTab: (tab: RankTabItem) => void;
   onClickProduct: () => void;
 };
-function MonthRankContent({ currentMonth, tabList, loading }: Props) {
+function MonthRankContent({
+  currentMonth,
+  loading,
+  tabList,
+  selectedTab,
+  rankList,
+  onSelectTab,
+  onClickProduct,
+}: Props) {
+  const selectedIndex = Math.max(tabList.indexOf(selectedTab), 0);
+  const dispRankList = rankList.filter((item, index) => {
+    const rank = parseInt(item.rank ?? '0', 10);
+    return rank >= selectedTab.startRank && rank <= selectedTab.endRank;
+  });
+  console.log('선택한 rankList = ', dispRankList);
   return (
     <View style={styles.block}>
       <Text style={styles.title}>{currentMonth}월 인기 순위 Top50</Text>
       <ScrollTab
-        initialSelectIndex={0}
+        initialSelectIndex={selectedIndex}
         tabList={tabList}
         tabTextList={tabList.map(tab => tab.display)}
-        onClickTab={(index, tabText) => {}}
+        onClickTab={(index, tabText) => {
+          onSelectTab(tabList[index]);
+        }}
       />
       {loading ? (
         <View style={[styles.mt, styles.skeletonContainer]}>
@@ -29,18 +48,17 @@ function MonthRankContent({ currentMonth, tabList, loading }: Props) {
           ))}
         </View>
       ) : (
-        <View />
-        // <FlatList
-        //   style={styles.mt}
-        //   contentContainerStyle={styles.listContainer}
-        //   horizontal
-        //   showsHorizontalScrollIndicator={false}
-        //   data={myAreaList}
-        //   renderItem={({ item }) => (
-        //     <PerformanceInfoContent item={item} onClick={onClickProduct} />
-        //   )}
-        //   keyExtractor={(item, index) => item.id ?? String(index)}
-        // />
+        <FlatList
+          style={styles.mt}
+          contentContainerStyle={styles.listContainer}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          data={dispRankList}
+          renderItem={({ item }) => (
+            <RankPerformanceInfoContent item={item} onClick={() => {}} />
+          )}
+          keyExtractor={(item, index) => item.performanceName ?? String(index)}
+        />
       )}
     </View>
   );
