@@ -1,4 +1,4 @@
-package com.codehongreactnativeappkplay
+package com.codehong.reactnative.kplay
 
 import android.app.Application
 import com.facebook.react.PackageList

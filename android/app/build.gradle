@@ -2,6 +2,12 @@ apply plugin: "com.android.application"
 apply plugin: "org.jetbrains.kotlin.android"
 apply plugin: "com.facebook.react"
 
+def localProperties = new Properties()
+def localPropertiesFile = rootProject.file('local.properties')
+if (localPropertiesFile.exists()) {
+    localPropertiesFile.withReader('UTF-8') { reader -> localProperties.load(reader) }
+}
+
 project.ext.vectoricons = [
     iconFontNames: [
         'MaterialIcons.ttf',
@@ -86,13 +92,14 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace "com.codehongreactnativeappkplay"
+    namespace "com.codehong.reactnative.kplay"
     defaultConfig {
-        applicationId "com.codehongreactnativeappkplay"
+        applicationId "com.codehong.reactnative.kplay"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
+        manifestPlaceholders = [NAVER_CLIENT_ID: localProperties.getProperty('NAVER_CLIENT_ID', '')]
     }
     signingConfigs {
         debug {

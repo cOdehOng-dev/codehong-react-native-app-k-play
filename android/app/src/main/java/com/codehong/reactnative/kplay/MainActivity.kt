@@ -1,4 +1,4 @@
-package com.codehongreactnativeappkplay
+package com.codehong.reactnative.kplay
 
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate

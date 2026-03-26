@@ -47,6 +47,8 @@
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>내 주변 공연 정보를 제공하기 위해 위치 정보를 사용합니다.</string>
+	<key>NMFNcpKeyId</key>
+	<string>$(NAVER_CLIENT_ID)</string>
 	<key>RCTNewArchEnabled</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
