@@ -1,44 +1,28 @@
-import React from 'react';
-import {
-  NativeStackNavigationProp,
-  NativeStackScreenProps,
-} from '@react-navigation/native-stack';
 import { createNativeBottomTabNavigator } from '@react-navigation/bottom-tabs/unstable';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import React from 'react';
 
-import HomeScreen from '../HomeScreen';
 import FavoriteScreen from '../FavoriteScreen';
+import HomeScreen from '../HomeScreen';
 import MyZoneScreen from '../MyZoneScreen';
 import SettingScreen from '../SettingScreen';
+import { MainTabProps } from './StackProps';
 
-export type RootStackProps = {
-  Home: undefined;
-  MyZone: undefined;
-  Favorite: undefined;
-  Setting: undefined;
-};
-
-export type RootStackNavigationProp = NativeStackNavigationProp<RootStackProps>;
-
-export type RootStackScreenProps<Screen extends keyof RootStackProps> =
-  NativeStackScreenProps<RootStackProps, Screen>;
-
-const Stack = createNativeBottomTabNavigator<RootStackProps>();
+const Tab = createNativeBottomTabNavigator<MainTabProps>();
 
 function getTabIcon(sfSymbol: string) {
   return { type: 'sfSymbol' as const, name: sfSymbol as any };
 }
 
-function RootStack() {
+function MainTab() {
   return (
-    <Stack.Navigator
+    <Tab.Navigator
       screenOptions={{
         tabBarActiveTintColor: '#FF8224',
         tabBarInactiveTintColor: '#000000',
         tabBarActiveIndicatorEnabled: false,
       }}
     >
-      <Stack.Screen
+      <Tab.Screen
         name="Home"
         component={HomeScreen}
         options={{
@@ -47,7 +31,7 @@ function RootStack() {
           tabBarIcon: getTabIcon('house.fill'),
         }}
       />
-      <Stack.Screen
+      <Tab.Screen
         name="MyZone"
         component={MyZoneScreen}
         options={{
@@ -56,7 +40,7 @@ function RootStack() {
           tabBarIcon: getTabIcon('location.fill'),
         }}
       />
-      <Stack.Screen
+      <Tab.Screen
         name="Favorite"
         component={FavoriteScreen}
         options={{
@@ -65,7 +49,7 @@ function RootStack() {
           tabBarIcon: getTabIcon('heart.fill'),
         }}
       />
-      <Stack.Screen
+      <Tab.Screen
         name="Setting"
         component={SettingScreen}
         options={{
@@ -74,8 +58,8 @@ function RootStack() {
           tabBarIcon: getTabIcon('gearshape.fill'),
         }}
       />
-    </Stack.Navigator>
+    </Tab.Navigator>
   );
 }
 
-export default RootStack;
+export default MainTab;

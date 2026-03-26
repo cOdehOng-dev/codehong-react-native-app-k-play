@@ -1,87 +1,35 @@
-import React from 'react';
 import {
+  createNativeStackNavigator,
   NativeStackNavigationProp,
   NativeStackScreenProps,
 } from '@react-navigation/native-stack';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-
-import HomeScreen from '../HomeScreen';
-import FavoriteScreen from '../FavoriteScreen';
-import MyZoneScreen from '../MyZoneScreen';
-import SettingScreen from '../SettingScreen';
+import React from 'react';
+import DetailScreen from '../DetailScreen';
+import MainTab from './MainTab';
 
 export type RootStackProps = {
-  Home: undefined;
-  MyZone: undefined;
-  Favorite: undefined;
-  Setting: undefined;
+  MainTab: undefined;
+  Detail: { performanceId: string };
 };
 
 export type RootStackNavigationProp = NativeStackNavigationProp<RootStackProps>;
-
 export type RootStackScreenProps<Screen extends keyof RootStackProps> =
   NativeStackScreenProps<RootStackProps, Screen>;
 
-const Stack = createBottomTabNavigator<RootStackProps>();
-
-const ICON_SIZE = 20;
-
-function getTabIcon(materialName: string) {
-  return ({ color }: { color: string }) => (
-    <MaterialIcons name={materialName} size={ICON_SIZE} color={color} />
-  );
-}
+const Stack = createNativeStackNavigator<RootStackProps>();
 
 function RootStack() {
-  const { bottom } = useSafeAreaInsets();
-
   return (
-    <Stack.Navigator
-      screenOptions={{
-        tabBarActiveTintColor: '#FF8224',
-        tabBarInactiveTintColor: '#000000',
-        tabBarStyle: { height: 58 + bottom, paddingBottom: bottom },
-        tabBarItemStyle: { paddingBottom: 0 },
-        tabBarShowLabel: true,
-      }}
-    >
+    <Stack.Navigator>
       <Stack.Screen
-        name="Home"
-        component={HomeScreen}
-        options={{
-          headerShown: false,
-          tabBarLabel: '홈',
-          tabBarIcon: getTabIcon('home'),
-        }}
+        name="MainTab"
+        component={MainTab}
+        options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="MyZone"
-        component={MyZoneScreen}
-        options={{
-          headerShown: false,
-          tabBarLabel: '내주변',
-          tabBarIcon: getTabIcon('location-on'),
-        }}
-      />
-      <Stack.Screen
-        name="Favorite"
-        component={FavoriteScreen}
-        options={{
-          headerShown: false,
-          tabBarLabel: '찜',
-          tabBarIcon: getTabIcon('favorite'),
-        }}
-      />
-      <Stack.Screen
-        name="Setting"
-        component={SettingScreen}
-        options={{
-          headerShown: false,
-          tabBarLabel: '설정',
-          tabBarIcon: getTabIcon('settings'),
-        }}
+        name="Detail"
+        component={DetailScreen}
+        options={{ headerShown: false }}
       />
     </Stack.Navigator>
   );

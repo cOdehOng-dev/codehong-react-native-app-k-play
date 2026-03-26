@@ -10,6 +10,11 @@ import React, { useRef } from 'react';
 import { PerformanceInfoItem } from '../../domain/model/PerformanceInfoItem';
 import PerformanceInfoContent from './PerformanceInfoContent';
 import PerformanceInfoSkeleton from './skeleton/PerformanceInfoSkeleton';
+import { useNavigation } from '@react-navigation/native';
+import {
+  RootStackNavigationProp,
+  RootStackProps,
+} from '../screens/stack/RootStack';
 
 type Props = {
   currentMonth: string;
@@ -25,6 +30,7 @@ function MyAreaContent({
   onClickRefresh,
 }: Props) {
   const rotateAnim = useRef(new Animated.Value(0)).current;
+  const navigation = useNavigation<RootStackNavigationProp>();
 
   const handleRefresh = () => {
     rotateAnim.setValue(0);
@@ -66,7 +72,12 @@ function MyAreaContent({
           showsHorizontalScrollIndicator={false}
           data={myAreaList}
           renderItem={({ item }) => (
-            <PerformanceInfoContent item={item} onClick={() => {}} />
+            <PerformanceInfoContent
+              item={item}
+              onClick={() =>
+                navigation.navigate('Detail', { performanceId: item.id ?? '' })
+              }
+            />
           )}
           keyExtractor={(item, index) => item.id ?? String(index)}
         />
