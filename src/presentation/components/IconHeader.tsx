@@ -30,6 +30,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     alignItems: 'center',
     flexDirection: 'row',
+    paddingHorizontal: 8,
   },
   iconContainer: {
     width: 40,
@@ -38,7 +39,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   icon: {
-    width: 34,
+    width: 24,
     height: 24,
   },
   title: {
