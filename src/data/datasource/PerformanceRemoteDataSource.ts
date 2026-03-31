@@ -3,13 +3,13 @@ import {
   getPerformanceList,
 } from '../remote/kopisApiService';
 import { PerformanceListResponseDto } from '../model/performance/list/PerformanceListResponseDto';
-import { PerformanceListParams } from '../../domain/model/apiprops/PerformanceListParams';
+import { PerformanceListProps } from '../../domain/model/apiprops/performanceListProps';
 import { PerformanceDetailProps } from '../../domain/model/apiprops/performanceDetailProps';
 import { PerformanceDetailResponseDto } from '../model/detail/performanceDetailResponseDto';
 
 export class PerformanceRemoteDataSource {
   async getPerformanceList(
-    params: PerformanceListParams,
+    params: PerformanceListProps,
   ): Promise<PerformanceListResponseDto> {
     try {
       return await getPerformanceList(params);

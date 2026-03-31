@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react';
 import { PerformanceInfoItem } from '../../domain/model/PerformanceInfoItem';
 import { useDI } from '../../di/DIContext';
-import { PerformanceListParams } from '../../domain/model/apiprops/PerformanceListParams';
+import { PerformanceListProps } from '../../domain/model/apiprops/performanceListProps';
 
 interface State {
   performanceList: PerformanceInfoItem[];
@@ -18,7 +18,7 @@ export function usePerformanceList() {
   });
 
   const callPerformanceListApi = useCallback(
-    async (params: PerformanceListParams) => {
+    async (params: PerformanceListProps) => {
       setState(s => ({ ...s, loading: true, error: null }));
       try {
         const performanceList = await performanceUseCase.getPerformanceList(

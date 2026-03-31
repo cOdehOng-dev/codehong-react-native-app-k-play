@@ -4,7 +4,7 @@ import {
   toPerformanceDetail,
   toPerformanceItem,
 } from '../mapper/PerformanceInfoMapper';
-import { PerformanceListParams } from '../../domain/model/apiprops/PerformanceListParams';
+import { PerformanceListProps } from '../../domain/model/apiprops/performanceListProps';
 import { PerformanceRepository } from './../../domain/repository/PerformanceRepository';
 import { PerformanceDetailProps } from '../../domain/model/apiprops/performanceDetailProps';
 import { PerformanceDetail } from '../../domain/model/detail/performanceDetail';
@@ -12,7 +12,7 @@ export class PerformanceRepositoryImpl implements PerformanceRepository {
   constructor(private readonly remote: PerformanceRemoteDataSource) {}
 
   async getPerformanceList(
-    params: PerformanceListParams,
+    params: PerformanceListProps,
   ): Promise<PerformanceInfoItem[]> {
     const dto = await this.remote.getPerformanceList(params);
     return dto.performances?.map(item => toPerformanceItem(item)) ?? [];

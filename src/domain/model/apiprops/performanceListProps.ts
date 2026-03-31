@@ -1,4 +1,4 @@
-export interface PerformanceListParams {
+export interface PerformanceListProps {
   service: string;
   startDate: string;
   endDate: string;

@@ -1,6 +1,6 @@
 import { BoxOfficeParams } from '../../domain/model/apiprops/BoxOfficeParams';
 import { PerformanceDetailProps } from '../../domain/model/apiprops/performanceDetailProps';
-import { PerformanceListParams } from '../../domain/model/apiprops/PerformanceListParams';
+import { PerformanceListProps } from '../../domain/model/apiprops/performanceListProps';
 import { SearchPlaceProps } from '../../domain/model/apiprops/searchPlaceProps';
 import { kopisApi } from '../api/instance';
 import {
@@ -21,7 +21,7 @@ import {
 } from '../model/place/placeListResponseDto';
 
 export const getPerformanceList = async (
-  params: PerformanceListParams,
+  params: PerformanceListProps,
 ): Promise<PerformanceListResponseDto> => {
   const response = await kopisApi.get<string>('/openApi/restful/pblprfr', {
     params: {

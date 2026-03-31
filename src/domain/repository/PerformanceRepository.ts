@@ -1,11 +1,11 @@
 import { PerformanceInfoItem } from '../model/PerformanceInfoItem';
-import { PerformanceListParams } from '../model/apiprops/PerformanceListParams';
+import { PerformanceListProps } from '../model/apiprops/performanceListProps';
 import { PerformanceDetailProps } from '../model/apiprops/performanceDetailProps';
 import { PerformanceDetail } from '../model/detail/performanceDetail';
 
 export interface PerformanceRepository {
   getPerformanceList(
-    params: PerformanceListParams,
+    params: PerformanceListProps,
   ): Promise<PerformanceInfoItem[]>;
 
   getDetail(

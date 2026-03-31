@@ -1,5 +1,5 @@
 import { PerformanceDetailProps } from '../model/apiprops/performanceDetailProps';
-import { PerformanceListParams } from '../model/apiprops/PerformanceListParams';
+import { PerformanceListProps } from '../model/apiprops/performanceListProps';
 import { PerformanceDetail } from '../model/detail/performanceDetail';
 import { PerformanceInfoItem } from '../model/PerformanceInfoItem';
 import { PerformanceRepository } from '../repository/PerformanceRepository';
@@ -8,7 +8,7 @@ export class PerformanceUseCase {
   constructor(private readonly repository: PerformanceRepository) {}
 
   async getPerformanceList(
-    params: PerformanceListParams,
+    params: PerformanceListProps,
   ): Promise<PerformanceInfoItem[]> {
     return this.repository.getPerformanceList(params);
   }

@@ -1,8 +1,8 @@
 import { XMLParser } from 'fast-xml-parser';
-import { FacilitySummaryDto } from './facilitySummaryDto';
+import { FacilityDto } from './facilityDto';
 
 export interface PlaceListResponseDto {
-  facilities?: FacilitySummaryDto[] | null;
+  facilities?: FacilityDto[] | null;
 }
 
 const parser = new XMLParser({
@@ -19,13 +19,11 @@ export function parsePlaceListResponseDto(xml: string): PlaceListResponseDto {
 
   return {
     facilities: list.map((item: Record<string, string>) => ({
-      fcltyNm: item.fcltynm,
-      mt10Id: item.mt10id,
-      mt13Cnt: item.mt13cnt,
-      fcltyChartr: item.fcltychartr,
-      sidoNm: item.sidonm,
-      gugunNm: item.gugunnm,
-      openDe: item.opendate,
+      name: item.fcltyNm ?? null,
+      id: item.mt10Id ?? null,
+      address: item.adres ?? null,
+      latitude: item.la ?? null,
+      longitude: item.lo ?? null,
     })),
   };
 }
