@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react';
 import { useDI } from '../../di/DIContext';
 import { BoxOfficeItem } from '../../domain/model/BoxOfficeItem';
-import { BoxOfficeParams } from '../../domain/model/apiparams/BoxOfficeParams';
+import { BoxOfficeParams } from '../../domain/model/apiprops/BoxOfficeParams';
 
 interface State {
   boxofficeList: BoxOfficeItem[];
@@ -10,7 +10,7 @@ interface State {
 }
 
 export function useBoxOfficeList() {
-  const { boxOfficeListUseCase } = useDI();
+  const { boxOfficeUseCase } = useDI();
   const [state, setState] = useState<State>({
     boxofficeList: [],
     isLoading: false,
@@ -21,9 +21,7 @@ export function useBoxOfficeList() {
     async (params: BoxOfficeParams) => {
       setState(s => ({ ...s, isLoading: true, error: null }));
       try {
-        const boxOfficeList = await boxOfficeListUseCase.getBoxOfficeList(
-          params,
-        );
+        const boxOfficeList = await boxOfficeUseCase.getBoxOfficeList(params);
         console.log(
           '[useBoxOfficeList] 응답 데이터:',
           JSON.stringify(boxOfficeList, null, 2),
@@ -42,7 +40,7 @@ export function useBoxOfficeList() {
         });
       }
     },
-    [boxOfficeListUseCase],
+    [boxOfficeUseCase],
   );
 
   return { ...state, callBoxofficeList };

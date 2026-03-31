@@ -99,7 +99,10 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
-        manifestPlaceholders = [NAVER_CLIENT_ID: localProperties.getProperty('NAVER_CLIENT_ID', '')]
+        manifestPlaceholders = [
+            NAVER_CLIENT_ID: localProperties.getProperty('NAVER_CLIENT_ID', ''),
+            usesCleartextTraffic: "true"
+        ]
     }
     signingConfigs {
         debug {

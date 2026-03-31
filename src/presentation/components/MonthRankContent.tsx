@@ -5,6 +5,8 @@ import { RankTabItem, RankTabList } from '../../domain/type/RankTab';
 import ScrollTab from './ScrollTab';
 import { BoxOfficeItem } from '../../domain/model/BoxOfficeItem';
 import RankPerformanceInfoContent from './RankPerformanceInfoContent';
+import { RootStackNavigationProp } from '../screens/stack/RootStack';
+import { useNavigation } from '@react-navigation/native';
 
 type Props = {
   currentMonth: string;
@@ -13,7 +15,6 @@ type Props = {
   selectedTab: RankTabItem;
   rankList: BoxOfficeItem[];
   onSelectTab: (tab: RankTabItem) => void;
-  onClickProduct: () => void;
 };
 function MonthRankContent({
   currentMonth,
@@ -22,8 +23,8 @@ function MonthRankContent({
   selectedTab,
   rankList,
   onSelectTab,
-  onClickProduct,
 }: Props) {
+  const navigation = useNavigation<RootStackNavigationProp>();
   const selectedIndex = Math.max(tabList.indexOf(selectedTab), 0);
   const dispRankList = rankList.filter((item, index) => {
     const rank = parseInt(item.rank ?? '0', 10);
@@ -55,9 +56,16 @@ function MonthRankContent({
           showsHorizontalScrollIndicator={false}
           data={dispRankList}
           renderItem={({ item }) => (
-            <RankPerformanceInfoContent item={item} onClick={() => {}} />
+            <RankPerformanceInfoContent
+              item={item}
+              onClick={() => {
+                navigation.navigate('Detail', {
+                  performanceId: item.performanceId ?? '',
+                });
+              }}
+            />
           )}
-          keyExtractor={(item, index) => item.performanceName ?? String(index)}
+          keyExtractor={(item, index) => item.performanceId ?? String(index)}
         />
       )}
     </View>

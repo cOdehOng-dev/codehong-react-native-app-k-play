@@ -1,4 +1,4 @@
-import { BoxOfficeParams } from '../../domain/model/apiparams/BoxOfficeParams';
+import { BoxOfficeParams } from '../../domain/model/apiprops/BoxOfficeParams';
 import { BoxOfficeItem } from '../../domain/model/BoxOfficeItem';
 import { BoxOfficeRepository } from '../../domain/repository/BoxOfficeRepository';
 import { BoxOfficeRemoteDataSource } from '../datasource/BoxOfficeRemoteDataSource';
@@ -9,9 +9,9 @@ export class BoxOfficeRepositoryImpl implements BoxOfficeRepository {
 
   async getBoxOfficeList(params: BoxOfficeParams): Promise<BoxOfficeItem[]> {
     const dto = await this.remote.getBoxOffice(params);
-    const ss = dto.boxOfficeList?.map(item => asDomain(item));
-    console.log(`item = ${ss!![0].rank}`);
-    console.log(`mapper = ${dto.boxOfficeList?.map(item => asDomain(item))}`);
+    console.log(
+      `test here mapper = ${dto.boxOfficeList?.map(item => asDomain(item))}`,
+    );
     return dto.boxOfficeList?.map(item => asDomain(item)) || [];
   }
 }

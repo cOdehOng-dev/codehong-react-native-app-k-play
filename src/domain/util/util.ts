@@ -15,6 +15,60 @@ export const chunk = <T>(arr: T[], size: number): T[][] =>
     arr.slice(i * size, i * size + size),
   );
 
+export function splitAndParseWithParentheses(str?: string | null): [string, string][] {
+  if (!str) return [];
+
+  const result: [string, string][] = [];
+  let buffer = '';
+  let depth = 0;
+
+  const addBufferToResult = () => {
+    if (!buffer.trim()) return;
+
+    const rawItem = buffer.trim();
+    const firstParenIndex = rawItem.indexOf('(');
+    const lastParenIndex = rawItem.lastIndexOf(')');
+
+    if (firstParenIndex !== -1 && lastParenIndex > firstParenIndex) {
+      const outerText = rawItem.slice(0, firstParenIndex).trim();
+      const innerText = rawItem.slice(firstParenIndex + 1, lastParenIndex).trim();
+      result.push([outerText, innerText]);
+    } else {
+      result.push([rawItem, '']);
+    }
+    buffer = '';
+  };
+
+  for (const char of str) {
+    if (char === '(') {
+      depth++;
+      buffer += char;
+    } else if (char === ')') {
+      if (depth > 0) depth--;
+      buffer += char;
+    } else if (char === ',') {
+      if (depth === 0) {
+        addBufferToResult();
+      } else {
+        buffer += char;
+      }
+    } else {
+      buffer += char;
+    }
+  }
+
+  addBufferToResult();
+
+  return result;
+}
+
+export function toPeriod(start?: string | null, end?: string | null): string {
+  if (start && end) return `${start} ~ ${end}`;
+  if (start && !end) return `${start} ~ `;
+  if (!start && end) return ` ~ ${end}`;
+  return '';
+}
+
 export function toShortAreaName(area?: string): string | undefined {
   if (!area) return area;
   if (area.includes('서울')) return '서울';

@@ -15,7 +15,9 @@ function IconHeader({ title, onClick }: Props) {
           source={require('../../assets/images/ic_34_arrow_left.png')}
         />
       </Pressable>
-      <Text style={styles.title}>{title}</Text>
+      <Text style={styles.title} ellipsizeMode="tail" numberOfLines={1}>
+        {title}
+      </Text>
       <View style={styles.dummy} />
     </View>
   );

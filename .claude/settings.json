@@ -1,0 +1,25 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:velog.io)",
+      "Bash(pod install:*)",
+      "Read(//Users/ghdtjrdn0323/Library/Android/sdk/platform-tools/**)",
+      "Read(//usr/local/**)",
+      "Bash(/dev/null -name adb -type f)",
+      "Bash(~/Library/Android/sdk/platform-tools/adb devices:*)",
+      "Bash(~/Library/Android/sdk/platform-tools/adb logcat:*)",
+      "Bash(~/Library/Android/sdk/platform-tools/adb shell:*)",
+      "Bash(./gradlew app:dependencies --configuration releaseRuntimeClasspath)",
+      "Read(//Users/ghdtjrdn0323/Library/Android/sdk/**)",
+      "Read(//Users/ghdtjrdn0323/.gradle/caches/**)",
+      "Bash(find ~/.gradle/caches -path *naver*map-sdk* -name *.aar)",
+      "Read(//private/tmp/**)",
+      "Bash(cp ~/.gradle/caches/modules-2/files-2.1/com.naver.maps/map-sdk/3.23.0/70167d756be3284d80a5eb698ac82a33b9c6318c/map-sdk-3.23.0.aar .)",
+      "Bash(unzip -p map-sdk-3.23.0.aar classes.jar)",
+      "Bash(jar tf:*)",
+      "Bash(javap -cp /tmp/naver_sdk/classes.jar com.naver.maps.map.NaverMapSdk)",
+      "Bash(javap -cp /tmp/naver_sdk/classes.jar \"com.naver.maps.map.NaverMapSdk$NaverCloudPlatformClient\")",
+      "Bash(javap -verbose -cp /tmp/naver_sdk_131/classes.jar com.naver.maps.map.NaverMapSdk$NaverCloudPlatformClient)"
+    ]
+  }
+}

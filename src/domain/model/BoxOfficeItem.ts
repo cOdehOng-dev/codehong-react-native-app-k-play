@@ -1,12 +1,12 @@
 export interface BoxOfficeItem {
-  category?: string;
-  rank?: string;
-  performanceName?: string;
-  performancePeriod?: string;
-  performanceCount?: string;
-  area?: string;
-  placeName?: string;
-  seatCount?: string;
-  posterUrl?: string;
-  performanceId?: string;
+  category?: string | null;
+  rank?: string | null;
+  performanceName?: string | null;
+  performancePeriod?: string | null;
+  performanceCount?: string | null;
+  area?: string | null;
+  placeName?: string | null;
+  seatCount?: string | null;
+  posterUrl?: string | null;
+  performanceId?: string | null;
 }

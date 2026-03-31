@@ -1,4 +1,4 @@
-import { BoxOfficeParams } from '../model/apiparams/BoxOfficeParams';
+import { BoxOfficeParams } from '../model/apiprops/BoxOfficeParams';
 import { BoxOfficeItem } from '../model/BoxOfficeItem';
 
 export interface BoxOfficeRepository {

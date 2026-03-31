@@ -1,9 +1,8 @@
-import { BoxOfficeParams } from '../model/apiparams/BoxOfficeParams';
+import { BoxOfficeParams } from '../model/apiprops/BoxOfficeParams';
 import { BoxOfficeItem } from '../model/BoxOfficeItem';
 import { BoxOfficeRepository } from '../repository/BoxOfficeRepository';
-import { IBoxOfficeUseCase } from './IBoxOfficeUseCase';
 
-export class BoxOfficeUseCase implements IBoxOfficeUseCase {
+export class BoxOfficeUseCase {
   constructor(private readonly repository: BoxOfficeRepository) {}
 
   async getBoxOfficeList(params: BoxOfficeParams): Promise<BoxOfficeItem[]> {

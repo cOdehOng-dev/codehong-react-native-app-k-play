@@ -1,14 +1,24 @@
-import { PerformanceListParams } from './../../domain/model/apiparams/PerformanceListParams';
-import { BoxOfficeParams } from '../../domain/model/apiparams/BoxOfficeParams';
+import { BoxOfficeParams } from '../../domain/model/apiprops/BoxOfficeParams';
+import { PerformanceDetailProps } from '../../domain/model/apiprops/performanceDetailProps';
+import { PerformanceListParams } from '../../domain/model/apiprops/PerformanceListParams';
+import { SearchPlaceProps } from '../../domain/model/apiprops/searchPlaceProps';
 import { kopisApi } from '../api/instance';
 import {
   BoxOfficeResponseDto,
   parseBoxOfficeResponseDto,
 } from '../model/boxoffice/BoxOfficeResponseDto';
 import {
+  parsePerformanceDetailResponseDto,
+  PerformanceDetailResponseDto,
+} from '../model/detail/performanceDetailResponseDto';
+import {
   parsePerformanceListResponseDto,
   PerformanceListResponseDto,
 } from '../model/performance/list/PerformanceListResponseDto';
+import {
+  parsePlaceListResponseDto,
+  PlaceListResponseDto,
+} from '../model/place/placeListResponseDto';
 
 export const getPerformanceList = async (
   params: PerformanceListParams,
@@ -47,3 +57,33 @@ export const getBoxOffice = async (
   });
   return parseBoxOfficeResponseDto(response.data);
 };
+
+export async function getPerformanceDetail(
+  props: PerformanceDetailProps,
+): Promise<PerformanceDetailResponseDto> {
+  const response = await kopisApi.get<string>(
+    `/openApi/restful/pblprfr/${props.id}`,
+    {
+      params: {
+        service: props.servicekey,
+      },
+      responseType: 'text',
+    },
+  );
+  return parsePerformanceDetailResponseDto(response.data);
+}
+
+export async function searchPlace(
+  props: SearchPlaceProps,
+): Promise<PlaceListResponseDto> {
+  const response = await kopisApi.get<string>('/openApi/restful/prfplc', {
+    params: {
+      service: props.servicekey,
+      cpage: props.currentPage,
+      rows: props.rowsPerPage,
+      shprfnmfct: props.keyword,
+    },
+    responseType: 'text',
+  });
+  return parsePlaceListResponseDto(response.data);
+}

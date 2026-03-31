@@ -1,9 +1,10 @@
-import { Alert, ScrollView, StyleSheet } from 'react-native';
-import React, { useCallback, useEffect, useState } from 'react';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { usePerformanceList } from '../hooks/usePerformanceList';
 import { KOKOR_CLIENT_ID } from '@env';
-import MyAreaContent from '../components/MyAreaContent';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Alert, ScrollView, StyleSheet } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { GenreCodeItem, GenreCodes } from '../../domain/type/GenreCode';
+import { RankTab, RankTabItem, RankTabList } from '../../domain/type/RankTab';
+import { nameToRegionCode, RegionCode } from '../../domain/type/RegionCode';
 import {
   getCurrentMonth,
   getCurrentMonthRange,
@@ -14,16 +15,11 @@ import {
   getCurrentPosition,
   requestLocationPermission,
 } from '../../domain/util/LocationUtil';
-import { nameToRegionCode, RegionCode } from '../../domain/type/RegionCode';
-import {
-  GenreCode,
-  GenreCodeItem,
-  GenreCodes,
-} from '../../domain/type/GenreCode';
 import GenreListContent from '../components/GenreListContent';
 import MonthRankContent from '../components/MonthRankContent';
-import { RankTab, RankTabItem, RankTabList } from '../../domain/type/RankTab';
+import MyAreaContent from '../components/MyAreaContent';
 import { useBoxOfficeList } from '../hooks/useBoxOfficeList';
+import { usePerformanceList } from '../hooks/usePerformanceList';
 
 function HomeScreen() {
   const [currentMonth] = useState(getCurrentMonth(false));
@@ -139,7 +135,6 @@ function HomeScreen() {
             console.log(`선택한 탭 = ${tab.display}`);
             setSelectedMonthRankTab(tab);
           }}
-          onClickProduct={() => {}}
         />
       </ScrollView>
     </SafeAreaView>
