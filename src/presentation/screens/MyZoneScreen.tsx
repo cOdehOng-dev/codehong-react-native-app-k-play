@@ -1,10 +1,9 @@
-import { StyleSheet, View } from 'react-native';
-import React from 'react';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import {
   NaverMapMarkerOverlay,
   NaverMapView,
 } from '@mj-studio/react-native-naver-map';
+import React from 'react';
+import { StyleSheet, View } from 'react-native';
 
 const INITIAL_CAMERA = {
   latitude: 37.5715,

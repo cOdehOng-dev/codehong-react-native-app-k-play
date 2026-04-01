@@ -1,23 +1,37 @@
-import React, { useCallback, useEffect } from 'react';
-import { Alert, ScrollView, StyleSheet, Text, View } from 'react-native';
-import IconHeader from '../components/IconHeader';
-import { RootStackScreenProps } from './stack/RootStack';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import IndicatorProgress from '../components/IndicatorProgress';
-import { usePerformanceDetail } from '../hooks/usePerformanceDetail';
 import { KOKOR_CLIENT_ID } from '@env';
-import PosterContent from '../components/detail/PosterContent';
+import React, { useCallback, useEffect } from 'react';
+import {
+  Alert,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
+import {
+  SafeAreaView,
+  useSafeAreaInsets,
+} from 'react-native-safe-area-context';
 import InfoContent from '../components/detail/InfoContent';
 import PerformanceDetailCastContent from '../components/detail/PerformanceDetailCastContent';
-import PerformanceDetailTimeTableContent from '../components/detail/PerformanceDetailTimeTableContent';
-import PerformanceDetailPriceContent from '../components/detail/PerformanceDetailPriceContent';
-import { usePlaceDetail } from '../hooks/usePlaceDetail';
-import { SearchPlaceProps } from '../../domain/model/apiprops/searchPlaceProps';
+import PerformanceDetailNoticeContent from '../components/detail/PerformanceDetailNoticeContent';
 import PerformanceDetailPlaceContent from '../components/detail/PerformanceDetailPlaceContent';
+import PerformanceDetailPriceContent from '../components/detail/PerformanceDetailPriceContent';
+import PerformanceDetailTimeTableContent from '../components/detail/PerformanceDetailTimeTableContent';
+import PosterContent from '../components/detail/PosterContent';
+import IconHeader from '../components/IconHeader';
+import IndicatorProgress from '../components/IndicatorProgress';
+import { usePerformanceDetail } from '../hooks/usePerformanceDetail';
+import { usePlaceDetail } from '../hooks/usePlaceDetail';
+import { RootStackScreenProps } from './stack/RootStack';
+import { RootContainer } from '../components/RootContainer';
+import FloatingButton from '../components/detail/FloatingButton';
 
 type Props = RootStackScreenProps<'Detail'>;
 
 function DetailScreen({ navigation, route }: Props) {
+  const { bottom: bottomInset } = useSafeAreaInsets();
+  const safeBottom = Platform.OS === 'ios' ? bottomInset : 0;
   const { performanceDetail, loading, error, callPerformanceDetailApi } =
     usePerformanceDetail();
 
@@ -72,36 +86,60 @@ function DetailScreen({ navigation, route }: Props) {
   }, [error]);
 
   return (
-    <SafeAreaView style={styles.container}>
-      <IconHeader
-        title={performanceDetail?.name ?? '공연 상세'}
-        onClick={() => navigation.goBack()}
-      />
+    <RootContainer
+      topBar={
+        <IconHeader
+          title={performanceDetail?.name ?? '공연 상세'}
+          onClick={() => navigation.goBack()}
+        />
+      }
+      bottomBar={
+        // <View style={[styles.floatingBottom]}>
+        //   <View></View>
+        // </View>
+        <FloatingButton
+          viewStyle={styles.floatingBottom}
+          onClick={() => {}}
+          isBookMark={true}
+        />
+      }
+    >
       {loading ? (
         <IndicatorProgress />
       ) : (
-        <ScrollView style={styles.content}>
-          <PosterContent imageInfo={performanceDetail?.posterUrl ?? null} />
-          {performanceDetail?.name && (
-            <Text style={styles.title} numberOfLines={1}>
-              {performanceDetail.name}
-            </Text>
-          )}
-          <InfoContent detail={performanceDetail} />
-          <PerformanceDetailCastContent
-            castInfo={performanceDetail?.cast ?? null}
-            crewInfo={performanceDetail?.crew ?? null}
-          />
-          <PerformanceDetailTimeTableContent
-            timeTable={performanceDetail?.dateGuidance ?? null}
-          />
-          <PerformanceDetailPriceContent
-            priceInfo={performanceDetail?.priceInfo ?? null}
-          />
-          <PerformanceDetailPlaceContent placeDetail={placeDetail} />
-        </ScrollView>
+        <View style={styles.body}>
+          <ScrollView
+            style={styles.content}
+            contentContainerStyle={[
+              styles.scrollContent,
+              { paddingBottom: 80 + safeBottom },
+            ]}
+          >
+            <PosterContent imageInfo={performanceDetail?.posterUrl ?? null} />
+            {performanceDetail?.name && (
+              <Text style={styles.title} numberOfLines={1}>
+                {performanceDetail.name}
+              </Text>
+            )}
+            <InfoContent detail={performanceDetail} />
+            <PerformanceDetailCastContent
+              castInfo={performanceDetail?.cast ?? null}
+              crewInfo={performanceDetail?.crew ?? null}
+            />
+            <PerformanceDetailTimeTableContent
+              timeTable={performanceDetail?.dateGuidance ?? null}
+            />
+            <PerformanceDetailPriceContent
+              priceInfo={performanceDetail?.priceInfo ?? null}
+            />
+            <PerformanceDetailPlaceContent placeDetail={placeDetail} />
+            <PerformanceDetailNoticeContent
+              imageUrlList={performanceDetail?.imageUrlList ?? null}
+            />
+          </ScrollView>
+        </View>
       )}
-    </SafeAreaView>
+    </RootContainer>
   );
 }
 
@@ -110,9 +148,27 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#FFFFFF',
   },
+  body: {
+    flex: 1,
+  },
   content: {
     backgroundColor: '#FFFFFF',
     flexDirection: 'column',
+  },
+  scrollContent: {
+    paddingBottom: 80,
+  },
+  floatingBottom: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    width: '100%',
+    backgroundColor: '#ffffff',
+  },
+  floatingButton: {
+    flex: 7,
+    backgroundColor: '#FF8224FF',
   },
   title: {
     marginTop: 20,
