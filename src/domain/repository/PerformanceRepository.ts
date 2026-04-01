@@ -2,6 +2,8 @@ import { PerformanceInfoItem } from '../model/PerformanceInfoItem';
 import { PerformanceListProps } from '../model/apiprops/performanceListProps';
 import { PerformanceDetailProps } from '../model/apiprops/performanceDetailProps';
 import { PerformanceDetail } from '../model/detail/performanceDetail';
+import { SearchPlaceProps } from '../model/apiprops/searchPlaceProps';
+import { PlaceDetail } from '../model/place/placeDetail';
 
 export interface PerformanceRepository {
   getPerformanceList(
@@ -12,4 +14,14 @@ export interface PerformanceRepository {
     props: PerformanceDetailProps,
     errorMessage: (msg: string) => void,
   ): Promise<PerformanceDetail | null>;
+
+  searchPlace(
+    props: SearchPlaceProps,
+    errorMessage: (msg: string) => void,
+  ): Promise<PlaceDetail[] | null>;
+
+  getPlaceDetail(
+    props: PerformanceDetailProps,
+    errorMessage: (msg: string) => void,
+  ): Promise<PlaceDetail | null>;
 }

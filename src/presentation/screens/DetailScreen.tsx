@@ -11,12 +11,22 @@ import InfoContent from '../components/detail/InfoContent';
 import PerformanceDetailCastContent from '../components/detail/PerformanceDetailCastContent';
 import PerformanceDetailTimeTableContent from '../components/detail/PerformanceDetailTimeTableContent';
 import PerformanceDetailPriceContent from '../components/detail/PerformanceDetailPriceContent';
+import { usePlaceDetail } from '../hooks/usePlaceDetail';
+import { SearchPlaceProps } from '../../domain/model/apiprops/searchPlaceProps';
+import PerformanceDetailPlaceContent from '../components/detail/PerformanceDetailPlaceContent';
 
 type Props = RootStackScreenProps<'Detail'>;
 
 function DetailScreen({ navigation, route }: Props) {
   const { performanceDetail, loading, error, callPerformanceDetailApi } =
     usePerformanceDetail();
+
+  const {
+    placeDetail,
+    loading: placeLoading,
+    error: placeError,
+    callPlaceDetailApi,
+  } = usePlaceDetail();
 
   const fetchPerformanceDetail = useCallback(
     (id: string) => {
@@ -28,10 +38,32 @@ function DetailScreen({ navigation, route }: Props) {
     [callPerformanceDetailApi],
   );
 
+  const fetchPlaceDetail = useCallback(
+    (keyword: string) => {
+      callPlaceDetailApi({
+        servicekey: KOKOR_CLIENT_ID,
+        currentPage: '1',
+        rowsPerPage: '50',
+        keyword: keyword,
+      });
+    },
+    [callPlaceDetailApi],
+  );
+
   useEffect(() => {
     const { performanceId } = route.params;
     fetchPerformanceDetail(performanceId);
   }, [route.params]);
+
+  useEffect(() => {
+    const name = performanceDetail?.facilityName?.split(' ')?.[0];
+
+    console.log(`placeName = ${name}`);
+
+    if (name) {
+      fetchPlaceDetail(name);
+    }
+  }, [performanceDetail?.facilityName, fetchPlaceDetail]);
 
   useEffect(() => {
     if (error) {
@@ -66,6 +98,7 @@ function DetailScreen({ navigation, route }: Props) {
           <PerformanceDetailPriceContent
             priceInfo={performanceDetail?.priceInfo ?? null}
           />
+          <PerformanceDetailPlaceContent placeDetail={placeDetail} />
         </ScrollView>
       )}
     </SafeAreaView>

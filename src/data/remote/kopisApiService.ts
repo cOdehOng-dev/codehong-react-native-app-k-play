@@ -16,6 +16,10 @@ import {
   PerformanceListResponseDto,
 } from '../model/performance/list/PerformanceListResponseDto';
 import {
+  parsePlaceDetailResponseDto,
+  PlaceDetailResponseDto,
+} from '../model/place/placeDetailResponseDto';
+import {
   parsePlaceListResponseDto,
   PlaceListResponseDto,
 } from '../model/place/placeListResponseDto';
@@ -86,4 +90,19 @@ export async function searchPlace(
     responseType: 'text',
   });
   return parsePlaceListResponseDto(response.data);
+}
+
+export async function getPlaceDetail(
+  params: PerformanceDetailProps,
+): Promise<PlaceDetailResponseDto> {
+  const response = await kopisApi.get<string>(
+    `/openApi/restful/prfplc/${params.id}`,
+    {
+      params: {
+        service: params.servicekey,
+      },
+      responseType: 'text',
+    },
+  );
+  return parsePlaceDetailResponseDto(response.data);
 }

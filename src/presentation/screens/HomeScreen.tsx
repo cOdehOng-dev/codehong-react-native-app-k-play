@@ -8,6 +8,8 @@ import { nameToRegionCode, RegionCode } from '../../domain/type/RegionCode';
 import {
   getCurrentMonth,
   getCurrentMonthRange,
+  getPreviousMonthFirstDay,
+  getPreviousMonthLastDay,
 } from '../../domain/util/dateUtil';
 import {
   checkLocationPermission,
@@ -64,7 +66,9 @@ function HomeScreen() {
   }, []);
 
   const fetchMonthRank = useCallback(() => {
-    const { startDate, endDate } = getCurrentMonthRange();
+    const startDate = getPreviousMonthFirstDay('YYYYMMDD');
+    const endDate = getPreviousMonthLastDay('YYYYMMDD');
+    console.log(`test here start = ${startDate}, end = ${endDate}`);
     callBoxofficeList({
       service: KOKOR_CLIENT_ID,
       startDate,

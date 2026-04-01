@@ -1,3 +1,5 @@
+import dayjs from 'dayjs';
+
 // 현재 달의 시작일과 종료일을 'YYYYMMDD' 형식으로 반환
 export const getCurrentMonthRange = (): {
   startDate: string;
@@ -31,3 +33,11 @@ export const getCurrentMonth = (isTwoDigits: boolean) => {
   }
   return `${month}`;
 };
+
+export function getPreviousMonthFirstDay(pattern: string): string {
+  return dayjs().subtract(1, 'month').startOf('month').format(pattern);
+}
+
+export function getPreviousMonthLastDay(pattern: string): string {
+  return dayjs().subtract(1, 'month').endOf('month').format(pattern);
+}
