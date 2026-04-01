@@ -23,6 +23,7 @@ import IconHeader from '../components/IconHeader';
 import IndicatorProgress from '../components/IndicatorProgress';
 import { usePerformanceDetail } from '../hooks/usePerformanceDetail';
 import { usePlaceDetail } from '../hooks/usePlaceDetail';
+import { useBookmark } from '../hooks/useBookmark';
 import { RootStackScreenProps } from './stack/RootStack';
 import { RootContainer } from '../components/RootContainer';
 import FloatingButton from '../components/detail/FloatingButton';
@@ -41,6 +42,10 @@ function DetailScreen({ navigation, route }: Props) {
     error: placeError,
     callPlaceDetailApi,
   } = usePlaceDetail();
+
+  const { isBookmarked, saveBookmark, removeBookmark } = useBookmark(
+    performanceDetail?.name,
+  );
 
   const fetchPerformanceDetail = useCallback(
     (id: string) => {
@@ -100,7 +105,21 @@ function DetailScreen({ navigation, route }: Props) {
         <FloatingButton
           viewStyle={styles.floatingBottom}
           onClick={() => {}}
-          isBookMark={true}
+          isBookMark={isBookmarked}
+          onBookmarkClick={() => {
+            if (!performanceDetail) return;
+            if (isBookmarked) {
+              removeBookmark(performanceDetail.name ?? '');
+            } else {
+              saveBookmark({
+                name: performanceDetail.name,
+                posterUrl: performanceDetail.posterUrl,
+                startDate: performanceDetail.startDate,
+                endDate: performanceDetail.endDate,
+                facilityName: performanceDetail.facilityName,
+              });
+            }
+          }}
         />
       }
     >

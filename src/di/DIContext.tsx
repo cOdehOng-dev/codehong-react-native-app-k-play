@@ -1,5 +1,6 @@
 import React, { createContext, useContext } from 'react';
 import { container, DIContainer } from './container';
+export type { DIContainer };
 
 // DI 컨테이너를 앱 전역에 공유하기 위한 React Context
 // 기본값으로 싱글턴 container 인스턴스를 사용

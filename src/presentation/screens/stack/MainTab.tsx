@@ -3,7 +3,7 @@ import React from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
-import FavoriteScreen from '../FavoriteScreen';
+import BookmarkScreen from '../BookmarkScreen';
 import HomeScreen from '../HomeScreen';
 import MyZoneScreen from '../MyZoneScreen';
 import SettingScreen from '../SettingScreen';
@@ -52,7 +52,7 @@ function MainTab() {
       />
       <Tab.Screen
         name="Favorite"
-        component={FavoriteScreen}
+        component={BookmarkScreen}
         options={{
           headerShown: false,
           tabBarLabel: '찜',

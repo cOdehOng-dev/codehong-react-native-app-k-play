@@ -2,7 +2,7 @@ import { BoxOfficeParams } from '../../domain/model/apiprops/BoxOfficeParams';
 import { BoxOfficeResponseDto } from '../model/boxoffice/BoxOfficeResponseDto';
 import { getBoxOffice } from '../remote/kopisApiService';
 
-export class BoxOfficeRemoteDataSource {
+export class BoxofficeRemoteDataSource {
   async getBoxOffice(params: BoxOfficeParams): Promise<BoxOfficeResponseDto> {
     try {
       return await getBoxOffice(params);

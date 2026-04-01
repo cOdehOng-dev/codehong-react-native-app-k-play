@@ -14,9 +14,10 @@ interface Props {
   viewStyle: ViewStyle;
   isBookMark: boolean;
   onClick: () => void;
+  onBookmarkClick: () => void;
 }
 
-function FloatingButton({ viewStyle, isBookMark, onClick }: Props) {
+function FloatingButton({ viewStyle, isBookMark, onClick, onBookmarkClick }: Props) {
   return (
     <View
       style={[
@@ -30,9 +31,7 @@ function FloatingButton({ viewStyle, isBookMark, onClick }: Props) {
       </Pressable>
       <Pressable
         style={styles.iconContainer}
-        onPress={() => {
-          // TODO
-        }}
+        onPress={onBookmarkClick}
       >
         <MaterialIcons
           name={isBookMark ? 'bookmark' : 'bookmark-border'}

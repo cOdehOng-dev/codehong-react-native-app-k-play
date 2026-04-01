@@ -1,7 +1,7 @@
 import { createNativeBottomTabNavigator } from '@react-navigation/bottom-tabs/unstable';
 import React from 'react';
 
-import FavoriteScreen from '../FavoriteScreen';
+import BookmarkScreen from '../BookmarkScreen';
 import HomeScreen from '../HomeScreen';
 import MyZoneScreen from '../MyZoneScreen';
 import SettingScreen from '../SettingScreen';
@@ -42,7 +42,7 @@ function MainTab() {
       />
       <Tab.Screen
         name="Favorite"
-        component={FavoriteScreen}
+        component={BookmarkScreen}
         options={{
           headerShown: false,
           tabBarLabel: '찜',

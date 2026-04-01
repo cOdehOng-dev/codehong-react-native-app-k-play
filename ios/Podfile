@@ -17,6 +17,10 @@ end
 target 'CodeHongReactNativeAppKPlay' do
   config = use_native_modules!
 
+  # WatermelonDB가 의존하는 simdjson을 @nozbe/simdjson 패키지 경로에서 직접 참조
+  # CocoaPods 원격 저장소 대신 NPM 벤더링된 버전을 사용해야 함 (WatermelonDB 요구사항)
+  pod 'simdjson', path: '../node_modules/@nozbe/simdjson', modular_headers: true
+
   use_react_native!(
     :path => config[:reactNativePath],
     # An absolute path to your application root.
