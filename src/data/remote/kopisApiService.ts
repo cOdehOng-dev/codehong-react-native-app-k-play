@@ -46,7 +46,7 @@ export const getPerformanceList = async (
   return parsePerformanceListResponseDto(response.data);
 };
 
-export const getBoxOffice = async (
+export const getBoxoffice = async (
   params: BoxOfficeParams,
 ): Promise<BoxOfficeResponseDto> => {
   const response = await kopisApi.get<string>('/openApi/restful/boxoffice', {
@@ -93,16 +93,34 @@ export async function searchPlace(
 }
 
 export async function getPlaceDetail(
-  params: PerformanceDetailProps,
+  props: PerformanceDetailProps,
 ): Promise<PlaceDetailResponseDto> {
   const response = await kopisApi.get<string>(
-    `/openApi/restful/prfplc/${params.id}`,
+    `/openApi/restful/prfplc/${props.id}`,
     {
       params: {
-        service: params.servicekey,
+        service: props.servicekey,
       },
       responseType: 'text',
     },
   );
   return parsePlaceDetailResponseDto(response.data);
+}
+
+export async function getFestivalList(
+  props: PerformanceListProps,
+): Promise<PerformanceListResponseDto> {
+  const response = await kopisApi.get<string>('/openApi/restful/prffest', {
+    params: {
+      service: props.service,
+      stdate: props.startDate,
+      eddate: props.endDate,
+      cpage: props.currentPage,
+      rows: props.rowsPerPage,
+      signgucode: props.signGuCode,
+      signgucodesub: props.signGuCodeSub,
+    },
+    responseType: 'text',
+  });
+  return parsePerformanceListResponseDto(response.data);
 }

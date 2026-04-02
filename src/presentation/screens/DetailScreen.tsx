@@ -8,7 +8,6 @@ import {
   Text,
   View,
 } from 'react-native';
-import InAppBrowser from 'react-native-inappbrowser-reborn';
 import {
   SafeAreaView,
   useSafeAreaInsets,
@@ -141,15 +140,12 @@ function DetailScreen({ navigation, route }: Props) {
         <FloatingButton
           viewStyle={styles.floatingBottom}
           onClick={() => {
-            const hasMultiReservation =
-              performanceDetail?.ticketSiteList?.length &&
-              performanceDetail?.ticketSiteList?.length > 1;
-            if (hasMultiReservation) {
+            const list = performanceDetail?.ticketSiteList;
+            if (!list || list.length === 0) return;
+            if (list.length > 1) {
               setPickerVisible(true);
             } else {
-              openInAppBrowser(
-                performanceDetail?.ticketSiteList?.[0]?.url ?? '',
-              );
+              openInAppBrowser(list[0]?.url ?? '');
             }
           }}
           isBookMark={isBookmarked}

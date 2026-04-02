@@ -26,7 +26,8 @@ import MonthRankContent from '../components/MonthRankContent';
 import MyAreaContent from '../components/MyAreaContent';
 import TabPerformanceContent from '../components/TabPerformanceContent';
 import { useBoxofficeList } from '../hooks/useBoxOfficeList';
-import { usePerformanceList } from '../hooks/usePerformanceList';
+import { useMyAreaList } from '../hooks/useMyAreaList';
+import { useFestivalList } from '../hooks/useFestivalList';
 
 function HomeScreen() {
   const [currentMonth] = useState(getCurrentMonth(false));
@@ -42,10 +43,10 @@ function HomeScreen() {
     loading: myAreaLoading,
     error: myAreaError,
     callApi: callMyAreaList,
-  } = usePerformanceList();
+  } = useMyAreaList();
   const [isMyAreaLoading, setIsMyAreaLoading] = useState(false);
 
-  const fetchMyAreaPerformance = useCallback(
+  const fetchMyAreaList = useCallback(
     (signGuCode: string) => {
       const { startDate, endDate } = getCurrentMonthRange();
       callMyAreaList({
@@ -73,11 +74,11 @@ function HomeScreen() {
     }
     try {
       const regionCode = await fetchRegionCodeFromLocation();
-      fetchMyAreaPerformance(regionCode);
+      fetchMyAreaList(regionCode);
     } catch {
       Alert.alert('오류', '현재 위치를 가져올 수 없습니다.');
     }
-  }, [fetchMyAreaPerformance, fetchRegionCodeFromLocation]);
+  }, [fetchMyAreaList, fetchRegionCodeFromLocation]);
   // endregion --------------------
 
   // region 월간 인기 순위 ---
@@ -116,7 +117,7 @@ function HomeScreen() {
     loading: localLoading,
     error: localError,
     callApi: callEntireLocalListApi,
-  } = usePerformanceList();
+  } = useMyAreaList();
   const fetchEntireLocalList = useCallback(
     (regionCode: RegionCode) => {
       const startDate = getPreviousMonthFirstDay('YYYYMMDD');
@@ -137,6 +138,38 @@ function HomeScreen() {
   }, [localLoading]);
   // endregion --------------------
 
+  // region 축제 리스트 ---
+  const [selectedFestivalRegionCode, setSelectedFestivalRegionCode] =
+    useState<RegionCode>(RegionCode.SEOUL);
+  const [isFestivalLoading, setIsFestivalLoading] = useState(false);
+
+  const {
+    result: festivalList,
+    loading: festivalLoading,
+    error: festivalError,
+    callApi: callFestivalListApi,
+  } = useFestivalList();
+
+  const fetchFestivalList = useCallback(
+    (regionCode: RegionCode) => {
+      const startDate = getPreviousMonthFirstDay('YYYYMMDD');
+      const endDate = getPreviousMonthLastDay('YYYYMMDD');
+      callFestivalListApi({
+        service: KOKOR_CLIENT_ID,
+        startDate,
+        endDate,
+        currentPage: '1',
+        rowsPerPage: '10',
+        signGuCode: regionCode.code,
+      });
+    },
+    [callFestivalListApi],
+  );
+  useEffect(() => {
+    setIsFestivalLoading(festivalLoading);
+  }, [festivalLoading]);
+  // endregion --------------------
+
   /**
    * API 호출
    */
@@ -147,13 +180,14 @@ function HomeScreen() {
         const regionCode = hasPermission
           ? await fetchRegionCodeFromLocation()
           : RegionCode.SEOUL.code;
-        fetchMyAreaPerformance(regionCode);
+        fetchMyAreaList(regionCode);
       } catch {
-        fetchMyAreaPerformance(RegionCode.SEOUL.code);
+        fetchMyAreaList(RegionCode.SEOUL.code);
       }
     })();
     fetchMonthRank();
     fetchEntireLocalList(selectedAllRegionCode);
+    fetchFestivalList(selectedFestivalRegionCode);
   }, []);
 
   return (
@@ -193,6 +227,18 @@ function HomeScreen() {
             console.log(`선택한 탭 = ${tab.displayName}`);
             setSelectedAllRegionCode(tab);
             fetchEntireLocalList(tab);
+          }}
+        />
+        <TabPerformanceContent
+          title="축제 공연은 어때요?"
+          tabList={regionCodeList}
+          performanceList={festivalList}
+          selectedTab={selectedFestivalRegionCode}
+          loading={isFestivalLoading}
+          onClickMore={() => {}}
+          onSelectTab={tab => {
+            setSelectedFestivalRegionCode(tab);
+            fetchFestivalList(tab);
           }}
         />
       </ScrollView>

@@ -1,13 +1,26 @@
-import { Alert, Platform } from 'react-native';
+import { Alert, Linking, Platform, ToastAndroid } from 'react-native';
 import { InAppBrowser } from 'react-native-inappbrowser-reborn';
 
-export async function openInAppBrowser(url: string) {
-  if (!url) return;
+function showError(message: string) {
+  if (Platform.OS === 'android') {
+    // Android는 Activity 미부착 상태에서 Alert 사용 불가 → Toast 사용
+    ToastAndroid.show(message, ToastAndroid.SHORT);
+  } else {
+    Alert.alert('오류', message);
+  }
+}
+
+export async function openInAppBrowser(rawUrl: string) {
+  if (!rawUrl) return;
+  // 프로토콜 없는 URL 보정 (예: www.example.com → https://www.example.com)
+  const url =
+    rawUrl.startsWith('http://') || rawUrl.startsWith('https://')
+      ? rawUrl
+      : `https://${rawUrl}`;
   try {
     if (await InAppBrowser.isAvailable()) {
       if (Platform.OS === 'ios') {
         await InAppBrowser.open(url, {
-          // iOS SFSafariViewController
           dismissButtonStyle: 'close',
           preferredBarTintColor: '#FFFFFF',
           preferredControlTintColor: '#FF8224',
@@ -17,7 +30,6 @@ export async function openInAppBrowser(url: string) {
         });
       } else {
         await InAppBrowser.open(url, {
-          // Android Custom Tabs
           showTitle: true,
           toolbarColor: '#FFFFFF',
           secondaryToolbarColor: '#FF8224',
@@ -27,10 +39,9 @@ export async function openInAppBrowser(url: string) {
         });
       }
     } else {
-      // 인앱 브라우저를 지원하지 않는 기기는 외부 브라우저로 폴백
-      await InAppBrowser.openAuth(url, '');
+      await Linking.openURL(url);
     }
   } catch (e) {
-    Alert.alert('오류', '브라우저를 열 수 없습니다.');
+    showError('브라우저를 열 수 없습니다.');
   }
 }

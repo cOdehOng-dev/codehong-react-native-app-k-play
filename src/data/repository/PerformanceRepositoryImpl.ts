@@ -12,13 +12,23 @@ import { SearchPlaceProps } from '../../domain/model/apiprops/searchPlaceProps';
 import { PlaceDetail } from '../../domain/model/place/placeDetail';
 import { placeInfoItemtoPlaceDetail } from '../mapper/placeInfoItemMapper';
 import { placeDetailDtoToPlaceDetail } from '../mapper/placeDetailMapper';
+
 export class PerformanceRepositoryImpl implements PerformanceRepository {
   constructor(private readonly remote: PerformanceRemoteDataSource) {}
 
   async getPerformanceList(
-    params: PerformanceListProps,
+    props: PerformanceListProps,
   ): Promise<PerformanceInfoItem[]> {
-    const dto = await this.remote.getPerformanceList(params);
+    const dto = await this.remote.getPerformanceList(props);
+    return dto.performances?.map(item => toPerformanceItem(item)) ?? [];
+  }
+
+  async getFestivalList(
+    props: PerformanceListProps,
+    errorMessage: (msg: string) => void,
+  ): Promise<PerformanceInfoItem[]> {
+    const dto = await this.remote.getFestivalList(props, errorMessage);
+    if (!dto) return [];
     return dto.performances?.map(item => toPerformanceItem(item)) ?? [];
   }
 

@@ -9,7 +9,7 @@ interface State {
   error: string | null;
 }
 
-export function usePerformanceList() {
+export function useMyAreaList() {
   const { performanceUseCase } = useDI();
   const [state, setState] = useState<State>({
     result: [],

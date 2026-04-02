@@ -7,7 +7,12 @@ import { PlaceDetail } from '../model/place/placeDetail';
 
 export interface PerformanceRepository {
   getPerformanceList(
-    params: PerformanceListProps,
+    props: PerformanceListProps,
+  ): Promise<PerformanceInfoItem[]>;
+
+  getFestivalList(
+    props: PerformanceListProps,
+    errorMessage: (msg: string) => void,
   ): Promise<PerformanceInfoItem[]>;
 
   getDetail(

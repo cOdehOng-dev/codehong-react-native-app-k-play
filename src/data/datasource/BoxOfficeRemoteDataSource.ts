@@ -1,11 +1,11 @@
 import { BoxOfficeParams } from '../../domain/model/apiprops/BoxOfficeParams';
 import { BoxOfficeResponseDto } from '../model/boxoffice/BoxOfficeResponseDto';
-import { getBoxOffice } from '../remote/kopisApiService';
+import { getBoxoffice } from '../remote/kopisApiService';
 
 export class BoxofficeRemoteDataSource {
   async getBoxOffice(params: BoxOfficeParams): Promise<BoxOfficeResponseDto> {
     try {
-      return await getBoxOffice(params);
+      return await getBoxoffice(params);
     } catch (e: any) {
       const status = e?.response?.status;
       if (status === 401) throw new Error('인증 키가 유효하지 않습니다.');

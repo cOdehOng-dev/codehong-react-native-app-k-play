@@ -8,9 +8,16 @@ export class PerformanceUseCase {
   constructor(private readonly repository: PerformanceRepository) {}
 
   async getPerformanceList(
-    params: PerformanceListProps,
+    props: PerformanceListProps,
   ): Promise<PerformanceInfoItem[]> {
-    return this.repository.getPerformanceList(params);
+    return this.repository.getPerformanceList(props);
+  }
+
+  async getFestivalList(
+    props: PerformanceListProps,
+    errorMessage: (msg: string) => void,
+  ): Promise<PerformanceInfoItem[]> {
+    return this.repository.getFestivalList(props, errorMessage);
   }
 
   async getDetail(
