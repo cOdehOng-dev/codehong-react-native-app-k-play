@@ -377,16 +377,16 @@ export const RegionCode = REGION_CODE_MAP;
 // 유틸 함수 (companion object 대체)
 // ─────────────────────────────────────────
 
-const regionEntries = Object.values(REGION_CODE_MAP);
+export const regionCodeList = Object.values(REGION_CODE_MAP);
 
 /** code → RegionCode 엔트리 (없으면 SEOUL) */
 export const toRegionCode = (code?: string | null): RegionCode =>
-  regionEntries.find(r => r.code === code) ?? REGION_CODE_MAP.SEOUL;
+  regionCodeList.find(r => r.code === code) ?? REGION_CODE_MAP.SEOUL;
 
 /** 시군구 코드 → GuRegion 튜플 */
 export const toSignGuCodeSub = (code?: string | null): GuRegion | null => {
   if (!code) return null;
-  for (const region of regionEntries) {
+  for (const region of regionCodeList) {
     const found = region.guList.find(([guCode]) => guCode === code);
     if (found) return found as GuRegion;
   }
@@ -397,7 +397,7 @@ export const toSignGuCodeSub = (code?: string | null): GuRegion | null => {
 export const nameToRegionCode = (name?: string | null): RegionCode => {
   if (!name) return REGION_CODE_MAP.SEOUL;
   return (
-    regionEntries.find(r => name.includes(r.displayName.slice(0, 2))) ??
+    regionCodeList.find(r => name.includes(r.displayName.slice(0, 2))) ??
     REGION_CODE_MAP.SEOUL
   );
 };

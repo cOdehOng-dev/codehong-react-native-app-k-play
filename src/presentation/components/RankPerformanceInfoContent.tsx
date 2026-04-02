@@ -14,7 +14,7 @@ function RankPerformanceInfoContent({ item, onClick }: Props) {
   return (
     <Pressable style={styles.container} onPress={onClick}>
       <Image
-        source={{ uri: item.posterUrl }}
+        source={{ uri: item.posterUrl ?? '' }}
         style={styles.thumbnail}
         resizeMode="cover"
       />

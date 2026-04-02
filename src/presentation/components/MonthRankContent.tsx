@@ -1,12 +1,12 @@
-import { FlatList, StyleSheet, Text, View } from 'react-native';
-import React from 'react';
-import PerformanceInfoSkeleton from './skeleton/PerformanceInfoSkeleton';
-import { RankTabItem, RankTabList } from '../../domain/type/RankTab';
-import ScrollTab from './ScrollTab';
-import { BoxOfficeItem } from '../../domain/model/BoxOfficeItem';
-import RankPerformanceInfoContent from './RankPerformanceInfoContent';
-import { RootStackNavigationProp } from '../screens/stack/RootStack';
 import { useNavigation } from '@react-navigation/native';
+import React from 'react';
+import { FlatList, StyleSheet, Text, View } from 'react-native';
+import { BoxOfficeItem } from '../../domain/model/BoxOfficeItem';
+import { RankTabItem } from '../../domain/type/RankTab';
+import { RootStackNavigationProp } from '../screens/stack/RootStack';
+import RankPerformanceInfoContent from './RankPerformanceInfoContent';
+import ScrollTab from './ScrollTab';
+import PerformanceInfoSkeleton from './skeleton/PerformanceInfoSkeleton';
 
 type Props = {
   currentMonth: string;
@@ -30,7 +30,6 @@ function MonthRankContent({
     const rank = parseInt(item.rank ?? '0', 10);
     return rank >= selectedTab.startRank && rank <= selectedTab.endRank;
   });
-  console.log('선택한 rankList = ', dispRankList);
   return (
     <View style={styles.block}>
       <Text style={styles.title}>{currentMonth}월 인기 순위 Top50</Text>
@@ -72,8 +71,6 @@ function MonthRankContent({
   );
 }
 
-export default MonthRankContent;
-
 const styles = StyleSheet.create({
   block: {
     flexDirection: 'column',
@@ -106,3 +103,5 @@ const styles = StyleSheet.create({
     gap: 12,
   },
 });
+
+export default MonthRankContent;

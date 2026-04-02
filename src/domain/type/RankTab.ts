@@ -32,4 +32,4 @@ export const RankTab = {
   },
 };
 
-export const RankTabList = Object.values(RankTab);
+export const rankTabList = Object.values(RankTab);

@@ -4,7 +4,7 @@ import { useDI } from '../../di/DIContext';
 import { PerformanceListProps } from '../../domain/model/apiprops/performanceListProps';
 
 interface State {
-  performanceList: PerformanceInfoItem[];
+  result: PerformanceInfoItem[];
   loading: boolean;
   error: string | null;
 }
@@ -12,12 +12,12 @@ interface State {
 export function usePerformanceList() {
   const { performanceUseCase } = useDI();
   const [state, setState] = useState<State>({
-    performanceList: [],
+    result: [],
     loading: false,
     error: null,
   });
 
-  const callPerformanceListApi = useCallback(
+  const callApi = useCallback(
     async (params: PerformanceListProps) => {
       setState(s => ({ ...s, loading: true, error: null }));
       try {
@@ -29,14 +29,14 @@ export function usePerformanceList() {
           JSON.stringify(performanceList, null, 2),
         );
         setState({
-          performanceList: performanceList,
+          result: performanceList,
           loading: false,
           error: null,
         });
       } catch (e) {
         console.log('[usePerformanceList] 에러:', e);
         setState({
-          performanceList: [],
+          result: [],
           loading: false,
           error: (e as Error).message,
         });
@@ -45,5 +45,5 @@ export function usePerformanceList() {
     [performanceUseCase],
   );
 
-  return { ...state, callPerformanceListApi };
+  return { ...state, callApi };
 }

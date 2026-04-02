@@ -4,22 +4,22 @@ import { BoxOfficeItem } from '../../domain/model/BoxOfficeItem';
 import { BoxOfficeParams } from '../../domain/model/apiprops/BoxOfficeParams';
 
 interface State {
-  boxofficeList: BoxOfficeItem[];
-  isLoading: boolean;
+  result: BoxOfficeItem[];
+  loading: boolean;
   error: string | null;
 }
 
-export function useBoxOfficeList() {
+export function useBoxofficeList() {
   const { boxOfficeUseCase } = useDI();
   const [state, setState] = useState<State>({
-    boxofficeList: [],
-    isLoading: false,
+    result: [],
+    loading: false,
     error: null,
   });
 
-  const callBoxofficeList = useCallback(
+  const callApi = useCallback(
     async (params: BoxOfficeParams) => {
-      setState(s => ({ ...s, isLoading: true, error: null }));
+      setState(s => ({ ...s, loading: true, error: null }));
       try {
         const boxOfficeList = await boxOfficeUseCase.getBoxOfficeList(params);
         console.log(
@@ -27,15 +27,15 @@ export function useBoxOfficeList() {
           JSON.stringify(boxOfficeList, null, 2),
         );
         setState({
-          boxofficeList: boxOfficeList,
-          isLoading: false,
+          result: boxOfficeList,
+          loading: false,
           error: null,
         });
       } catch (e) {
         console.log('[useBoxOfficeList] 에러:', e);
         setState({
-          boxofficeList: [],
-          isLoading: false,
+          result: [],
+          loading: false,
           error: (e as Error).message,
         });
       }
@@ -43,5 +43,5 @@ export function useBoxOfficeList() {
     [boxOfficeUseCase],
   );
 
-  return { ...state, callBoxofficeList };
+  return { ...state, callApi };
 }

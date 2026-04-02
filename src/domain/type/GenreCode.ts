@@ -57,10 +57,10 @@ export const GenreCode = {
   },
 } as const satisfies Record<string, GenreCodeItem>;
 
-export const GenreCodes = Object.values(GenreCode);
+export const genreCodeList = Object.values(GenreCode);
 
 export function toGenreCode(
   code: string | null | undefined,
 ): GenreCodeItem | undefined {
-  return GenreCodes.find(genre => genre.code === code);
+  return genreCodeList.find(genre => genre.code === code);
 }
