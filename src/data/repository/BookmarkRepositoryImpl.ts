@@ -23,7 +23,7 @@ export class BookmarkRepositoryImpl implements BookmarkRepository {
     return this.local.save(item);
   }
 
-  remove(name: string): Promise<void> {
-    return this.local.remove(name);
+  remove(id: string): Promise<void> {
+    return this.local.remove(id);
   }
 }

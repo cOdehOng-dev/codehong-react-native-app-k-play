@@ -25,8 +25,8 @@ export class BookmarkUseCase {
     return this.repository.save(item);
   }
 
-  /** 북마크 삭제 (name 기준) */
-  remove(name: string): Promise<void> {
-    return this.repository.remove(name);
+  /** 북마크 삭제 (id 기준) */
+  remove(id: string): Promise<void> {
+    return this.repository.remove(id);
   }
 }

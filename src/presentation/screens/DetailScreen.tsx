@@ -109,9 +109,10 @@ function DetailScreen({ navigation, route }: Props) {
           onBookmarkClick={() => {
             if (!performanceDetail) return;
             if (isBookmarked) {
-              removeBookmark(performanceDetail.name ?? '');
+              removeBookmark(performanceDetail.id ?? '');
             } else {
               saveBookmark({
+                id: performanceDetail.id,
                 name: performanceDetail.name,
                 posterUrl: performanceDetail.posterUrl,
                 startDate: performanceDetail.startDate,

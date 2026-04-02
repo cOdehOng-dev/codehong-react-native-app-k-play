@@ -6,6 +6,7 @@ export function toBookmarkPerformance(
 ): BookMarkPerformance {
   if (!entity) return {};
   return {
+    id: entity.performanceId,
     name: entity.name,
     posterUrl: entity.posterUrl,
     startDate: entity.startDate,

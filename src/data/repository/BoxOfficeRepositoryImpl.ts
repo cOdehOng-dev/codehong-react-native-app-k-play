@@ -1,8 +1,8 @@
 import { BoxOfficeParams } from '../../domain/model/apiprops/BoxOfficeParams';
 import { BoxOfficeItem } from '../../domain/model/BoxOfficeItem';
 import { BoxofficeRepository } from '../../domain/repository/BoxofficeRepository';
-import { BoxofficeRemoteDataSource } from '../datasource/BoxofficeRemoteDataSource';
-import { toBoxOfficeItem } from '../mapper/boxofficeItemMapper';
+import { BoxofficeRemoteDataSource } from '../datasource/BoxOfficeRemoteDataSource';
+import { toBoxOfficeItem } from '../mapper/BoxOfficeItemMapper';
 
 export class BoxofficeRepositoryImpl implements BoxofficeRepository {
   constructor(private readonly remote: BoxofficeRemoteDataSource) {}

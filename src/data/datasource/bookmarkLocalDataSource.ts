@@ -49,6 +49,7 @@ export class BookmarkLocalDataSource {
   async save(item: BookMarkPerformance): Promise<void> {
     await this.db.write(async () => {
       await this.collection.create(record => {
+        record.performanceId = item.id ?? null;
         record.name = item.name ?? null;
         record.posterUrl = item.posterUrl ?? null;
         record.startDate = item.startDate ?? null;
@@ -64,11 +65,9 @@ export class BookmarkLocalDataSource {
    * - destroyPermanently(): 동기화 마킹 없이 DB에서 즉시 물리 삭제
    *   (vs markAsDeleted(): 동기화를 위해 삭제 마킹만 함)
    */
-  async remove(name: string): Promise<void> {
+  async remove(id: string): Promise<void> {
     await this.db.write(async () => {
-      const records = await this.collection
-        .query(Q.where('name', name))
-        .fetch();
+      const records = await this.collection.query(Q.where('performance_id', id)).fetch();
       for (const record of records) {
         await record.destroyPermanently();
       }

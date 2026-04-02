@@ -1,6 +1,5 @@
 import { Model } from '@nozbe/watermelondb';
 import { field } from '@nozbe/watermelondb/decorators';
-import { BookMarkPerformance } from '../../../domain/model/bookMarkPerformance';
 
 /**
  * WatermelonDB Model 클래스 - bookmarks 테이블의 단일 행(row)을 표현
@@ -12,20 +11,10 @@ import { BookMarkPerformance } from '../../../domain/model/bookMarkPerformance';
 export class BookmarkPerformanceEntity extends Model {
   static table = 'bookmarks';
 
+  @field('performance_id') performanceId!: string | null;
   @field('name') name!: string | null;
   @field('poster_url') posterUrl!: string | null;
   @field('start_date') startDate!: string | null;
   @field('end_date') endDate!: string | null;
   @field('facility_name') facilityName!: string | null;
-
-  /** WatermelonDB Record → Domain Model 변환 */
-  toDomain(): BookMarkPerformance {
-    return {
-      name: this.name,
-      posterUrl: this.posterUrl,
-      startDate: this.startDate,
-      endDate: this.endDate,
-      facilityName: this.facilityName,
-    };
-  }
 }

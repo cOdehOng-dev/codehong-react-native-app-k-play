@@ -6,7 +6,7 @@ import { appSchema, tableSchema } from '@nozbe/watermelondb';
  * - 스키마 버전이 올라가면 마이그레이션 필요 (현재는 최초 버전 1)
  */
 export const bookmarkSchema = appSchema({
-  version: 1,
+  version: 2,
   tables: [
     /**
      * bookmarks 테이블
@@ -16,6 +16,7 @@ export const bookmarkSchema = appSchema({
       name: 'bookmarks',
       columns: [
         // isOptional: true → null 허용 (BookMarkPerformance 필드가 optional이므로)
+        { name: 'performance_id', type: 'string', isOptional: true },
         { name: 'name', type: 'string', isOptional: true },
         { name: 'poster_url', type: 'string', isOptional: true },
         { name: 'start_date', type: 'string', isOptional: true },

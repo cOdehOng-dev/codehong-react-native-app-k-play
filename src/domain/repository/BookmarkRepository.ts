@@ -9,5 +9,5 @@ export interface BookmarkRepository {
   getAll(): Promise<BookMarkPerformance[]>;
   isBookmarked(name: string): Promise<boolean>;
   save(item: BookMarkPerformance): Promise<void>;
-  remove(name: string): Promise<void>;
+  remove(id: string): Promise<void>;
 }

@@ -51,13 +51,19 @@ export function useBookmark(name?: string | null) {
 
   /** 북마크 삭제: DB에서 제거 후 로컬 상태 갱신 */
   const removeBookmark = useCallback(
-    async (itemName: string) => {
-      await bookmarkUseCase.remove(itemName);
+    async (itemId: string) => {
+      await bookmarkUseCase.remove(itemId);
       setIsBookmarked(false);
       await loadBookmarks();
     },
     [bookmarkUseCase, loadBookmarks],
   );
 
-  return { bookmarks, isBookmarked, saveBookmark, removeBookmark, loadBookmarks };
+  return {
+    bookmarks,
+    isBookmarked,
+    saveBookmark,
+    removeBookmark,
+    loadBookmarks,
+  };
 }
