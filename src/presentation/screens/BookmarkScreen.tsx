@@ -24,9 +24,6 @@ function BookmarkScreen() {
     }, [loadBookmarks]),
   );
 
-  // navigation.navigate('Detail', {
-  //   performanceId: item.performanceId ?? '',
-  // });
   return (
     <SafeAreaView style={styles.root}>
       <Text style={styles.header}>북마크</Text>

@@ -1,5 +1,5 @@
 import { KOKOR_CLIENT_ID } from '@env';
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   Alert,
   Platform,
@@ -8,6 +8,7 @@ import {
   Text,
   View,
 } from 'react-native';
+import InAppBrowser from 'react-native-inappbrowser-reborn';
 import {
   SafeAreaView,
   useSafeAreaInsets,
@@ -27,8 +28,44 @@ import { useBookmark } from '../hooks/useBookmark';
 import { RootStackScreenProps } from './stack/RootStack';
 import { RootContainer } from '../components/RootContainer';
 import FloatingButton from '../components/detail/FloatingButton';
+import { Picker } from '../components/Picker';
+import { openInAppBrowser } from '../utils';
 
 type Props = RootStackScreenProps<'Detail'>;
+
+// async function openInAppBrowser(url: string) {
+//   if (!url) return;
+//   try {
+//     if (await InAppBrowser.isAvailable()) {
+//       if (Platform.OS === 'ios') {
+//         await InAppBrowser.open(url, {
+//           // iOS SFSafariViewController
+//           dismissButtonStyle: 'close',
+//           preferredBarTintColor: '#FFFFFF',
+//           preferredControlTintColor: '#FF8224',
+//           readerMode: false,
+//           animated: true,
+//           modalEnabled: true,
+//         });
+//       } else {
+//         await InAppBrowser.open(url, {
+//           // Android Custom Tabs
+//           showTitle: true,
+//           toolbarColor: '#FFFFFF',
+//           secondaryToolbarColor: '#FF8224',
+//           enableUrlBarHiding: true,
+//           enableDefaultShare: true,
+//           forceCloseOnRedirection: false,
+//         });
+//       }
+//     } else {
+//       // 인앱 브라우저를 지원하지 않는 기기는 외부 브라우저로 폴백
+//       await InAppBrowser.openAuth(url, '');
+//     }
+//   } catch (e) {
+//     Alert.alert('오류', '브라우저를 열 수 없습니다.');
+//   }
+// }
 
 function DetailScreen({ navigation, route }: Props) {
   const { bottom: bottomInset } = useSafeAreaInsets();
@@ -42,6 +79,8 @@ function DetailScreen({ navigation, route }: Props) {
     error: placeError,
     callPlaceDetailApi,
   } = usePlaceDetail();
+
+  const [pickerVisible, setPickerVisible] = useState(false);
 
   const { isBookmarked, saveBookmark, removeBookmark } = useBookmark(
     performanceDetail?.name,
@@ -99,12 +138,20 @@ function DetailScreen({ navigation, route }: Props) {
         />
       }
       bottomBar={
-        // <View style={[styles.floatingBottom]}>
-        //   <View></View>
-        // </View>
         <FloatingButton
           viewStyle={styles.floatingBottom}
-          onClick={() => {}}
+          onClick={() => {
+            const hasMultiReservation =
+              performanceDetail?.ticketSiteList?.length &&
+              performanceDetail?.ticketSiteList?.length > 1;
+            if (hasMultiReservation) {
+              setPickerVisible(true);
+            } else {
+              openInAppBrowser(
+                performanceDetail?.ticketSiteList?.[0]?.url ?? '',
+              );
+            }
+          }}
           isBookMark={isBookmarked}
           onBookmarkClick={() => {
             if (!performanceDetail) return;
@@ -124,6 +171,22 @@ function DetailScreen({ navigation, route }: Props) {
         />
       }
     >
+      <Picker
+        visible={pickerVisible}
+        title="예매처 선택"
+        optionList={
+          performanceDetail?.ticketSiteList?.map(site => site.name ?? '') ?? []
+        }
+        selectedOptionIndex={0}
+        selectorColorHex="#FFF0E5"
+        onDismiss={() => setPickerVisible(false)}
+        onConfirm={selectOption => {
+          openInAppBrowser(
+            performanceDetail?.ticketSiteList?.[selectOption[0]]?.url ?? '',
+          );
+          setPickerVisible(false);
+        }}
+      />
       {loading ? (
         <IndicatorProgress />
       ) : (

@@ -15,7 +15,9 @@ export const chunk = <T>(arr: T[], size: number): T[][] =>
     arr.slice(i * size, i * size + size),
   );
 
-export function splitAndParseWithParentheses(str?: string | null): [string, string][] {
+export function splitAndParseWithParentheses(
+  str?: string | null,
+): [string, string][] {
   if (!str) return [];
 
   const result: [string, string][] = [];
@@ -31,7 +33,9 @@ export function splitAndParseWithParentheses(str?: string | null): [string, stri
 
     if (firstParenIndex !== -1 && lastParenIndex > firstParenIndex) {
       const outerText = rawItem.slice(0, firstParenIndex).trim();
-      const innerText = rawItem.slice(firstParenIndex + 1, lastParenIndex).trim();
+      const innerText = rawItem
+        .slice(firstParenIndex + 1, lastParenIndex)
+        .trim();
       result.push([outerText, innerText]);
     } else {
       result.push([rawItem, '']);
