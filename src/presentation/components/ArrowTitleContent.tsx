@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import ArrowRightIcon from './ArrowRightIcon';
-import { RegionCode } from '../../domain/type/RegionCode';
+import { RegionCode } from '../../domain/type/regionCode';
 
 type Props = {
   title: string;

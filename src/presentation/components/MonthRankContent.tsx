@@ -2,7 +2,7 @@ import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { BoxOfficeItem } from '../../domain/model/BoxOfficeItem';
-import { RankTabItem } from '../../domain/type/RankTab';
+import { RankTabItem } from '../../domain/type/rankTab';
 import { RootStackNavigationProp } from '../screens/stack/RootStack';
 import RankPerformanceInfoContent from './RankPerformanceInfoContent';
 import ScrollTab from './ScrollTab';

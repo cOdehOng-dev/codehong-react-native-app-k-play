@@ -1,6 +1,6 @@
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import React from 'react';
-import { GenreCodeItem } from '../../domain/type/GenreCode';
+import { GenreCodeItem } from '../../domain/type/genreCode';
 import { chunk } from '../../domain/util/util';
 
 type Props = {

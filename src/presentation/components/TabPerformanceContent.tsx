@@ -1,7 +1,7 @@
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import ArrowTitleContent from './ArrowTitleContent';
-import { RegionCode } from '../../domain/type/RegionCode';
+import { RegionCode } from '../../domain/type/regionCode';
 import ScrollTab from './ScrollTab';
 import { PerformanceInfoItem } from '../../domain/model/PerformanceInfoItem';
 import PerformanceInfoContent from './PerformanceInfoContent';

@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useDI } from '../../di/DIContext';
 import { BoxofficeProps } from '../../domain/model/apiprops/BoxofficeProps';
-import { toGenreCode } from '../../domain/type/GenreCode';
+import { toGenreCode } from '../../domain/type/genreCode';
 
 interface Props {
   props: BoxofficeProps;

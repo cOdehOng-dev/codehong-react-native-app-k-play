@@ -6,6 +6,7 @@ import {
 } from '../../domain/model/PerformanceInfoItem';
 import Badge from './Badge';
 import { extractParenthesesContent } from '../../domain/util/util';
+import FastImage from 'react-native-fast-image';
 
 type Props = {
   item: PerformanceInfoItem;
@@ -15,10 +16,14 @@ type Props = {
 function PerformanceInfoContent({ item, onClick }: Props) {
   return (
     <Pressable style={styles.container} onPress={onClick}>
-      <Image
-        source={{ uri: item.posterUrl }}
+      <FastImage
+        source={{
+          uri: item.posterUrl ?? '',
+          priority: FastImage.priority.normal,
+          cache: FastImage.cacheControl.immutable,
+        }}
         style={styles.thumbnail}
-        resizeMode="cover"
+        resizeMode={FastImage.resizeMode.cover}
       />
       <Text style={styles.prdName} numberOfLines={2} ellipsizeMode="tail">
         {item.name}

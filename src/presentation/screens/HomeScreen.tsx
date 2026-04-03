@@ -2,18 +2,17 @@ import { KOKOR_CLIENT_ID } from '@env';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Alert, ScrollView, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { PerformanceInfoItem } from '../../domain/model/PerformanceInfoItem';
 import {
   GenreCode,
   GenreCodeItem,
   genreCodeList,
-} from '../../domain/type/GenreCode';
-import { RankTab, RankTabItem, rankTabList } from '../../domain/type/RankTab';
+} from '../../domain/type/genreCode';
+import { RankTab, RankTabItem, rankTabList } from '../../domain/type/rankTab';
 import {
   nameToRegionCode,
   RegionCode,
   regionCodeList,
-} from '../../domain/type/RegionCode';
+} from '../../domain/type/regionCode';
 import {
   getCurrentMonth,
   getCurrentMonthRange,
@@ -117,40 +116,28 @@ function HomeScreen() {
   // endregion --------------------
 
   // region 지역별 공연 리스트 ---
-  const [entireLocalList, setEntireLocalList] = useState<
-    Map<RegionCode, PerformanceInfoItem[]>
-  >(new Map(regionCodeList.map(regionCode => [regionCode, []])));
   const [selectedLocalRegionCode, setSelectedLocalRegionCode] =
     useState<RegionCode>(RegionCode.SEOUL);
-  const [isLocalListLoading, setLocalListLoading] = useState(false);
+
+  const fetchLocalListProps = useMemo(() => {
+    const startDate = getPreviousMonthFirstDay('YYYYMMDD');
+    const endDate = getPreviousMonthLastDay('YYYYMMDD');
+
+    return {
+      service: KOKOR_CLIENT_ID,
+      startDate,
+      endDate,
+      currentPage: '1',
+      rowsPerPage: '10',
+      signGuCode: selectedLocalRegionCode.code,
+    };
+  }, [selectedLocalRegionCode]);
 
   const {
     result: localList,
-    loading: localLoading,
+    loading: isLocalListLoading,
     error: localError,
-    callApi: callLocalListApi,
-  } = useLocalList({
-    entireLocalList,
-    setEntireLocalList,
-  });
-  const fetchEntireLocalList = useCallback(
-    (regionCode: RegionCode) => {
-      const startDate = getPreviousMonthFirstDay('YYYYMMDD');
-      const endDate = getPreviousMonthLastDay('YYYYMMDD');
-      callLocalListApi({
-        service: KOKOR_CLIENT_ID,
-        startDate,
-        endDate,
-        currentPage: '1',
-        rowsPerPage: '10',
-        signGuCode: regionCode.code,
-      });
-    },
-    [callLocalListApi],
-  );
-  useEffect(() => {
-    setLocalListLoading(localLoading);
-  }, [localLoading]);
+  } = useLocalList({ props: fetchLocalListProps });
   // endregion --------------------
 
   // region 축제 리스트 -------
@@ -218,7 +205,6 @@ function HomeScreen() {
       }
     })();
     fetchMonthRank();
-    fetchEntireLocalList(selectedLocalRegionCode);
   }, []);
 
   return (
@@ -261,7 +247,7 @@ function HomeScreen() {
           onSelectedTab={tab => {
             console.log(`선택한 탭 = ${tab.displayName}`);
             setSelectedLocalRegionCode(tab);
-            fetchEntireLocalList(tab);
+            // fetchEntireLocalList(tab);
           }}
         />
         <GenreRankContent

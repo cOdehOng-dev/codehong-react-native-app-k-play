@@ -1,9 +1,9 @@
+import React, { memo } from 'react';
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
-import React from 'react';
-import { getPeriod } from '../../domain/model/PerformanceInfoItem';
-import Badge from './Badge';
-import { extractParenthesesContent } from '../../domain/util/util';
 import { BoxOfficeItem } from '../../domain/model/BoxOfficeItem';
+import { extractParenthesesContent } from '../../domain/util/util';
+import Badge from './Badge';
+import FastImage from 'react-native-fast-image';
 
 type Props = {
   item: BoxOfficeItem;
@@ -13,10 +13,14 @@ type Props = {
 function RankPerformanceInfoContent({ item, onClick }: Props) {
   return (
     <Pressable style={styles.container} onPress={onClick}>
-      <Image
-        source={{ uri: item.posterUrl ?? '' }}
+      <FastImage
+        source={{
+          uri: item.posterUrl ?? '',
+          priority: FastImage.priority.normal,
+          cache: FastImage.cacheControl.immutable,
+        }}
         style={styles.thumbnail}
-        resizeMode="cover"
+        resizeMode={FastImage.resizeMode.cover}
       />
       <Text style={styles.prdName} numberOfLines={2} ellipsizeMode="tail">
         {item.performanceName}
@@ -74,4 +78,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default RankPerformanceInfoContent;
+export default memo(RankPerformanceInfoContent);

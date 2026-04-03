@@ -2,7 +2,7 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query'; // 추가
 import { useDI } from '../../di/DIContext';
 import { PerformanceListProps } from '../../domain/model/apiprops/performanceListProps';
-import { toRegionCode } from '../../domain/type/RegionCode';
+import { toRegionCode } from '../../domain/type/regionCode';
 
 interface Props {
   props: PerformanceListProps;
