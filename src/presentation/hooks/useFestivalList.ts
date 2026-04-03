@@ -1,75 +1,31 @@
-import { useCallback, useState } from 'react';
+// 수정: useCallback, useState 제거 → useQuery로 대체
+import { keepPreviousData, useQuery } from '@tanstack/react-query'; // 추가
 import { useDI } from '../../di/DIContext';
 import { PerformanceListProps } from '../../domain/model/apiprops/performanceListProps';
-import { PerformanceInfoItem } from '../../domain/model/PerformanceInfoItem';
-import { RegionCode, toRegionCode } from '../../domain/type/RegionCode';
-
-interface State {
-  result: PerformanceInfoItem[];
-  loading: boolean;
-  error: string | null;
-}
+import { toRegionCode } from '../../domain/type/RegionCode';
 
 interface Props {
-  entireFestivalList: Map<RegionCode, PerformanceInfoItem[]>;
-  setEntireFestivalList: (
-    entireFestivalList: Map<RegionCode, PerformanceInfoItem[]>,
-  ) => void;
+  props: PerformanceListProps;
 }
 
-export function useFestivalList({
-  entireFestivalList,
-  setEntireFestivalList,
-}: Props) {
+export function useFestivalList({ props }: Props) {
   const { performanceUseCase } = useDI();
-  const [state, setState] = useState<State>({
-    result: [],
-    loading: false,
-    error: null,
+
+  // queryKey에 사용해 지역별 캐싱
+  const regionCode = toRegionCode(props.signGuCode);
+
+  const { data, isFetching, error } = useQuery({
+    queryKey: ['festivalList', regionCode], // 지역 코드 기반 캐시 키
+    queryFn: () =>
+      performanceUseCase.getFestivalList(props, msg =>
+        console.log('[useFestivalList] API 에러:', msg),
+      ),
+    staleTime: 1000 * 60 * 5, // 5분간 캐시 유지
   });
 
-  const callApi = useCallback(
-    async (props: PerformanceListProps) => {
-      setState(s => ({ ...s, loading: true, error: null }));
-      const code = toRegionCode(props.signGuCode);
-      const cachedRegionList = entireFestivalList.get(code);
-      if (cachedRegionList && cachedRegionList.length > 0) {
-        console.log(`test here 캐싱 있음`);
-        setState({
-          result: cachedRegionList,
-          loading: false,
-          error: null,
-        });
-        return;
-      }
-      try {
-        const festivalList = await performanceUseCase.getFestivalList(
-          props,
-          msg => console.log('[useFestivalList] API 에러:', msg),
-        );
-        console.log(
-          '[useFestivalList] 응답 데이터:',
-          JSON.stringify(festivalList, null, 2),
-        );
-        const next = new Map(entireFestivalList);
-        next.set(code, festivalList);
-        setEntireFestivalList(next);
-        setState({
-          result: festivalList,
-          loading: false,
-          error: null,
-        });
-      } catch (e) {
-        console.log('[useFestivalList] 에러:', e);
-        setState({
-          result: [],
-          loading: false,
-          error: (e as Error).message,
-        });
-      }
-    },
-    [performanceUseCase, entireFestivalList, setEntireFestivalList],
-  );
-
-  return { ...state, callApi };
+  return {
+    result: data ?? [],
+    loading: isFetching,
+    error: error ? (error as Error).message : null,
+  };
 }

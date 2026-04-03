@@ -1,5 +1,5 @@
 import { KOKOR_CLIENT_ID } from '@env';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Alert, ScrollView, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { BoxOfficeItem } from '../../domain/model/BoxOfficeItem';
@@ -155,41 +155,28 @@ function HomeScreen() {
   // endregion --------------------
 
   // region 축제 리스트 -------
-  const [entireFestivalList, setEntireFestivalList] = useState<
-    Map<RegionCode, PerformanceInfoItem[]>
-  >(new Map(regionCodeList.map(regionCode => [regionCode, []])));
   const [selectedFestivalRegionCode, setSelectedFestivalRegionCode] =
     useState<RegionCode>(RegionCode.SEOUL);
-  const [isFestivalLoading, setIsFestivalLoading] = useState(false);
+
+  const festivalListProps = useMemo(() => {
+    const startDate = getPreviousMonthFirstDay('YYYYMMDD');
+    const endDate = getPreviousMonthLastDay('YYYYMMDD');
+    return {
+      service: KOKOR_CLIENT_ID,
+      startDate,
+      endDate,
+      currentPage: '1',
+      rowsPerPage: '10',
+      signGuCode: selectedFestivalRegionCode.code,
+    };
+  }, [selectedFestivalRegionCode]);
 
   const {
     result: festivalList,
-    loading: festivalLoading,
+    loading: isFestivalLoading,
     error: festivalError,
-    callApi: callFestivalListApi,
-  } = useFestivalList({
-    entireFestivalList,
-    setEntireFestivalList,
-  });
+  } = useFestivalList({ props: festivalListProps });
 
-  const fetchFestivalList = useCallback(
-    (regionCode: RegionCode) => {
-      const startDate = getPreviousMonthFirstDay('YYYYMMDD');
-      const endDate = getPreviousMonthLastDay('YYYYMMDD');
-      callFestivalListApi({
-        service: KOKOR_CLIENT_ID,
-        startDate,
-        endDate,
-        currentPage: '1',
-        rowsPerPage: '10',
-        signGuCode: regionCode.code,
-      });
-    },
-    [callFestivalListApi],
-  );
-  useEffect(() => {
-    setIsFestivalLoading(festivalLoading);
-  }, [festivalLoading]);
   // endregion --------------------
 
   // regigon 장르별 순위 -------------
@@ -246,7 +233,7 @@ function HomeScreen() {
     })();
     fetchMonthRank();
     fetchEntireLocalList(selectedLocalRegionCode);
-    fetchFestivalList(selectedFestivalRegionCode);
+    // 수정: fetchFestivalList 제거 - useQuery가 마운트 시 자동으로 첫 요청 처리
     fetchGenreRank(selectedGenreRankTab);
   }, []);
 
@@ -314,8 +301,9 @@ function HomeScreen() {
           loading={isFestivalLoading}
           onClickMore={() => {}}
           onSelectedTab={tab => {
+            // 수정: fetchFestivalList 호출 제거
+            //       setSelectedFestivalRegionCode → festivalListProps 재계산 → useQuery 자동 재요청
             setSelectedFestivalRegionCode(tab);
-            fetchFestivalList(tab);
           }}
         />
       </ScrollView>

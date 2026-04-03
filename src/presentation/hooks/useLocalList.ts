@@ -32,7 +32,6 @@ export function useLocalList({ entireLocalList, setEntireLocalList }: Props) {
       const code = toRegionCode(props.signGuCode);
       const cachedRegionList = entireLocalList.get(code);
       if (cachedRegionList && cachedRegionList.length > 0) {
-        console.log(`test here 캐싱 있음`);
         setState({
           result: cachedRegionList,
           loading: false,
@@ -41,7 +40,6 @@ export function useLocalList({ entireLocalList, setEntireLocalList }: Props) {
         return;
       }
       try {
-        console.log(`test here 캐싱 없음`);
         const performanceList = await performanceUseCase.getPerformanceList(
           props,
         );
