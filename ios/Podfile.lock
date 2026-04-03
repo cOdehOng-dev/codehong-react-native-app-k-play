@@ -1900,6 +1900,28 @@ PODS:
     - SDWebImageWebPCoder (~> 0.8.4)
   - RNInAppBrowser (3.7.1):
     - React-Core
+  - RNPermissions (5.5.1):
+    - hermes-engine
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Core
+    - React-Core-prebuilt
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - React-jsi
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-renderercss
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - ReactNativeDependencies
+    - Yoga
   - RNScreens (4.24.0):
     - hermes-engine
     - RCTRequired
@@ -2060,6 +2082,7 @@ DEPENDENCIES:
   - ReactNativeDependencies (from `../node_modules/react-native/third-party-podspecs/ReactNativeDependencies.podspec`)
   - RNFastImage (from `../node_modules/react-native-fast-image`)
   - RNInAppBrowser (from `../node_modules/react-native-inappbrowser-reborn`)
+  - RNPermissions (from `../node_modules/react-native-permissions`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - "simdjson (from `../node_modules/@nozbe/simdjson`)"
@@ -2230,6 +2253,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-fast-image"
   RNInAppBrowser:
     :path: "../node_modules/react-native-inappbrowser-reborn"
+  RNPermissions:
+    :path: "../node_modules/react-native-permissions"
   RNScreens:
     :path: "../node_modules/react-native-screens"
   RNVectorIcons:
@@ -2322,6 +2347,7 @@ SPEC CHECKSUMS:
   ReactNativeDependencies: 740b17340834c97fc96ae4d66ae76d9900ab5bef
   RNFastImage: 462a183c4b0b6b26fdfd639e1ed6ba37536c3b87
   RNInAppBrowser: 904d24dc75e8e6c6c98a3160329192608946f9df
+  RNPermissions: bde5ea0fad76a60b615f59416f76ffc7d6fd67d4
   RNScreens: 6cb648bdad8fe9bee9259fe144df95b6d1d5b707
   RNVectorIcons: 4351544f100d4f12cac156a7c13399e60bab3e26
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
@@ -2330,6 +2356,6 @@ SPEC CHECKSUMS:
   WatermelonDB: 75e467adbaf2cb2809780fb3eda7ce4964e11778
   Yoga: c0b3f2c7e8d3e327e450223a2414ca3fa296b9a2
 
-PODFILE CHECKSUM: 23453ae91307ad7d6b52d801b4555c9d2e91a560
+PODFILE CHECKSUM: 6cc024234deb9844cc7fd94e08e7bca527f6f076
 
 COCOAPODS: 1.16.2

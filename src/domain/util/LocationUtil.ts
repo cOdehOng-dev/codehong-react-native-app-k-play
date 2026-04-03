@@ -1,6 +1,13 @@
 import { KAKAO_REST_API_KEY } from '@env';
-import { PermissionsAndroid, Platform } from 'react-native';
+import { Platform } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
+import {
+  check,
+  PERMISSIONS,
+  request,
+  requestMultiple,
+  RESULTS,
+} from 'react-native-permissions';
 
 interface KakaoRegionDocument {
   region_type: string;
@@ -62,24 +69,31 @@ export async function getAddressFromCoords(
 
 export const checkLocationPermission = async (): Promise<boolean> => {
   if (Platform.OS === 'ios') {
-    const status = await Geolocation.requestAuthorization('whenInUse');
-    return status === 'granted';
+    const result = await check(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE);
+    return result === RESULTS.GRANTED;
   }
-  const granted = await PermissionsAndroid.check(
-    PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-  );
-  return granted;
+  // FINE이 있으면 FINE, 없으면 COARSE라도 있으면 허용
+  const fine = await check(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION);
+  if (fine === RESULTS.GRANTED) return true;
+  const coarse = await check(PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION);
+  return coarse === RESULTS.GRANTED;
 };
 
 export const requestLocationPermission = async (): Promise<boolean> => {
   if (Platform.OS === 'ios') {
-    const result = await Geolocation.requestAuthorization('whenInUse');
-    return result === 'granted';
+    const result = await request(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE);
+    return result === RESULTS.GRANTED;
   }
-  const granted = await PermissionsAndroid.request(
-    PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+  // Android 12+: COARSE + FINE 동시 요청 → 통합 다이얼로그(정밀/대략) 표시
+  // 단독 요청 시 정밀도 선택이 별도 Activity로 뜨며 크래시 발생
+  const results = await requestMultiple([
+    PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION,
+    PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
+  ]);
+  return (
+    results[PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION] === RESULTS.GRANTED ||
+    results[PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION] === RESULTS.GRANTED
   );
-  return granted === PermissionsAndroid.RESULTS.GRANTED;
 };
 
 export const getCurrentPosition = (): Promise<{
