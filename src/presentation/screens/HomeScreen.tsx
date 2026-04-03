@@ -2,7 +2,6 @@ import { KOKOR_CLIENT_ID } from '@env';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Alert, ScrollView, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { BoxOfficeItem } from '../../domain/model/BoxOfficeItem';
 import { PerformanceInfoItem } from '../../domain/model/PerformanceInfoItem';
 import {
   GenreCode,
@@ -28,11 +27,11 @@ import {
   requestLocationPermission,
 } from '../../domain/util/LocationUtil';
 import GenreListContent from '../components/GenreListContent';
-import TopBannerContent from '../components/TopBannerContent';
 import GenreRankContent from '../components/GenreRankContent';
 import MonthRankContent from '../components/MonthRankContent';
 import MyAreaContent from '../components/MyAreaContent';
 import TabPerformanceContent from '../components/TabPerformanceContent';
+import TopBannerContent from '../components/TopBannerContent';
 import { useFestivalList } from '../hooks/useFestivalList';
 import { useGenreRankList } from '../hooks/useGenreRankList';
 import { useLocalList } from '../hooks/useLocalList';
@@ -180,40 +179,27 @@ function HomeScreen() {
   // endregion --------------------
 
   // regigon 장르별 순위 -------------
-  const [entireGenreRankList, setEntireGenreRankList] = useState<
-    Map<GenreCodeItem, BoxOfficeItem[]>
-  >(new Map(genreCodeList.map(genreCode => [genreCode, []])));
-  const [isGenreRankListLoading, setIsGenreRankListLoading] = useState(false);
   const [selectedGenreRankTab, setSelectedGenreRankTab] =
     useState<GenreCodeItem>(GenreCode.THEATER);
+
+  const genreRankListProps = useMemo(() => {
+    const startDate = getPreviousMonthFirstDay('YYYYMMDD');
+    const endDate = getPreviousMonthLastDay('YYYYMMDD');
+    return {
+      service: KOKOR_CLIENT_ID,
+      startDate,
+      endDate,
+      genreCode: selectedGenreRankTab.code,
+    };
+  }, [selectedGenreRankTab]);
+
   const {
     result: genreRankList,
-    loading: genreRankLoading,
+    loading: isGenreRankListLoading,
     error: genreRankError,
-    callApi: callGenreRankList,
   } = useGenreRankList({
-    entireGenreRankList,
-    setEntireGenreRankList,
+    props: genreRankListProps,
   });
-
-  const fetchGenreRank = useCallback(
-    (genreCode: GenreCodeItem) => {
-      const startDate = getPreviousMonthFirstDay('YYYYMMDD');
-      const endDate = getPreviousMonthLastDay('YYYYMMDD');
-      callGenreRankList({
-        service: KOKOR_CLIENT_ID,
-        startDate,
-        endDate,
-        genreCode: genreCode.code,
-      });
-    },
-    [callGenreRankList],
-  );
-
-  useEffect(() => {
-    setIsGenreRankListLoading(genreRankLoading);
-  }, [genreRankLoading]);
-
   // endregion --------------------
 
   /**
@@ -233,8 +219,6 @@ function HomeScreen() {
     })();
     fetchMonthRank();
     fetchEntireLocalList(selectedLocalRegionCode);
-    // 수정: fetchFestivalList 제거 - useQuery가 마운트 시 자동으로 첫 요청 처리
-    fetchGenreRank(selectedGenreRankTab);
   }, []);
 
   return (
@@ -289,7 +273,6 @@ function HomeScreen() {
           onSelectedTab={tab => {
             console.log(`선택한 탭 = ${tab.displayName}`);
             setSelectedGenreRankTab(tab);
-            fetchGenreRank(tab);
           }}
           onClickMore={() => {}}
         />
@@ -301,8 +284,6 @@ function HomeScreen() {
           loading={isFestivalLoading}
           onClickMore={() => {}}
           onSelectedTab={tab => {
-            // 수정: fetchFestivalList 호출 제거
-            //       setSelectedFestivalRegionCode → festivalListProps 재계산 → useQuery 자동 재요청
             setSelectedFestivalRegionCode(tab);
           }}
         />

@@ -1,5 +1,5 @@
 import { FlatList, StyleSheet, Text, View } from 'react-native';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { RootStackNavigationProp } from '../screens/stack/RootStack';
 import ArrowTitleContent from './ArrowTitleContent';
@@ -31,13 +31,14 @@ function GenreRankContent({
 }: Props) {
   const navigation = useNavigation<RootStackNavigationProp>();
   const selectedIndex = Math.max(tabList.indexOf(selectedTab), 0);
+  const tabTextList = useMemo(() => tabList.map(tab => tab.displayName), [tabList]);
   return (
     <View style={styles.root}>
       <ArrowTitleContent title={title} onClickMore={onClickMore} />
       <ScrollTab
         initialSelectIndex={selectedIndex}
         tabList={tabList}
-        tabTextList={tabList.map(tab => tab.displayName)}
+        tabTextList={tabTextList}
         onClickTab={(index, tabText) => {
           onSelectedTab(tabList[index]);
         }}

@@ -3,12 +3,10 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  TextStyle,
   TouchableOpacity,
   View,
-  ViewStyle,
 } from 'react-native';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { startTransition, useEffect, useRef, useState } from 'react';
 
 type Props = {
   initialSelectIndex: number;
@@ -44,7 +42,9 @@ function ScrollTab({
 
   const handleTabPress = (index: number) => {
     setSelectedIndex(index);
-    onClickTab?.(index, tabList[index]);
+    startTransition(() => {
+      onClickTab?.(index, tabList[index]);
+    });
   };
 
   const handleItemLayout = (index: number, e: LayoutChangeEvent) => {
@@ -71,32 +71,6 @@ function ScrollTab({
           const isSelected = index === selectedIndex;
           const isLast = index === tabTextList.length - 1;
 
-          const bgColor = isSelected ? '#FF8224' : '#FFFFFF';
-          const borderWidth = isSelected ? 0 : 1;
-          const borderColor = isSelected ? '#00000000' : '#eaeaeaff';
-
-          const textColorHex = isSelected ? '#FFFFFF' : '#000000';
-
-          const itemStyle: ViewStyle = {
-            backgroundColor: bgColor,
-            paddingHorizontal: 12,
-            paddingVertical: 8,
-            marginRight: isLast ? 0 : 6,
-            borderRadius: 100,
-            ...(borderWidth > 0
-              ? {
-                  borderWidth,
-                  borderColor: borderColor,
-                }
-              : {}),
-          };
-
-          const textStyle: TextStyle = {
-            fontSize: 14,
-            fontWeight: 'bold',
-            color: textColorHex,
-          };
-
           return (
             <TouchableOpacity
               key={index}
@@ -104,8 +78,24 @@ function ScrollTab({
               onPress={() => handleTabPress(index)}
               onLayout={e => handleItemLayout(index, e)}
             >
-              <View style={itemStyle}>
-                <Text style={textStyle} numberOfLines={1}>
+              <View
+                style={[
+                  styles.tabItem,
+                  isLast ? null : styles.tabItemMargin,
+                  isSelected
+                    ? styles.tabItemSelected
+                    : styles.tabItemUnselected,
+                ]}
+              >
+                <Text
+                  style={[
+                    styles.tabText,
+                    isSelected
+                      ? styles.tabTextSelected
+                      : styles.tabTextUnselected,
+                  ]}
+                  numberOfLines={1}
+                >
                   {text}
                 </Text>
               </View>
@@ -129,5 +119,31 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingLeft: 16,
     paddingRight: 16,
+  },
+  tabItem: {
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 100,
+  },
+  tabItemMargin: {
+    marginRight: 6,
+  },
+  tabItemSelected: {
+    backgroundColor: '#FF8224',
+  },
+  tabItemUnselected: {
+    backgroundColor: '#FFFFFF',
+    borderWidth: 1,
+    borderColor: '#eaeaeaff',
+  },
+  tabText: {
+    fontSize: 14,
+    fontWeight: 'bold',
+  },
+  tabTextSelected: {
+    color: '#FFFFFF',
+  },
+  tabTextUnselected: {
+    color: '#000000',
   },
 });
