@@ -59,8 +59,6 @@ export const GenreCode = {
 
 export const genreCodeList = Object.values(GenreCode);
 
-export function toGenreCode(
-  code: string | null | undefined,
-): GenreCodeItem | undefined {
-  return genreCodeList.find(genre => genre.code === code);
+export function toGenreCode(code: string | null | undefined): GenreCodeItem {
+  return genreCodeList.find(genre => genre.code === code) ?? GenreCode.THEATER;
 }

@@ -1,3 +1,5 @@
+import { useNavigation } from '@react-navigation/native';
+import React, { useRef } from 'react';
 import {
   Animated,
   FlatList,
@@ -6,15 +8,10 @@ import {
   Text,
   View,
 } from 'react-native';
-import React, { useRef } from 'react';
 import { PerformanceInfoItem } from '../../domain/model/PerformanceInfoItem';
+import { RootStackNavigationProp } from '../screens/stack/RootStack';
 import PerformanceInfoContent from './PerformanceInfoContent';
 import PerformanceInfoSkeleton from './skeleton/PerformanceInfoSkeleton';
-import { useNavigation } from '@react-navigation/native';
-import {
-  RootStackNavigationProp,
-  RootStackProps,
-} from '../screens/stack/RootStack';
 
 type Props = {
   currentMonth: string;
@@ -107,7 +104,8 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     color: '#000000',
-    paddingHorizontal: 16,
+    paddingStart: 16,
+    paddingEnd: 3,
   },
   refreshIcon: {
     width: 18,

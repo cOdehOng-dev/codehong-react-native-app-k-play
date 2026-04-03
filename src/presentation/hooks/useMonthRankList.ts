@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react';
 import { useDI } from '../../di/DIContext';
 import { BoxOfficeItem } from '../../domain/model/BoxOfficeItem';
-import { BoxOfficeParams } from '../../domain/model/apiprops/BoxOfficeParams';
+import { BoxofficeProps } from '../../domain/model/apiprops/BoxofficeProps';
 
 interface State {
   result: BoxOfficeItem[];
@@ -9,7 +9,7 @@ interface State {
   error: string | null;
 }
 
-export function useBoxofficeList() {
+export function useMonthRankList() {
   const { boxOfficeUseCase } = useDI();
   const [state, setState] = useState<State>({
     result: [],
@@ -18,21 +18,21 @@ export function useBoxofficeList() {
   });
 
   const callApi = useCallback(
-    async (params: BoxOfficeParams) => {
+    async (props: BoxofficeProps) => {
       setState(s => ({ ...s, loading: true, error: null }));
       try {
-        const boxOfficeList = await boxOfficeUseCase.getBoxOfficeList(params);
+        const rankList = await boxOfficeUseCase.getRankList(props);
         console.log(
-          '[useBoxOfficeList] 응답 데이터:',
-          JSON.stringify(boxOfficeList, null, 2),
+          '[useRankList] 응답 데이터:',
+          JSON.stringify(rankList, null, 2),
         );
         setState({
-          result: boxOfficeList,
+          result: rankList,
           loading: false,
           error: null,
         });
       } catch (e) {
-        console.log('[useBoxOfficeList] 에러:', e);
+        console.log('[useRankList] 에러:', e);
         setState({
           result: [],
           loading: false,

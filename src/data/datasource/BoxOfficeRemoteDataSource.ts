@@ -1,9 +1,9 @@
-import { BoxOfficeParams } from '../../domain/model/apiprops/BoxOfficeParams';
+import { BoxofficeProps } from '../../domain/model/apiprops/BoxofficeProps';
 import { BoxOfficeResponseDto } from '../model/boxoffice/BoxOfficeResponseDto';
 import { getBoxoffice } from '../remote/kopisApiService';
 
 export class BoxofficeRemoteDataSource {
-  async getBoxOffice(params: BoxOfficeParams): Promise<BoxOfficeResponseDto> {
+  async getBoxOffice(params: BoxofficeProps): Promise<BoxOfficeResponseDto> {
     try {
       return await getBoxoffice(params);
     } catch (e: any) {

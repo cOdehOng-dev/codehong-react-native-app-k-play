@@ -3,7 +3,6 @@ import { InAppBrowser } from 'react-native-inappbrowser-reborn';
 
 function showError(message: string) {
   if (Platform.OS === 'android') {
-    // Android는 Activity 미부착 상태에서 Alert 사용 불가 → Toast 사용
     ToastAndroid.show(message, ToastAndroid.SHORT);
   } else {
     Alert.alert('오류', message);
@@ -12,7 +11,6 @@ function showError(message: string) {
 
 export async function openInAppBrowser(rawUrl: string) {
   if (!rawUrl) return;
-  // 프로토콜 없는 URL 보정 (예: www.example.com → https://www.example.com)
   const url =
     rawUrl.startsWith('http://') || rawUrl.startsWith('https://')
       ? rawUrl

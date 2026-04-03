@@ -1,32 +1,33 @@
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 import React from 'react';
-import ArrowTitleContent from './ArrowTitleContent';
-import { RegionCode } from '../../domain/type/RegionCode';
-import ScrollTab from './ScrollTab';
-import { PerformanceInfoItem } from '../../domain/model/PerformanceInfoItem';
-import PerformanceInfoContent from './PerformanceInfoContent';
 import { useNavigation } from '@react-navigation/native';
 import { RootStackNavigationProp } from '../screens/stack/RootStack';
+import ArrowTitleContent from './ArrowTitleContent';
+import { GenreCodeItem } from '../../domain/type/GenreCode';
+import { BoxOfficeItem } from '../../domain/model/BoxOfficeItem';
+import ScrollTab from './ScrollTab';
+import PerformanceInfoContent from './PerformanceInfoContent';
 import PerformanceInfoSkeleton from './skeleton/PerformanceInfoSkeleton';
+import RankPerformanceInfoContent from './RankPerformanceInfoContent';
 
 type Props = {
   title: string;
-  tabList: RegionCode[];
-  selectedTab: RegionCode;
-  performanceList?: PerformanceInfoItem[];
+  tabList: GenreCodeItem[];
+  selectedTab: GenreCodeItem;
+  genreRankList: BoxOfficeItem[];
   loading: boolean;
-  onSelectedTab: (tab: RegionCode) => void;
+  onSelectedTab: (tab: GenreCodeItem) => void;
   onClickMore: () => void;
 };
 
-function TabPerformanceContent({
+function GenreRankContent({
   title,
   tabList,
-  performanceList,
   selectedTab,
+  genreRankList,
   loading,
+  onSelectedTab,
   onClickMore,
-  onSelectedTab: onSelectTab,
 }: Props) {
   const navigation = useNavigation<RootStackNavigationProp>();
   const selectedIndex = Math.max(tabList.indexOf(selectedTab), 0);
@@ -38,7 +39,7 @@ function TabPerformanceContent({
         tabList={tabList}
         tabTextList={tabList.map(tab => tab.displayName)}
         onClickTab={(index, tabText) => {
-          onSelectTab(tabList[index]);
+          onSelectedTab(tabList[index]);
         }}
       />
       {loading ? (
@@ -53,21 +54,26 @@ function TabPerformanceContent({
           contentContainerStyle={styles.listContainer}
           horizontal
           showsHorizontalScrollIndicator={false}
-          data={performanceList}
+          data={genreRankList}
           renderItem={({ item }) => (
-            <PerformanceInfoContent
+            <RankPerformanceInfoContent
               item={item}
-              onClick={() =>
-                navigation.navigate('Detail', { performanceId: item.id ?? '' })
-              }
+              onClick={() => {
+                navigation.navigate('Detail', {
+                  performanceId: item.performanceId ?? '',
+                });
+              }}
             />
           )}
-          keyExtractor={(item, index) => item.id ?? String(index)}
+          keyExtractor={(item, index) => item.performanceId ?? String(index)}
         />
       )}
     </View>
   );
 }
+
+export default GenreRankContent;
+
 const styles = StyleSheet.create({
   root: {
     width: '100%',
@@ -87,5 +93,3 @@ const styles = StyleSheet.create({
     gap: 12,
   },
 });
-
-export default TabPerformanceContent;

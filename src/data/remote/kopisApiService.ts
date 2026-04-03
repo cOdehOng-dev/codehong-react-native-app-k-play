@@ -1,4 +1,4 @@
-import { BoxOfficeParams } from '../../domain/model/apiprops/BoxOfficeParams';
+import { BoxofficeProps } from '../../domain/model/apiprops/BoxofficeProps';
 import { PerformanceDetailProps } from '../../domain/model/apiprops/performanceDetailProps';
 import { PerformanceListProps } from '../../domain/model/apiprops/performanceListProps';
 import { SearchPlaceProps } from '../../domain/model/apiprops/searchPlaceProps';
@@ -46,21 +46,21 @@ export const getPerformanceList = async (
   return parsePerformanceListResponseDto(response.data);
 };
 
-export const getBoxoffice = async (
-  params: BoxOfficeParams,
-): Promise<BoxOfficeResponseDto> => {
+export async function getBoxoffice(
+  props: BoxofficeProps,
+): Promise<BoxOfficeResponseDto> {
   const response = await kopisApi.get<string>('/openApi/restful/boxoffice', {
     params: {
-      service: params.service,
-      stdate: params.startDate,
-      eddate: params.endDate,
-      catecode: params.catecode,
-      area: params.area,
+      service: props.service,
+      stdate: props.startDate,
+      eddate: props.endDate,
+      catecode: props.genreCode,
+      area: props.area,
     },
     responseType: 'text',
   });
   return parseBoxOfficeResponseDto(response.data);
-};
+}
 
 export async function getPerformanceDetail(
   props: PerformanceDetailProps,

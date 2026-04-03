@@ -11,22 +11,6 @@ import {
 // ─── Option Type ─────────────────────────────────────────────────────────────
 // Kotlin: HongHorizontalPagerOption
 
-// export type BannerPagerOption<T> = {
-//   pageInfoList?: T[] | null;
-//   // Kotlin: Pair<Boolean, Boolean> — [forwardInfinite, backwardInfinite]
-//   // 둘 중 하나라도 true면 리스트를 10배 복제하여 무한 스크롤 구현
-//   infiniteScroll?: [boolean, boolean];
-//   // 현재 페이지 인덱스 콜백 (원본 리스트 기준 index)
-//   currentIndex?: (index: number) => void;
-//   // 0이면 자동 스크롤 없음
-//   autoScrollMillSecond?: number;
-//   // Kotlin: beyondViewportPageCount — 미리 렌더할 페이지 수 (현재 RN에선 FlatList windowSize로 대응)
-//   initialLoadPageSize?: number;
-//   prevPageVisibleWidth?: number;
-//   nextPageVisibleWidth?: number;
-//   pageSpacing?: number;
-// };
-
 // ─── Component ───────────────────────────────────────────────────────────────
 
 type Props<T> = {

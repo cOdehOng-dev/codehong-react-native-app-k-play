@@ -1,8 +1,9 @@
 import { useCallback, useState } from 'react';
+import { PerformanceInfoItem } from '../../domain/model/PerformanceInfoItem';
 import { useDI } from '../../di/DIContext';
 import { PerformanceListProps } from '../../domain/model/apiprops/performanceListProps';
-import { PerformanceInfoItem } from '../../domain/model/PerformanceInfoItem';
 import { RegionCode, toRegionCode } from '../../domain/type/RegionCode';
+import { BoxOfficeItem } from '../../domain/model/BoxOfficeItem';
 
 interface State {
   result: PerformanceInfoItem[];
@@ -11,16 +12,13 @@ interface State {
 }
 
 interface Props {
-  entireFestivalList: Map<RegionCode, PerformanceInfoItem[]>;
-  setEntireFestivalList: (
-    entireFestivalList: Map<RegionCode, PerformanceInfoItem[]>,
+  entireLocalList: Map<RegionCode, PerformanceInfoItem[]>;
+  setEntireLocalList: (
+    entireLocalList: Map<RegionCode, PerformanceInfoItem[]>,
   ) => void;
 }
 
-export function useFestivalList({
-  entireFestivalList,
-  setEntireFestivalList,
-}: Props) {
+export function useLocalList({ entireLocalList, setEntireLocalList }: Props) {
   const { performanceUseCase } = useDI();
   const [state, setState] = useState<State>({
     result: [],
@@ -32,7 +30,7 @@ export function useFestivalList({
     async (props: PerformanceListProps) => {
       setState(s => ({ ...s, loading: true, error: null }));
       const code = toRegionCode(props.signGuCode);
-      const cachedRegionList = entireFestivalList.get(code);
+      const cachedRegionList = entireLocalList.get(code);
       if (cachedRegionList && cachedRegionList.length > 0) {
         console.log(`test here 캐싱 있음`);
         setState({
@@ -43,24 +41,24 @@ export function useFestivalList({
         return;
       }
       try {
-        const festivalList = await performanceUseCase.getFestivalList(
+        console.log(`test here 캐싱 없음`);
+        const performanceList = await performanceUseCase.getPerformanceList(
           props,
-          msg => console.log('[useFestivalList] API 에러:', msg),
         );
         console.log(
-          '[useFestivalList] 응답 데이터:',
-          JSON.stringify(festivalList, null, 2),
+          '[usePerformanceList] 응답 데이터:',
+          JSON.stringify(performanceList, null, 2),
         );
-        const next = new Map(entireFestivalList);
-        next.set(code, festivalList);
-        setEntireFestivalList(next);
+        const next = new Map(entireLocalList);
+        next.set(code, performanceList);
+        setEntireLocalList(next);
         setState({
-          result: festivalList,
+          result: performanceList,
           loading: false,
           error: null,
         });
       } catch (e) {
-        console.log('[useFestivalList] 에러:', e);
+        console.log('[usePerformanceList] 에러:', e);
         setState({
           result: [],
           loading: false,
@@ -68,7 +66,7 @@ export function useFestivalList({
         });
       }
     },
-    [performanceUseCase, entireFestivalList, setEntireFestivalList],
+    [performanceUseCase, entireLocalList, setEntireLocalList],
   );
 
   return { ...state, callApi };

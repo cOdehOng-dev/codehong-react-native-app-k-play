@@ -1,7 +1,7 @@
-export interface BoxOfficeParams {
+export interface BoxofficeProps {
   service: string;
   startDate: string;
   endDate: string;
-  catecode?: string;
+  genreCode?: string;
   area?: string;
 }

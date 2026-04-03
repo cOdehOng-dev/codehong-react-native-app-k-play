@@ -2,7 +2,13 @@ import { KOKOR_CLIENT_ID } from '@env';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Alert, ScrollView, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { GenreCodeItem, genreCodeList } from '../../domain/type/GenreCode';
+import { BoxOfficeItem } from '../../domain/model/BoxOfficeItem';
+import { PerformanceInfoItem } from '../../domain/model/PerformanceInfoItem';
+import {
+  GenreCode,
+  GenreCodeItem,
+  genreCodeList,
+} from '../../domain/type/GenreCode';
 import { RankTab, RankTabItem, rankTabList } from '../../domain/type/RankTab';
 import {
   nameToRegionCode,
@@ -22,12 +28,16 @@ import {
   requestLocationPermission,
 } from '../../domain/util/LocationUtil';
 import GenreListContent from '../components/GenreListContent';
+import TopBannerContent from '../components/TopBannerContent';
+import GenreRankContent from '../components/GenreRankContent';
 import MonthRankContent from '../components/MonthRankContent';
 import MyAreaContent from '../components/MyAreaContent';
 import TabPerformanceContent from '../components/TabPerformanceContent';
-import { useBoxofficeList } from '../hooks/useBoxOfficeList';
-import { useMyAreaList } from '../hooks/useMyAreaList';
 import { useFestivalList } from '../hooks/useFestivalList';
+import { useGenreRankList } from '../hooks/useGenreRankList';
+import { useLocalList } from '../hooks/useLocalList';
+import { useMonthRankList } from '../hooks/useMonthRankList';
+import { useMyAreaList } from '../hooks/useMyAreaList';
 
 function HomeScreen() {
   const [currentMonth] = useState(getCurrentMonth(false));
@@ -83,12 +93,12 @@ function HomeScreen() {
 
   // region 월간 인기 순위 ---
   const {
-    result: boxofficeList,
-    loading: boxofficeLoading,
-    error: boxofficeError,
+    result: monthRankList,
+    loading: monthRankLoading,
+    error: monthRankError,
     callApi: callMonthRankList,
-  } = useBoxofficeList();
-  const [isBoxofficeDataLoading, setIsBoxofficeDataLoading] = useState(false);
+  } = useMonthRankList();
+  const [isMonthRankListLoading, setIsMonthRankListLoading] = useState(false);
   const [selectedMonthRankTab, setSelectedMonthRankTab] = useState<RankTabItem>(
     RankTab.TOP_1_10,
   );
@@ -103,26 +113,32 @@ function HomeScreen() {
   }, [callMonthRankList]);
 
   useEffect(() => {
-    setIsBoxofficeDataLoading(boxofficeLoading);
-  }, [boxofficeLoading]);
+    setIsMonthRankListLoading(monthRankLoading);
+  }, [monthRankLoading]);
   // endregion --------------------
 
   // region 지역별 공연 리스트 ---
-  const [selectedAllRegionCode, setSelectedAllRegionCode] =
+  const [entireLocalList, setEntireLocalList] = useState<
+    Map<RegionCode, PerformanceInfoItem[]>
+  >(new Map(regionCodeList.map(regionCode => [regionCode, []])));
+  const [selectedLocalRegionCode, setSelectedLocalRegionCode] =
     useState<RegionCode>(RegionCode.SEOUL);
-  const [isEntireLocalLoading, setIsEntireLocalLoading] = useState(false);
+  const [isLocalListLoading, setLocalListLoading] = useState(false);
 
   const {
-    result: entireLocalList,
+    result: localList,
     loading: localLoading,
     error: localError,
-    callApi: callEntireLocalListApi,
-  } = useMyAreaList();
+    callApi: callLocalListApi,
+  } = useLocalList({
+    entireLocalList,
+    setEntireLocalList,
+  });
   const fetchEntireLocalList = useCallback(
     (regionCode: RegionCode) => {
       const startDate = getPreviousMonthFirstDay('YYYYMMDD');
       const endDate = getPreviousMonthLastDay('YYYYMMDD');
-      callEntireLocalListApi({
+      callLocalListApi({
         service: KOKOR_CLIENT_ID,
         startDate,
         endDate,
@@ -131,14 +147,17 @@ function HomeScreen() {
         signGuCode: regionCode.code,
       });
     },
-    [callEntireLocalListApi],
+    [callLocalListApi],
   );
   useEffect(() => {
-    setIsEntireLocalLoading(localLoading);
+    setLocalListLoading(localLoading);
   }, [localLoading]);
   // endregion --------------------
 
-  // region 축제 리스트 ---
+  // region 축제 리스트 -------
+  const [entireFestivalList, setEntireFestivalList] = useState<
+    Map<RegionCode, PerformanceInfoItem[]>
+  >(new Map(regionCodeList.map(regionCode => [regionCode, []])));
   const [selectedFestivalRegionCode, setSelectedFestivalRegionCode] =
     useState<RegionCode>(RegionCode.SEOUL);
   const [isFestivalLoading, setIsFestivalLoading] = useState(false);
@@ -148,7 +167,10 @@ function HomeScreen() {
     loading: festivalLoading,
     error: festivalError,
     callApi: callFestivalListApi,
-  } = useFestivalList();
+  } = useFestivalList({
+    entireFestivalList,
+    setEntireFestivalList,
+  });
 
   const fetchFestivalList = useCallback(
     (regionCode: RegionCode) => {
@@ -170,6 +192,43 @@ function HomeScreen() {
   }, [festivalLoading]);
   // endregion --------------------
 
+  // regigon 장르별 순위 -------------
+  const [entireGenreRankList, setEntireGenreRankList] = useState<
+    Map<GenreCodeItem, BoxOfficeItem[]>
+  >(new Map(genreCodeList.map(genreCode => [genreCode, []])));
+  const [isGenreRankListLoading, setIsGenreRankListLoading] = useState(false);
+  const [selectedGenreRankTab, setSelectedGenreRankTab] =
+    useState<GenreCodeItem>(GenreCode.THEATER);
+  const {
+    result: genreRankList,
+    loading: genreRankLoading,
+    error: genreRankError,
+    callApi: callGenreRankList,
+  } = useGenreRankList({
+    entireGenreRankList,
+    setEntireGenreRankList,
+  });
+
+  const fetchGenreRank = useCallback(
+    (genreCode: GenreCodeItem) => {
+      const startDate = getPreviousMonthFirstDay('YYYYMMDD');
+      const endDate = getPreviousMonthLastDay('YYYYMMDD');
+      callGenreRankList({
+        service: KOKOR_CLIENT_ID,
+        startDate,
+        endDate,
+        genreCode: genreCode.code,
+      });
+    },
+    [callGenreRankList],
+  );
+
+  useEffect(() => {
+    setIsGenreRankListLoading(genreRankLoading);
+  }, [genreRankLoading]);
+
+  // endregion --------------------
+
   /**
    * API 호출
    */
@@ -186,13 +245,18 @@ function HomeScreen() {
       }
     })();
     fetchMonthRank();
-    fetchEntireLocalList(selectedAllRegionCode);
+    fetchEntireLocalList(selectedLocalRegionCode);
     fetchFestivalList(selectedFestivalRegionCode);
+    fetchGenreRank(selectedGenreRankTab);
   }, []);
 
   return (
     <SafeAreaView style={styles.block} edges={['top']}>
       <ScrollView>
+        <TopBannerContent
+          isLoading={isMonthRankListLoading}
+          bannerList={monthRankList.slice(0, 6)}
+        />
         <GenreListContent
           genreList={genreCodeList}
           onClickGenre={(genreCode: GenreCodeItem) =>
@@ -207,9 +271,9 @@ function HomeScreen() {
         />
         <MonthRankContent
           currentMonth={currentMonth}
-          loading={isBoxofficeDataLoading}
+          loading={isMonthRankListLoading}
           tabList={rankTabList}
-          rankList={boxofficeList}
+          rankList={monthRankList}
           selectedTab={selectedMonthRankTab}
           onSelectTab={tab => {
             console.log(`선택한 탭 = ${tab.display}`);
@@ -219,15 +283,28 @@ function HomeScreen() {
         <TabPerformanceContent
           title="지역별 공연이에요"
           tabList={regionCodeList}
-          performanceList={entireLocalList}
-          selectedTab={selectedAllRegionCode}
-          loading={isEntireLocalLoading}
+          performanceList={localList}
+          selectedTab={selectedLocalRegionCode}
+          loading={isLocalListLoading}
           onClickMore={() => {}}
-          onSelectTab={tab => {
+          onSelectedTab={tab => {
             console.log(`선택한 탭 = ${tab.displayName}`);
-            setSelectedAllRegionCode(tab);
+            setSelectedLocalRegionCode(tab);
             fetchEntireLocalList(tab);
           }}
+        />
+        <GenreRankContent
+          title="장르별 순위에요"
+          tabList={genreCodeList}
+          selectedTab={selectedGenreRankTab}
+          genreRankList={genreRankList}
+          loading={isGenreRankListLoading}
+          onSelectedTab={tab => {
+            console.log(`선택한 탭 = ${tab.displayName}`);
+            setSelectedGenreRankTab(tab);
+            fetchGenreRank(tab);
+          }}
+          onClickMore={() => {}}
         />
         <TabPerformanceContent
           title="축제 공연은 어때요?"
@@ -236,7 +313,7 @@ function HomeScreen() {
           selectedTab={selectedFestivalRegionCode}
           loading={isFestivalLoading}
           onClickMore={() => {}}
-          onSelectTab={tab => {
+          onSelectedTab={tab => {
             setSelectedFestivalRegionCode(tab);
             fetchFestivalList(tab);
           }}
