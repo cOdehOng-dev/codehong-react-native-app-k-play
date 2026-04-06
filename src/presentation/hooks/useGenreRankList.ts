@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { useDI } from '../../di/DIContext';
-import { BoxofficeProps } from '../../domain/model/apiprops/BoxofficeProps';
+import { BoxofficeProps } from '../../domain/model/apiprops/boxofficeProps';
 import { toGenreCode } from '../../domain/type/genreCode';
 
 interface Props {
@@ -8,7 +8,7 @@ interface Props {
 }
 
 export function useGenreRankList({ props }: Props) {
-  const { boxOfficeUseCase } = useDI();
+  const { boxofficeUseCase: boxOfficeUseCase } = useDI();
   const code = toGenreCode(props.genreCode);
 
   const { data, isFetching, error } = useQuery({

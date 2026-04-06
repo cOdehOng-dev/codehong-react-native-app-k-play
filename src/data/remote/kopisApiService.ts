@@ -1,4 +1,4 @@
-import { BoxofficeProps } from '../../domain/model/apiprops/BoxofficeProps';
+import { BoxofficeProps } from '../../domain/model/apiprops/boxofficeProps';
 import { PerformanceDetailProps } from '../../domain/model/apiprops/performanceDetailProps';
 import { PerformanceListProps } from '../../domain/model/apiprops/performanceListProps';
 import { PlaceDetailProps } from '../../domain/model/apiprops/placeDetailProps';

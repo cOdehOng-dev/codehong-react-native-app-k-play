@@ -1,4 +1,4 @@
-import { BoxofficeProps } from '../../domain/model/apiprops/BoxofficeProps';
+import { BoxofficeProps } from '../../domain/model/apiprops/boxofficeProps';
 import { BoxOfficeResponseDto } from '../model/boxoffice/BoxOfficeResponseDto';
 import { getBoxoffice } from '../remote/kopisApiService';
 

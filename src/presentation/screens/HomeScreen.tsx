@@ -46,73 +46,79 @@ function HomeScreen() {
     const address = await getAddressFromCoords(latitude, longitude);
     return nameToRegionCode(address.region1).code;
   }, []);
-  const {
-    result: myAreaList,
-    loading: myAreaLoading,
-    error: myAreaError,
-    callApi: callMyAreaList,
-  } = useMyAreaList();
-  const [isMyAreaLoading, setIsMyAreaLoading] = useState(false);
 
-  const fetchMyAreaList = useCallback(
-    (signGuCode: string) => {
-      const { startDate, endDate } = getCurrentMonthRange();
-      callMyAreaList({
-        service: KOKOR_CLIENT_ID,
-        startDate,
-        endDate,
-        currentPage: '1',
-        rowsPerPage: '10',
-        signGuCode,
-      });
-    },
-    [callMyAreaList],
+  const [myAreaSignGuCode, setMyAreaSignGuCode] = useState<string>(
+    RegionCode.SEOUL.code,
   );
 
+  const fetchMyAreaListProps = useMemo(() => {
+    const { startDate, endDate } = getCurrentMonthRange();
+    return {
+      service: KOKOR_CLIENT_ID,
+      startDate,
+      endDate,
+      currentPage: '1',
+      rowsPerPage: '10',
+      signGuCode: myAreaSignGuCode,
+    };
+  }, [myAreaSignGuCode]);
+
+  const {
+    result: myAreaList,
+    loading: isLoadignMyAreaList,
+    error: errorMyAreaList,
+    refetch: refetchMyAreaList,
+  } = useMyAreaList({ props: fetchMyAreaListProps });
+
+  const [isMyAreaLoading, setIsMyAreaLoading] = useState(false);
+
   useEffect(() => {
-    setIsMyAreaLoading(myAreaLoading);
-  }, [myAreaLoading]);
+    setIsMyAreaLoading(isLoadignMyAreaList);
+  }, [isLoadignMyAreaList]);
 
   const handleRefresh = useCallback(async () => {
     setIsMyAreaLoading(true);
     const hasPermission = await requestLocationPermission();
     if (!hasPermission) {
       Alert.alert('위치 권한 없음', '설정에서 위치 권한을 허용해주세요.');
+      setIsMyAreaLoading(false);
       return;
     }
     try {
       const regionCode = await fetchRegionCodeFromLocation();
-      fetchMyAreaList(regionCode);
+      if (regionCode === myAreaSignGuCode) {
+        refetchMyAreaList();
+      } else {
+        setMyAreaSignGuCode(regionCode);
+      }
     } catch {
       Alert.alert('오류', '현재 위치를 가져올 수 없습니다.');
+      setIsMyAreaLoading(false);
     }
-  }, [fetchMyAreaList, fetchRegionCodeFromLocation]);
+  }, [myAreaSignGuCode, fetchRegionCodeFromLocation, refetchMyAreaList]);
   // endregion --------------------
 
   // region 월간 인기 순위 ---
-  const {
-    result: monthRankList,
-    loading: monthRankLoading,
-    error: monthRankError,
-    callApi: callMonthRankList,
-  } = useMonthRankList();
-  const [isMonthRankListLoading, setIsMonthRankListLoading] = useState(false);
   const [selectedMonthRankTab, setSelectedMonthRankTab] = useState<RankTabItem>(
     RankTab.TOP_1_10,
   );
-  const fetchMonthRank = useCallback(() => {
+  const fetchMonthRankListProps = useMemo(() => {
     const startDate = getPreviousMonthFirstDay('YYYYMMDD');
     const endDate = getPreviousMonthLastDay('YYYYMMDD');
-    callMonthRankList({
+
+    return {
       service: KOKOR_CLIENT_ID,
       startDate,
       endDate,
-    });
-  }, [callMonthRankList]);
+    };
+  }, [selectedMonthRankTab]);
 
-  useEffect(() => {
-    setIsMonthRankListLoading(monthRankLoading);
-  }, [monthRankLoading]);
+  const {
+    result: monthRankList,
+    loading: isMonthRankListLoading,
+    error: monthRankError,
+  } = useMonthRankList({ props: fetchMonthRankListProps });
+
   // endregion --------------------
 
   // region 지역별 공연 리스트 ---
@@ -199,12 +205,11 @@ function HomeScreen() {
         const regionCode = hasPermission
           ? await fetchRegionCodeFromLocation()
           : RegionCode.SEOUL.code;
-        fetchMyAreaList(regionCode);
+        setMyAreaSignGuCode(regionCode);
       } catch {
-        fetchMyAreaList(RegionCode.SEOUL.code);
+        setMyAreaSignGuCode(RegionCode.SEOUL.code);
       }
     })();
-    fetchMonthRank();
   }, []);
 
   return (

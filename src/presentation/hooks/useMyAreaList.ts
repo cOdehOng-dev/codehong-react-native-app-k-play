@@ -1,49 +1,24 @@
-import { useCallback, useState } from 'react';
-import { PerformanceInfoItem } from '../../domain/model/PerformanceInfoItem';
+import { useQuery } from '@tanstack/react-query';
 import { useDI } from '../../di/DIContext';
 import { PerformanceListProps } from '../../domain/model/apiprops/performanceListProps';
 
-interface State {
-  result: PerformanceInfoItem[];
-  loading: boolean;
-  error: string | null;
-}
+type Props = {
+  props: PerformanceListProps;
+};
 
-export function useMyAreaList() {
+export const useMyAreaList = ({ props }: Props) => {
   const { performanceUseCase } = useDI();
-  const [state, setState] = useState<State>({
-    result: [],
-    loading: false,
-    error: null,
+
+  const { data, isFetching, error, refetch } = useQuery({
+    queryKey: ['myAreaList', props.signGuCode],
+    queryFn: () => performanceUseCase.getPerformanceList(props),
+    staleTime: 1000 * 60 * 5,
   });
 
-  const callApi = useCallback(
-    async (params: PerformanceListProps) => {
-      setState(s => ({ ...s, loading: true, error: null }));
-      try {
-        const performanceList = await performanceUseCase.getPerformanceList(
-          params,
-        );
-        console.log(
-          '[usePerformanceList] 응답 데이터:',
-          JSON.stringify(performanceList, null, 2),
-        );
-        setState({
-          result: performanceList,
-          loading: false,
-          error: null,
-        });
-      } catch (e) {
-        console.log('[usePerformanceList] 에러:', e);
-        setState({
-          result: [],
-          loading: false,
-          error: (e as Error).message,
-        });
-      }
-    },
-    [performanceUseCase],
-  );
-
-  return { ...state, callApi };
-}
+  return {
+    result: data ?? [],
+    loading: isFetching,
+    error: error ? (error as Error).message : null,
+    refetch,
+  };
+};

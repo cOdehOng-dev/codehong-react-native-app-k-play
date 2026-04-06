@@ -16,9 +16,9 @@ const performanceRepository = new PerformanceRepositoryImpl(
   performanceRemoteDataSource,
 );
 
-const boxOfficeRemoteDataSource = new BoxofficeRemoteDataSource();
-const boxOfficeRepository = new BoxofficeRepositoryImpl(
-  boxOfficeRemoteDataSource,
+const boxofficeRemoteDataSource = new BoxofficeRemoteDataSource();
+const boxofficeRepository = new BoxofficeRepositoryImpl(
+  boxofficeRemoteDataSource,
 );
 
 // 북마크: 로컬 DB(WatermelonDB) → DataSource → Repository → UseCase
@@ -28,7 +28,7 @@ const bookmarkRepository = new BookmarkRepositoryImpl(bookmarkLocalDataSource);
 // DIContainer: 인터페이스에 의존해 테스트 시 mock으로 교체 가능
 export interface DIContainer {
   performanceUseCase: PerformanceUseCase;
-  boxOfficeUseCase: BoxofficeUseCase;
+  boxofficeUseCase: BoxofficeUseCase;
   placeUseCase: PlaceUseCase;
   bookmarkUseCase: BookmarkUseCase;
 }
@@ -36,7 +36,7 @@ export interface DIContainer {
 // Hilt의 @Singleton에 해당: 앱 전역 단일 인스턴스
 export const container: DIContainer = {
   performanceUseCase: new PerformanceUseCase(performanceRepository),
-  boxOfficeUseCase: new BoxofficeUseCase(boxOfficeRepository),
+  boxofficeUseCase: new BoxofficeUseCase(boxofficeRepository),
   placeUseCase: new PlaceUseCase(performanceRepository),
   bookmarkUseCase: new BookmarkUseCase(bookmarkRepository),
 };

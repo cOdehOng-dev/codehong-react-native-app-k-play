@@ -1,4 +1,4 @@
-import { BoxofficeProps } from '../../domain/model/apiprops/BoxofficeProps';
+import { BoxofficeProps } from '../../domain/model/apiprops/boxofficeProps';
 import { BoxOfficeItem } from '../../domain/model/BoxOfficeItem';
 import { BoxofficeRepository } from '../../domain/repository/BoxofficeRepository';
 import { BoxofficeRemoteDataSource } from '../datasource/BoxOfficeRemoteDataSource';

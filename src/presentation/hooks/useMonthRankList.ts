@@ -1,47 +1,23 @@
-import { useCallback, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { useDI } from '../../di/DIContext';
-import { BoxOfficeItem } from '../../domain/model/BoxOfficeItem';
-import { BoxofficeProps } from '../../domain/model/apiprops/BoxofficeProps';
+import { BoxofficeProps } from '../../domain/model/apiprops/boxofficeProps';
 
-interface State {
-  result: BoxOfficeItem[];
-  loading: boolean;
-  error: string | null;
-}
+type Props = {
+  props: BoxofficeProps;
+};
 
-export function useMonthRankList() {
-  const { boxOfficeUseCase } = useDI();
-  const [state, setState] = useState<State>({
-    result: [],
-    loading: false,
-    error: null,
+export const useMonthRankList = ({ props }: Props) => {
+  const { boxofficeUseCase } = useDI();
+
+  const { data, isFetching, error } = useQuery({
+    queryKey: ['monthRankList', [props.startDate, props.endDate]],
+    queryFn: () => boxofficeUseCase.getRankList(props),
+    staleTime: 1000 * 60 * 5,
   });
 
-  const callApi = useCallback(
-    async (props: BoxofficeProps) => {
-      setState(s => ({ ...s, loading: true, error: null }));
-      try {
-        const rankList = await boxOfficeUseCase.getRankList(props);
-        console.log(
-          '[useRankList] 응답 데이터:',
-          JSON.stringify(rankList, null, 2),
-        );
-        setState({
-          result: rankList,
-          loading: false,
-          error: null,
-        });
-      } catch (e) {
-        console.log('[useRankList] 에러:', e);
-        setState({
-          result: [],
-          loading: false,
-          error: (e as Error).message,
-        });
-      }
-    },
-    [boxOfficeUseCase],
-  );
-
-  return { ...state, callApi };
-}
+  return {
+    result: data ?? [],
+    loading: isFetching,
+    error: error ? (error as Error).message : null,
+  };
+};
