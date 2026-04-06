@@ -36,14 +36,21 @@ import { useGenreRankList } from '../hooks/useGenreRankList';
 import { useLocalList } from '../hooks/useLocalList';
 import { useMonthRankList } from '../hooks/useMonthRankList';
 import { useMyAreaList } from '../hooks/useMyAreaList';
+import useMyRegionActions from '../hooks/useMyRegionActions';
 
 function HomeScreen() {
   const [currentMonth] = useState(getCurrentMonth(false));
+  const { save } = useMyRegionActions();
 
-  // region 내 지역 공연 리스트 ---
+  // region 내 지역 공연 리스트 ---------------------------
   const fetchRegionCodeFromLocation = useCallback(async (): Promise<string> => {
     const { latitude, longitude } = await getCurrentPosition();
     const address = await getAddressFromCoords(latitude, longitude);
+    console.log(`test here address = ${JSON.stringify(address)}`);
+    save({
+      address,
+      regionCode: nameToRegionCode(address.region1),
+    });
     return nameToRegionCode(address.region1).code;
   }, []);
 

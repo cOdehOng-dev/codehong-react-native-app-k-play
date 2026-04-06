@@ -4,6 +4,7 @@ import {
 } from '@mj-studio/react-native-naver-map';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
+import useMyRegion from '../hooks/useMyRegion';
 
 const INITIAL_CAMERA = {
   latitude: 37.5715,
@@ -12,6 +13,8 @@ const INITIAL_CAMERA = {
 };
 
 function MyZoneScreen() {
+  const { myRegion } = useMyRegion();
+  console.log(`test here myRegion = ${JSON.stringify(myRegion)}`);
   return (
     <View style={styles.container}>
       <NaverMapView

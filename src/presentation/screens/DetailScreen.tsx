@@ -151,7 +151,7 @@ function DetailScreen({ navigation, route }: Props) {
           >
             <PosterContent imageInfo={performanceDetail?.posterUrl ?? null} />
             {performanceDetail?.name && (
-              <Text style={styles.title} numberOfLines={1}>
+              <Text style={styles.title} numberOfLines={2}>
                 {performanceDetail.name}
               </Text>
             )}
