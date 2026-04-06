@@ -2,7 +2,7 @@ import { PerformanceInfoItem } from '../model/PerformanceInfoItem';
 import { PerformanceListProps } from '../model/apiprops/performanceListProps';
 import { PerformanceDetailProps } from '../model/apiprops/performanceDetailProps';
 import { PerformanceDetail } from '../model/detail/performanceDetail';
-import { SearchPlaceProps } from '../model/apiprops/searchPlaceProps';
+import { PlaceDetailProps } from '../model/apiprops/placeDetailProps';
 import { PlaceDetail } from '../model/place/placeDetail';
 
 export interface PerformanceRepository {
@@ -21,7 +21,7 @@ export interface PerformanceRepository {
   ): Promise<PerformanceDetail | null>;
 
   searchPlace(
-    props: SearchPlaceProps,
+    props: PlaceDetailProps,
     errorMessage: (msg: string) => void,
   ): Promise<PlaceDetail[] | null>;
 

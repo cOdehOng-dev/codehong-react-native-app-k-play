@@ -8,7 +8,7 @@ import { PerformanceListProps } from '../../domain/model/apiprops/performanceLis
 import { PerformanceRepository } from './../../domain/repository/PerformanceRepository';
 import { PerformanceDetailProps } from '../../domain/model/apiprops/performanceDetailProps';
 import { PerformanceDetail } from '../../domain/model/detail/performanceDetail';
-import { SearchPlaceProps } from '../../domain/model/apiprops/searchPlaceProps';
+import { PlaceDetailProps } from '../../domain/model/apiprops/placeDetailProps';
 import { PlaceDetail } from '../../domain/model/place/placeDetail';
 import { placeInfoItemtoPlaceDetail } from '../mapper/placeInfoItemMapper';
 import { placeDetailDtoToPlaceDetail } from '../mapper/placeDetailMapper';
@@ -42,7 +42,7 @@ export class PerformanceRepositoryImpl implements PerformanceRepository {
   }
 
   async searchPlace(
-    props: SearchPlaceProps,
+    props: PlaceDetailProps,
     errorMessage: (msg: string) => void,
   ): Promise<PlaceDetail[] | null> {
     console.log('[RepositoryImpl] searchPlace 시작');

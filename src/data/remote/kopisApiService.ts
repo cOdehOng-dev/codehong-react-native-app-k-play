@@ -1,7 +1,7 @@
 import { BoxofficeProps } from '../../domain/model/apiprops/BoxofficeProps';
 import { PerformanceDetailProps } from '../../domain/model/apiprops/performanceDetailProps';
 import { PerformanceListProps } from '../../domain/model/apiprops/performanceListProps';
-import { SearchPlaceProps } from '../../domain/model/apiprops/searchPlaceProps';
+import { PlaceDetailProps } from '../../domain/model/apiprops/placeDetailProps';
 import { kopisApi } from '../api/instance';
 import {
   BoxOfficeResponseDto,
@@ -78,7 +78,7 @@ export async function getPerformanceDetail(
 }
 
 export async function searchPlace(
-  props: SearchPlaceProps,
+  props: PlaceDetailProps,
 ): Promise<PlaceListResponseDto> {
   const response = await kopisApi.get<string>('/openApi/restful/prfplc', {
     params: {

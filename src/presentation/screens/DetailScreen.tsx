@@ -1,5 +1,5 @@
 import { KOKOR_CLIENT_ID } from '@env';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
   Alert,
   Platform,
@@ -8,10 +8,8 @@ import {
   Text,
   View,
 } from 'react-native';
-import {
-  SafeAreaView,
-  useSafeAreaInsets,
-} from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import FloatingButton from '../components/detail/FloatingButton';
 import InfoContent from '../components/detail/InfoContent';
 import PerformanceDetailCastContent from '../components/detail/PerformanceDetailCastContent';
 import PerformanceDetailNoticeContent from '../components/detail/PerformanceDetailNoticeContent';
@@ -21,112 +19,69 @@ import PerformanceDetailTimeTableContent from '../components/detail/PerformanceD
 import PosterContent from '../components/detail/PosterContent';
 import IconHeader from '../components/IconHeader';
 import IndicatorProgress from '../components/IndicatorProgress';
+import { Picker } from '../components/Picker';
+import { RootContainer } from '../components/RootContainer';
+import { useBookmark } from '../hooks/useBookmark';
 import { usePerformanceDetail } from '../hooks/usePerformanceDetail';
 import { usePlaceDetail } from '../hooks/usePlaceDetail';
-import { useBookmark } from '../hooks/useBookmark';
-import { RootStackScreenProps } from './stack/RootStack';
-import { RootContainer } from '../components/RootContainer';
-import FloatingButton from '../components/detail/FloatingButton';
-import { Picker } from '../components/Picker';
 import { openInAppBrowser } from '../utils';
+import { RootStackScreenProps } from './stack/RootStack';
 
 type Props = RootStackScreenProps<'Detail'>;
-
-// async function openInAppBrowser(url: string) {
-//   if (!url) return;
-//   try {
-//     if (await InAppBrowser.isAvailable()) {
-//       if (Platform.OS === 'ios') {
-//         await InAppBrowser.open(url, {
-//           // iOS SFSafariViewController
-//           dismissButtonStyle: 'close',
-//           preferredBarTintColor: '#FFFFFF',
-//           preferredControlTintColor: '#FF8224',
-//           readerMode: false,
-//           animated: true,
-//           modalEnabled: true,
-//         });
-//       } else {
-//         await InAppBrowser.open(url, {
-//           // Android Custom Tabs
-//           showTitle: true,
-//           toolbarColor: '#FFFFFF',
-//           secondaryToolbarColor: '#FF8224',
-//           enableUrlBarHiding: true,
-//           enableDefaultShare: true,
-//           forceCloseOnRedirection: false,
-//         });
-//       }
-//     } else {
-//       // 인앱 브라우저를 지원하지 않는 기기는 외부 브라우저로 폴백
-//       await InAppBrowser.openAuth(url, '');
-//     }
-//   } catch (e) {
-//     Alert.alert('오류', '브라우저를 열 수 없습니다.');
-//   }
-// }
 
 function DetailScreen({ navigation, route }: Props) {
   const { bottom: bottomInset } = useSafeAreaInsets();
   const safeBottom = Platform.OS === 'ios' ? bottomInset : 0;
-  const { performanceDetail, loading, error, callPerformanceDetailApi } =
-    usePerformanceDetail();
+  const [pickerVisible, setPickerVisible] = useState(false);
+
+  const performaceDetailProps = useMemo(() => {
+    const { performanceId } = route.params;
+    if (!performanceId || performanceId.length === 0) {
+      Alert.alert('오류', '공연 ID가 없습니다.');
+    }
+
+    return {
+      servicekey: KOKOR_CLIENT_ID,
+      id: performanceId,
+    };
+  }, [route.params]);
 
   const {
-    placeDetail,
-    loading: placeLoading,
-    error: placeError,
-    callPlaceDetailApi,
-  } = usePlaceDetail();
-
-  const [pickerVisible, setPickerVisible] = useState(false);
+    result: performanceDetail,
+    loading: isLoadingPerformanceDetail,
+    error: errorPerformanceDetail,
+  } = usePerformanceDetail({ props: performaceDetailProps });
 
   const { isBookmarked, saveBookmark, removeBookmark } = useBookmark(
     performanceDetail?.name,
   );
 
-  const fetchPerformanceDetail = useCallback(
-    (id: string) => {
-      callPerformanceDetailApi({
-        servicekey: KOKOR_CLIENT_ID,
-        id: id,
-      });
-    },
-    [callPerformanceDetailApi],
-  );
-
-  const fetchPlaceDetail = useCallback(
-    (keyword: string) => {
-      callPlaceDetailApi({
-        servicekey: KOKOR_CLIENT_ID,
-        currentPage: '1',
-        rowsPerPage: '50',
-        keyword: keyword,
-      });
-    },
-    [callPlaceDetailApi],
-  );
-
-  useEffect(() => {
-    const { performanceId } = route.params;
-    fetchPerformanceDetail(performanceId);
-  }, [route.params]);
-
-  useEffect(() => {
+  const placeDetailProps = useMemo(() => {
     const name = performanceDetail?.facilityName?.split(' ')?.[0];
-
     console.log(`placeName = ${name}`);
 
-    if (name) {
-      fetchPlaceDetail(name);
-    }
-  }, [performanceDetail?.facilityName, fetchPlaceDetail]);
+    return {
+      servicekey: KOKOR_CLIENT_ID,
+      currentPage: '1',
+      rowsPerPage: '10',
+      keyword: name ?? '',
+    };
+  }, [performanceDetail?.facilityName]);
+
+  const {
+    result: placeDetail,
+    loading: isLoadingPlaceDetail,
+    error: errorPlaceDetail,
+  } = usePlaceDetail({ props: placeDetailProps });
 
   useEffect(() => {
-    if (error) {
-      Alert.alert('오류', error ?? '알 수 없는 오류가 발생했습니다.');
+    if (errorPerformanceDetail) {
+      Alert.alert(
+        '오류',
+        errorPerformanceDetail ?? '알 수 없는 오류가 발생했습니다.',
+      );
     }
-  }, [error]);
+  }, [errorPerformanceDetail]);
 
   return (
     <RootContainer
@@ -183,7 +138,7 @@ function DetailScreen({ navigation, route }: Props) {
           setPickerVisible(false);
         }}
       />
-      {loading ? (
+      {isLoadingPerformanceDetail || isLoadingPlaceDetail ? (
         <IndicatorProgress />
       ) : (
         <View style={styles.body}>

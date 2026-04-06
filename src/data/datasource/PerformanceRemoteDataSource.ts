@@ -10,7 +10,7 @@ import {
 import { PerformanceListResponseDto } from '../model/performance/list/PerformanceListResponseDto';
 import { PerformanceListProps } from '../../domain/model/apiprops/performanceListProps';
 import { PerformanceDetailResponseDto } from '../model/detail/performanceDetailResponseDto';
-import { SearchPlaceProps } from '../../domain/model/apiprops/searchPlaceProps';
+import { PlaceDetailProps } from '../../domain/model/apiprops/placeDetailProps';
 import { PlaceDetailResponseDto } from '../model/place/placeDetailResponseDto';
 
 export class PerformanceRemoteDataSource {
@@ -66,7 +66,7 @@ export class PerformanceRemoteDataSource {
   }
 
   async searchPlace(
-    props: SearchPlaceProps,
+    props: PlaceDetailProps,
     errorMessage: (msg: string) => void,
   ): Promise<PlaceListResponseDto | null> {
     try {
