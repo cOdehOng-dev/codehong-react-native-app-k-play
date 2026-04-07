@@ -3,19 +3,14 @@ import {
   NaverMapView,
 } from '@mj-studio/react-native-naver-map';
 import React, { useMemo } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { getCurrentMonthRange } from '../../domain/util/dateUtil';
 import useMyRegion from '../hooks/useMyRegion';
 import { KOKOR_CLIENT_ID } from '@env';
 import { useMyAreaList } from '../hooks/useMyAreaList';
 import { useMyZoneList } from '../hooks/useMyZoneList';
 import { PerformanceGroup } from '../../domain/model/performanceGroup';
-
-// const INITIAL_CAMERA = {
-//   latitude: 37.5715,
-//   longitude: 126.9769,
-//   zoom: 14,
-// };
 
 function MyZoneScreen() {
   const { myRegion } = useMyRegion();
@@ -108,20 +103,6 @@ function MyZoneScreen() {
     };
   }, [pinList, myRegion?.latitude, myRegion?.longitude]);
 
-  // pinList.forEach(item => {
-  //   if (item.placeName === '성남아트센터') {
-  //     console.log(
-  //       `test here pin performanceList = ${JSON.stringify(
-  //         item.performanceList?.length ?? 0,
-  //       )}`,
-  //     );
-  //   }
-  // });
-
-  console.log(
-    `test here 111 latitude = ${myRegion?.latitude} || longitude = ${myRegion?.longitude}`,
-  );
-
   return (
     <View style={styles.container}>
       <NaverMapView
@@ -131,18 +112,33 @@ function MyZoneScreen() {
       >
         {pinList?.map(pin => {
           if (pin.lat && pin.lng) {
+            const count = pin.performanceList?.length ?? 0;
             return (
               <NaverMapMarkerOverlay
                 key={pin.placeName}
-                latitude={pin.lat ?? 0}
-                longitude={pin.lng ?? 0}
-              />
+                latitude={pin.lat}
+                longitude={pin.lng}
+                width={60}
+                height={62}
+                anchor={{ x: 0.5, y: 1 }}
+              >
+                <View collapsable={false} style={styles.markerWrapper}>
+                  <MaterialIcons
+                    name="place"
+                    size={52}
+                    color="#FF8224"
+                    style={styles.pinIcon}
+                  />
+                  {count >= 2 && (
+                    <View style={styles.badge}>
+                      <Text style={styles.badgeText}>{count}</Text>
+                    </View>
+                  )}
+                </View>
+              </NaverMapMarkerOverlay>
             );
           }
         })}
-        {/* <NaverMapMarkerOverlay latitude={37.5666102} longitude={126.9783881} />
-        <NaverMapMarkerOverlay latitude={37.5796} longitude={126.977} />
-        <NaverMapMarkerOverlay latitude={37.5657} longitude={126.975} /> */}
       </NaverMapView>
     </View>
   );
@@ -153,5 +149,31 @@ export default MyZoneScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  markerWrapper: {
+    width: 60,
+    height: 62,
+  },
+  pinIcon: {
+    position: 'absolute',
+    bottom: 0,
+    left: 4,
+  },
+  badge: {
+    position: 'absolute',
+    top: 7,
+    right: 8,
+    minWidth: 18,
+    height: 18,
+    borderRadius: 9,
+    backgroundColor: '#FF322E',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 4,
+  },
+  badgeText: {
+    color: '#fff',
+    fontSize: 10,
+    fontWeight: 'bold',
   },
 });
