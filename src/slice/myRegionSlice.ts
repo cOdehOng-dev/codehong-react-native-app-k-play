@@ -5,6 +5,8 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 export interface MyRegion {
   address: Address;
   regionCode: RegionCode;
+  latitude: number;
+  longitude: number;
 }
 
 interface MyRegionState {
@@ -15,6 +17,8 @@ const initialState: MyRegionState = {
   myRegion: {
     address: { region1: '서울특별시', region2: '강남구', region3: '삼성동' },
     regionCode: RegionCode.SEOUL,
+    latitude: 37.5715,
+    longitude: 126.9769,
   },
 };
 

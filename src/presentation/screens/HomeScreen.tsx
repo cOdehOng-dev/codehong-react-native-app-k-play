@@ -45,11 +45,13 @@ function HomeScreen() {
   // region 내 지역 공연 리스트 ---------------------------
   const fetchRegionCodeFromLocation = useCallback(async (): Promise<string> => {
     const { latitude, longitude } = await getCurrentPosition();
+    console.log(`test here latitude = ${latitude} || longitude = ${longitude}`);
     const address = await getAddressFromCoords(latitude, longitude);
-    console.log(`test here address = ${JSON.stringify(address)}`);
     save({
       address,
       regionCode: nameToRegionCode(address.region1),
+      latitude,
+      longitude,
     });
     return nameToRegionCode(address.region1).code;
   }, []);

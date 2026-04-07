@@ -25,20 +25,20 @@ import {
 } from '../model/place/placeListResponseDto';
 
 export const getPerformanceList = async (
-  params: PerformanceListProps,
+  props: PerformanceListProps,
 ): Promise<PerformanceListResponseDto> => {
   const response = await kopisApi.get<string>('/openApi/restful/pblprfr', {
     params: {
-      service: params.service,
-      stdate: params.startDate,
-      eddate: params.endDate,
-      cpage: params.currentPage,
-      rows: params.rowsPerPage,
-      prfstate: params.performanceState,
-      signgucode: params.signGuCode,
-      signgucodesub: params.signGuCodeSub,
-      kidstate: params.kidState,
-      shcate: params.genreCode,
+      service: props.service,
+      stdate: props.startDate,
+      eddate: props.endDate,
+      cpage: props.currentPage,
+      rows: props.rowsPerPage,
+      prfstate: props.performanceState,
+      signgucode: props.signGuCode,
+      signgucodesub: props.signGuCodeSub,
+      kidstate: props.kidState,
+      shcate: props.genreCode,
     },
     responseType: 'text',
   });

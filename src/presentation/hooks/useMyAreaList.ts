@@ -12,7 +12,7 @@ export const useMyAreaList = ({ props }: Props) => {
   const { data, isFetching, error, refetch } = useQuery({
     queryKey: ['myAreaList', props.signGuCode],
     queryFn: () => performanceUseCase.getPerformanceList(props),
-    staleTime: 1000 * 60 * 5,
+    staleTime: 0,
   });
 
   return {
