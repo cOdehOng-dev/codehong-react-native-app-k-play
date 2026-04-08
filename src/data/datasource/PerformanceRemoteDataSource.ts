@@ -1,5 +1,5 @@
 import { PlaceListResponseDto } from '../model/place/placeListResponseDto';
-import { PerformanceDetailProps } from './../../domain/model/apiprops/performanceDetailProps';
+import { PerformanceDetailProps } from '../../domain/model/apiprops/performanceDetailProps';
 import {
   getFestivalList,
   getPerformanceDetail,

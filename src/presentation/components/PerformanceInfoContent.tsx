@@ -6,7 +6,7 @@ import {
 } from '../../domain/model/PerformanceInfoItem';
 import Badge from './Badge';
 import { extractParenthesesContent } from '../../domain/util/util';
-import FastImage from 'react-native-fast-image';
+import FastImage from '@d11/react-native-fast-image';
 
 type Props = {
   item: PerformanceInfoItem;
@@ -36,7 +36,7 @@ function PerformanceInfoContent({ item, onClick }: Props) {
           {getPeriod(item)}
         </Text>
       )}
-      <View style={styles.badge}>
+      <View style={styles.mt}>
         <Badge text={extractParenthesesContent(item.genre)} />
       </View>
     </Pressable>
@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
     color: '#545457',
     marginTop: 2,
   },
-  badge: {
+  mt: {
     marginTop: 4,
   },
 });

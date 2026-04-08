@@ -2,6 +2,7 @@ import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import { GenreCodeItem } from '../../domain/type/genreCode';
 import { chunk } from '../../domain/util/util';
+import FastImage from '@d11/react-native-fast-image';
 
 type Props = {
   genreList: GenreCodeItem[];
@@ -18,7 +19,7 @@ const GenreContent = ({
   const iconResId = genreCode.icon;
   return (
     <Pressable style={styles.contentContainer} onPress={onClick}>
-      <Image style={styles.icon} source={iconResId} />
+      <FastImage style={styles.icon} source={iconResId} />
       <Text style={styles.text}>{genreCode.displayName}</Text>
     </Pressable>
   );

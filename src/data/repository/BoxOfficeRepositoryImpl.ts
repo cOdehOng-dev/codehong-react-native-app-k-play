@@ -1,7 +1,7 @@
 import { BoxofficeProps } from '../../domain/model/apiprops/boxofficeProps';
 import { BoxOfficeItem } from '../../domain/model/BoxOfficeItem';
 import { BoxofficeRepository } from '../../domain/repository/BoxofficeRepository';
-import { BoxofficeRemoteDataSource } from '../datasource/BoxOfficeRemoteDataSource';
+import { BoxofficeRemoteDataSource } from '../datasource/boxofficeRemoteDataSource';
 import { toBoxOfficeItem } from '../mapper/BoxOfficeItemMapper';
 
 export class BoxofficeRepositoryImpl implements BoxofficeRepository {

@@ -123,7 +123,6 @@ export default function SwipeContainer({
 const styles = StyleSheet.create({
   swipeContainer: {
     position: 'relative',
-    marginHorizontal: 16,
     marginVertical: 6,
     overflow: 'hidden',
   },

@@ -1,5 +1,6 @@
-import { Image, StyleSheet, View } from 'react-native';
+import FastImage from '@d11/react-native-fast-image';
 import React, { useState } from 'react';
+import { StyleSheet, View } from 'react-native';
 import BlurImage from './BlurImage';
 
 interface Props {
@@ -14,16 +15,10 @@ function PosterContent({ imageInfo }: Props) {
       <View style={styles.container}>
         <BlurImage imageInfo={imageInfo} blur={30} />
         <View style={[styles.posterWrapper, { aspectRatio }]}>
-          <Image
+          <FastImage
             source={{ uri: imageInfo ?? '' }}
             style={styles.poster}
             resizeMode="cover"
-            onLoad={e => {
-              const { width, height } = e.nativeEvent.source;
-              if (width && height) {
-                setAspectRatio(width / height);
-              }
-            }}
           />
         </View>
       </View>

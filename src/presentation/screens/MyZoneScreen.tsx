@@ -1,28 +1,37 @@
+import { KOKOR_CLIENT_ID } from '@env';
+import { NaverMapView } from '@mj-studio/react-native-naver-map';
+import { useNavigation } from '@react-navigation/native';
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import {
-  NaverMapMarkerOverlay,
-  NaverMapView,
-} from '@mj-studio/react-native-naver-map';
-import React, { useMemo, useState } from 'react';
-import {
-  FlatList,
-  Modal,
+  ActivityIndicator,
+  Animated,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
 } from 'react-native';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import { getCurrentMonthRange } from '../../domain/util/dateUtil';
-import useMyRegion from '../hooks/useMyRegion';
-import { KOKOR_CLIENT_ID } from '@env';
-import { useMyAreaList } from '../hooks/useMyAreaList';
-import { useMyZoneList } from '../hooks/useMyZoneList';
 import { PerformanceGroup } from '../../domain/model/performanceGroup';
-import { getPeriod, PerformanceInfoItem } from '../../domain/model/PerformanceInfoItem';
+import { getCurrentMonthRange } from '../../domain/util/dateUtil';
+import MapMarker from '../components/MapMarker';
+import PerformanceModal from '../components/PerformanceModal';
+import { useMyAreaList } from '../hooks/useMyAreaList';
+import useMyRegion from '../hooks/useMyRegion';
+import { useMyZoneList } from '../hooks/useMyZoneList';
+import { RootStackNavigationProp } from './stack/RootStack';
 
 function MyZoneScreen() {
   const { myRegion } = useMyRegion();
   const [selectedPin, setSelectedPin] = useState<PerformanceGroup | null>(null);
+  const handleSelectPin = useCallback((pin: PerformanceGroup) => {
+    setSelectedPin(pin);
+  }, []);
+  const loadingRef = useRef(new Animated.Value(0)).current;
+  const navigation = useNavigation<RootStackNavigationProp>();
 
   const myZoneProps = useMemo(() => {
     const { startDate, endDate } = getCurrentMonthRange();
@@ -36,23 +45,23 @@ function MyZoneScreen() {
     };
   }, [myRegion?.regionCode?.code]);
 
-  const {
-    result: myAreaList,
-    loading: isLoadignMyAreaList,
-    error: errorMyAreaList,
-    refetch: refetchMyAreaList,
-  } = useMyAreaList({ props: myZoneProps });
+  const { result: myAreaList } = useMyAreaList({ props: myZoneProps });
 
   const placeNameList = useMemo(
     () => (myAreaList ?? []).map(p => p?.placeName ?? ''),
     [myAreaList],
   );
 
-  const {
-    result: placeDetails,
-    loading: isLoadingPlaceDetails,
-    error: errorPlaceDetails,
-  } = useMyZoneList({ placeNameList });
+  const { result: placeDetails, loading: isLoadingPlaceDetails } =
+    useMyZoneList({ placeNameList });
+
+  useEffect(() => {
+    Animated.timing(loadingRef, {
+      toValue: isLoadingPlaceDetails ? 1 : 0,
+      duration: 200,
+      useNativeDriver: true,
+    }).start();
+  }, [isLoadingPlaceDetails]);
 
   const pinList = useMemo<PerformanceGroup[]>(() => {
     if (!placeDetails || placeDetails.length === 0) {
@@ -118,100 +127,62 @@ function MyZoneScreen() {
         initialCamera={initialCamera}
         isShowZoomControls={false}
       >
-        {pinList?.map(pin => {
-          if (pin.lat && pin.lng) {
-            const count = pin.performanceList?.length ?? 0;
-            return (
-              <NaverMapMarkerOverlay
-                key={pin.placeName}
-                latitude={pin.lat}
-                longitude={pin.lng}
-                width={60}
-                height={62}
-                anchor={{ x: 0.5, y: 1 }}
-                onTap={() => setSelectedPin(pin)}
-              >
-                <View collapsable={false} style={styles.markerWrapper}>
-                  <MaterialIcons
-                    name="place"
-                    size={52}
-                    color="#FF8224"
-                    style={styles.pinIcon}
-                  />
-                  {count >= 2 && (
-                    <View style={styles.badge}>
-                      <Text style={styles.badgeText}>{count}</Text>
-                    </View>
-                  )}
-                </View>
-              </NaverMapMarkerOverlay>
-            );
-          }
-        })}
-      </NaverMapView>
-      <Modal
-        visible={selectedPin !== null}
-        transparent
-        animationType="slide"
-        onRequestClose={() => setSelectedPin(null)}
-      >
-        <View style={styles.modalOverlay}>
-          <TouchableOpacity
-            style={StyleSheet.absoluteFill}
-            activeOpacity={1}
-            onPress={() => setSelectedPin(null)}
-          />
-          <View style={styles.modalSheet}>
-            <View style={styles.dragHandle} />
-            <Text style={styles.modalTitle}>{selectedPin?.placeName}</Text>
-            <FlatList
-              data={selectedPin?.performanceList}
-              keyExtractor={(item: PerformanceInfoItem) => item.id ?? ''}
-              renderItem={({ item }) => (
-                <View style={styles.performanceItem}>
-                  <Text style={styles.performanceName}>{item.name}</Text>
-                  <Text style={styles.performancePeriod}>{getPeriod(item)}</Text>
-                </View>
-              )}
+        {pinList.map(pin =>
+          pin.lat && pin.lng ? (
+            <MapMarker
+              key={pin.placeName}
+              pin={pin}
+              onSelect={handleSelectPin}
             />
-          </View>
+          ) : null,
+        )}
+      </NaverMapView>
+      <Animated.View
+        style={[styles.loadingContainer, { opacity: loadingRef }]}
+        pointerEvents="none"
+      >
+        <View style={styles.loadingPill}>
+          <ActivityIndicator size={16} color="#FF8224" />
+          <Text style={styles.loadingText}>공연장 위치 조회 중...</Text>
         </View>
-      </Modal>
+      </Animated.View>
+      <PerformanceModal
+        selectedPin={selectedPin}
+        onClose={() => setSelectedPin(null)}
+        onSelectPerformance={id => {
+          navigation.navigate('Detail', {
+            performanceId: id,
+          });
+          setSelectedPin(null);
+        }}
+      />
     </View>
   );
 }
-
-export default MyZoneScreen;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  markerWrapper: {
-    width: 60,
-    height: 62,
-  },
-  pinIcon: {
+  loadingContainer: {
     position: 'absolute',
-    bottom: 0,
-    left: 4,
-  },
-  badge: {
-    position: 'absolute',
-    top: 7,
-    right: 8,
-    minWidth: 18,
-    height: 18,
-    borderRadius: 9,
-    backgroundColor: '#FF322E',
+    top: 30,
+    left: 0,
+    right: 0,
     alignItems: 'center',
-    justifyContent: 'center',
-    paddingHorizontal: 4,
   },
-  badgeText: {
-    color: '#fff',
-    fontSize: 10,
-    fontWeight: 'bold',
+  loadingPill: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 20,
+  },
+  loadingText: {
+    fontSize: 12,
+    color: '#555',
   },
   modalOverlay: {
     flex: 1,
@@ -254,3 +225,5 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
 });
+
+export default MyZoneScreen;

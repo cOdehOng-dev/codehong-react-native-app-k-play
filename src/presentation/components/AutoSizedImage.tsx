@@ -1,6 +1,6 @@
+import FastImage from '@d11/react-native-fast-image';
 import React, { useEffect, useState } from 'react';
 import { Image, StyleSheet, View } from 'react-native';
-import FastImage from 'react-native-fast-image';
 
 export function AutoSizedImage({ uri }: { uri: string }) {
   const [containerWidth, setContainerWidth] = useState(0);

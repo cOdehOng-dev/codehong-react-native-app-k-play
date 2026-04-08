@@ -1,4 +1,4 @@
-import { BoxofficeRemoteDataSource } from '../data/datasource/BoxOfficeRemoteDataSource';
+import { BoxofficeRemoteDataSource } from '../data/datasource/boxofficeRemoteDataSource';
 import { PerformanceRemoteDataSource } from '../data/datasource/performanceRemoteDataSource';
 import { BookmarkLocalDataSource } from '../data/datasource/bookmarkLocalDataSource';
 import { BoxofficeRepositoryImpl } from '../data/repository/BoxofficeRepositoryImpl';
