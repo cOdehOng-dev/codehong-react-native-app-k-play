@@ -12,7 +12,7 @@ import {
 import {
   getPeriod,
   PerformanceInfoItem,
-} from '../../domain/model/PerformanceInfoItem';
+} from '../../domain/model/performanceInfoItem';
 import { PerformanceGroup } from '../../domain/model/performanceGroup';
 import { extractParenthesesContent } from '../../domain/util/util';
 import Badge from './Badge';

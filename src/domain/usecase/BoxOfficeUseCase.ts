@@ -1,11 +1,11 @@
 import { BoxofficeProps } from '../model/apiprops/boxofficeProps';
-import { BoxOfficeItem } from '../model/BoxOfficeItem';
+import { BoxofficeItem } from '../model/boxofficeItem';
 import { BoxofficeRepository } from '../repository/BoxofficeRepository';
 
 export class BoxofficeUseCase {
   constructor(private readonly repository: BoxofficeRepository) {}
 
-  async getRankList(props: BoxofficeProps): Promise<BoxOfficeItem[]> {
+  async getRankList(props: BoxofficeProps): Promise<BoxofficeItem[]> {
     return this.repository.getRankList(props);
   }
 }

@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useCallback, useMemo } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
-import { BoxOfficeItem } from '../../domain/model/BoxOfficeItem';
+import { BoxofficeItem } from '../../domain/model/boxofficeItem';
 import { GenreCodeItem } from '../../domain/type/genreCode';
 import { RootStackNavigationProp } from '../screens/stack/RootStack';
 import ArrowTitleContent from './ArrowTitleContent';
@@ -13,9 +13,9 @@ type Props = {
   title: string;
   tabList: GenreCodeItem[];
   selectedTab: GenreCodeItem;
-  genreRankList: BoxOfficeItem[];
-  loading: boolean;
-  onSelectedTab: (tab: GenreCodeItem) => void;
+  genreRankList: BoxofficeItem[];
+  isLoading: boolean;
+  onSelectTab: (tab: GenreCodeItem) => void;
   onClickMore: () => void;
 };
 
@@ -24,8 +24,8 @@ function GenreRankContent({
   tabList,
   selectedTab,
   genreRankList,
-  loading,
-  onSelectedTab,
+  isLoading: loading,
+  onSelectTab: onSelectedTab,
   onClickMore,
 }: Props) {
   const navigation = useNavigation<RootStackNavigationProp>();
@@ -36,7 +36,7 @@ function GenreRankContent({
   );
 
   const renderItem = useCallback(
-    ({ item }: { item: BoxOfficeItem }) => (
+    ({ item }: { item: BoxofficeItem }) => (
       <RankPerformanceInfoContent
         item={item}
         onClick={() => {
@@ -50,7 +50,7 @@ function GenreRankContent({
   );
 
   const keyExtractor = useCallback(
-    (item: BoxOfficeItem, index: number) => item.performanceId ?? String(index),
+    (item: BoxofficeItem, index: number) => item.performanceId ?? String(index),
     [],
   );
 

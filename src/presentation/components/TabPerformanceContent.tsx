@@ -3,7 +3,7 @@ import React from 'react';
 import ArrowTitleContent from './ArrowTitleContent';
 import { RegionCode } from '../../domain/type/regionCode';
 import ScrollTab from './ScrollTab';
-import { PerformanceInfoItem } from '../../domain/model/PerformanceInfoItem';
+import { PerformanceInfoItem } from '../../domain/model/performanceInfoItem';
 import PerformanceInfoContent from './PerformanceInfoContent';
 import { useNavigation } from '@react-navigation/native';
 import { RootStackNavigationProp } from '../screens/stack/RootStack';
@@ -14,8 +14,8 @@ type Props = {
   tabList: RegionCode[];
   selectedTab: RegionCode;
   performanceList?: PerformanceInfoItem[];
-  loading: boolean;
-  onSelectedTab: (tab: RegionCode) => void;
+  isLoading: boolean;
+  onSelectTab: (tab: RegionCode) => void;
   onClickMore: () => void;
 };
 
@@ -24,9 +24,9 @@ function TabPerformanceContent({
   tabList,
   performanceList,
   selectedTab,
-  loading,
+  isLoading: loading,
   onClickMore,
-  onSelectedTab: onSelectTab,
+  onSelectTab: onSelectTab,
 }: Props) {
   const navigation = useNavigation<RootStackNavigationProp>();
   const selectedIndex = Math.max(tabList.indexOf(selectedTab), 0);

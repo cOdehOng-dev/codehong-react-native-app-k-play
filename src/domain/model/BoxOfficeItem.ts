@@ -1,4 +1,4 @@
-export interface BoxOfficeItem {
+export interface BoxofficeItem {
   category?: string | null;
   rank?: string | null;
   performanceName?: string | null;

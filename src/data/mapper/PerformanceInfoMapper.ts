@@ -1,5 +1,5 @@
 import { PerformanceItemDto } from '../model/performance/list/PerformanceItemDto';
-import { PerformanceInfoItem } from '../../domain/model/PerformanceInfoItem';
+import { PerformanceInfoItem } from '../../domain/model/performanceInfoItem';
 import { toShortAreaName } from '../../domain/util/util';
 import { PerformanceDetailDto } from '../model/detail/performanceDetailDto';
 import { PerformanceDetail } from '../../domain/model/detail/performanceDetail';

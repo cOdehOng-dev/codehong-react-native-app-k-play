@@ -8,7 +8,7 @@ import {
   Text,
   View,
 } from 'react-native';
-import { PerformanceInfoItem } from '../../domain/model/PerformanceInfoItem';
+import { PerformanceInfoItem } from '../../domain/model/performanceInfoItem';
 import { RootStackNavigationProp } from '../screens/stack/RootStack';
 import PerformanceInfoContent from './PerformanceInfoContent';
 import PerformanceInfoSkeleton from './skeleton/PerformanceInfoSkeleton';
@@ -16,14 +16,14 @@ import PerformanceInfoSkeleton from './skeleton/PerformanceInfoSkeleton';
 type Props = {
   currentMonth: string;
   myAreaList: PerformanceInfoItem[];
-  loading: boolean;
+  isLoading: boolean;
   onClickRefresh: () => void;
 };
 
 function MyAreaContent({
   currentMonth,
   myAreaList,
-  loading,
+  isLoading,
   onClickRefresh,
 }: Props) {
   const rotateAnim = useRef(new Animated.Value(0)).current;
@@ -55,7 +55,7 @@ function MyAreaContent({
           />
         </Pressable>
       </View>
-      {loading ? (
+      {isLoading ? (
         <View style={[styles.mt, styles.skeletonContainer]}>
           {Array.from({ length: 4 }).map((_, i) => (
             <PerformanceInfoSkeleton key={i} />

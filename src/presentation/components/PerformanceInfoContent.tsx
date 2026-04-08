@@ -3,7 +3,7 @@ import React from 'react';
 import {
   getPeriod,
   PerformanceInfoItem,
-} from '../../domain/model/PerformanceInfoItem';
+} from '../../domain/model/performanceInfoItem';
 import Badge from './Badge';
 import { extractParenthesesContent } from '../../domain/util/util';
 import FastImage from '@d11/react-native-fast-image';

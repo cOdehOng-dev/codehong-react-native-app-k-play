@@ -1,8 +1,8 @@
-import { BoxOfficeItem } from '../../domain/model/BoxOfficeItem';
+import { BoxofficeItem } from '../../domain/model/boxofficeItem';
 import { toShortAreaName } from '../../domain/util/util';
 import { BoxOfficeItemDto } from '../model/boxoffice/BoxOfficeDto';
 
-export function toBoxOfficeItem(dto?: BoxOfficeItemDto | null): BoxOfficeItem {
+export function toBoxOfficeItem(dto?: BoxOfficeItemDto | null): BoxofficeItem {
   if (!dto) return {};
   return {
     category: dto.category,

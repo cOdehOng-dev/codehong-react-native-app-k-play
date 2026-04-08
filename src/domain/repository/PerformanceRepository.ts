@@ -1,4 +1,4 @@
-import { PerformanceInfoItem } from '../model/PerformanceInfoItem';
+import { PerformanceInfoItem } from '../model/performanceInfoItem';
 import { PerformanceListProps } from '../model/apiprops/performanceListProps';
 import { PerformanceDetailProps } from '../model/apiprops/performanceDetailProps';
 import { PerformanceDetail } from '../model/detail/performanceDetail';

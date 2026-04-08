@@ -1,12 +1,12 @@
 import React, { memo } from 'react';
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
-import { BoxOfficeItem } from '../../domain/model/BoxOfficeItem';
+import { BoxofficeItem } from '../../domain/model/boxofficeItem';
 import { extractParenthesesContent } from '../../domain/util/util';
 import Badge from './Badge';
 import FastImage from '@d11/react-native-fast-image';
 
 type Props = {
-  item: BoxOfficeItem;
+  item: BoxofficeItem;
   onClick: () => void;
 };
 

@@ -1,4 +1,4 @@
-import { PerformanceInfoItem } from './PerformanceInfoItem';
+import { PerformanceInfoItem } from './performanceInfoItem';
 
 export interface PerformanceGroup {
   placeName?: string | null;

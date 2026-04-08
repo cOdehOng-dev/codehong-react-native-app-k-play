@@ -1,4 +1,4 @@
-import { PerformanceInfoItem } from '../../domain/model/PerformanceInfoItem';
+import { PerformanceInfoItem } from '../../domain/model/performanceInfoItem';
 import { PerformanceRemoteDataSource } from '../datasource/performanceRemoteDataSource';
 import {
   toPerformanceDetail,

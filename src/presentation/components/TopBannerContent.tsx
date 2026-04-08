@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import FastImage from '@d11/react-native-fast-image';
-import { BoxOfficeItem } from '../../domain/model/BoxOfficeItem';
+import { BoxofficeItem } from '../../domain/model/boxofficeItem';
 import { BannerPager } from './BannerPager';
 import { useNavigation } from '@react-navigation/native';
 import { RootStackNavigationProp } from '../screens/stack/RootStack';
@@ -10,7 +10,7 @@ const BANNER_HEIGHT = 380;
 
 type Props = {
   isLoading: boolean;
-  bannerList: BoxOfficeItem[];
+  bannerList: BoxofficeItem[];
 };
 
 function TopBannerContent({ isLoading, bannerList }: Props) {
@@ -27,7 +27,7 @@ function TopBannerContent({ isLoading, bannerList }: Props) {
 
   return (
     <View style={styles.container}>
-      <BannerPager<BoxOfficeItem>
+      <BannerPager<BoxofficeItem>
         pageInfoList={bannerList}
         autoScrollMillSecond={2000}
         infiniteScroll={[true, false]}
@@ -58,7 +58,7 @@ function TopBannerContent({ isLoading, bannerList }: Props) {
 // ─── BannerItem ──────────────────────────────────────────────────────────────
 
 type BannerItemProps = {
-  item: BoxOfficeItem;
+  item: BoxofficeItem;
   onClick: () => void;
 };
 

@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
-import { BoxOfficeItem } from '../../domain/model/BoxOfficeItem';
+import { BoxofficeItem } from '../../domain/model/boxofficeItem';
 import { RankTabItem } from '../../domain/type/rankTab';
 import { RootStackNavigationProp } from '../screens/stack/RootStack';
 import RankPerformanceInfoContent from './RankPerformanceInfoContent';
@@ -10,15 +10,15 @@ import PerformanceInfoSkeleton from './skeleton/PerformanceInfoSkeleton';
 
 type Props = {
   currentMonth: string;
-  loading: boolean;
+  isLoading: boolean;
   tabList: RankTabItem[];
   selectedTab: RankTabItem;
-  rankList: BoxOfficeItem[];
+  rankList: BoxofficeItem[];
   onSelectTab: (tab: RankTabItem) => void;
 };
 function MonthRankContent({
   currentMonth,
-  loading,
+  isLoading: loading,
   tabList,
   selectedTab,
   rankList,

@@ -1,6 +1,6 @@
 import { BoxofficeProps } from '../model/apiprops/boxofficeProps';
-import { BoxOfficeItem } from '../model/BoxOfficeItem';
+import { BoxofficeItem } from '../model/boxofficeItem';
 
 export interface BoxofficeRepository {
-  getRankList(props: BoxofficeProps): Promise<BoxOfficeItem[]>;
+  getRankList(props: BoxofficeProps): Promise<BoxofficeItem[]>;
 }
