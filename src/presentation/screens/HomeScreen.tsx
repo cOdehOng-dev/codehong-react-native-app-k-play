@@ -12,6 +12,7 @@ import MyAreaContent from '../components/MyAreaContent';
 import TabPerformanceContent from '../components/TabPerformanceContent';
 import TopBannerContent from '../components/TopBannerContent';
 import { useHomeViewModel } from '../mvi/home/useHomeViewModel';
+import HomeSearchBar from '../components/HomeSearchBar';
 
 function HomeScreen() {
   const {
@@ -32,6 +33,7 @@ function HomeScreen() {
   return (
     <SafeAreaView style={styles.block} edges={['top']}>
       <ScrollView>
+        <HomeSearchBar />
         <TopBannerContent
           isLoading={isMonthRankListLoading}
           bannerList={monthRankList.slice(0, 6)}
@@ -64,10 +66,10 @@ function HomeScreen() {
           performanceList={localList}
           selectedTab={state.selectedLocalTab}
           isLoading={isLocalListLoading}
-          onClickMore={() => {}}
           onSelectTab={(tab: RegionCode) =>
             onAction({ type: 'SELECT_LOCAL_REGION', region: tab })
           }
+          onClickMore={() => {}}
         />
         <GenreRankContent
           title="장르별 순위에요"
@@ -86,10 +88,10 @@ function HomeScreen() {
           performanceList={festivalList}
           selectedTab={state.selectedFestivalTab}
           isLoading={isFestivalLoading}
-          onClickMore={() => {}}
           onSelectTab={(tab: RegionCode) =>
             onAction({ type: 'SELECT_FESTIVAL_REGION', region: tab })
           }
+          onClickMore={() => {}}
         />
       </ScrollView>
     </SafeAreaView>

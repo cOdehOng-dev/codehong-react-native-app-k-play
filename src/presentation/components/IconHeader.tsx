@@ -1,5 +1,6 @@
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import React from 'react';
+import FastImage from '@d11/react-native-fast-image';
 
 type Props = {
   title: string;
@@ -10,7 +11,7 @@ function IconHeader({ title, onClick }: Props) {
   return (
     <View style={styles.container}>
       <Pressable style={styles.iconContainer} onPress={onClick}>
-        <Image
+        <FastImage
           style={styles.icon}
           source={require('../../assets/images/ic_34_arrow_left.png')}
         />

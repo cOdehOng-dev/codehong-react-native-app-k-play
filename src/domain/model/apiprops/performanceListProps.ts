@@ -9,4 +9,5 @@ export interface PerformanceListProps {
   signGuCodeSub?: string;
   kidState?: string;
   genreCode?: string;
+  keyword?: string;
 }

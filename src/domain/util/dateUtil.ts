@@ -41,3 +41,7 @@ export function getPreviousMonthFirstDay(pattern: string): string {
 export function getPreviousMonthLastDay(pattern: string): string {
   return dayjs().subtract(1, 'month').endOf('month').format(pattern);
 }
+
+export function getCurrentYearLastDay(): string {
+  return dayjs().endOf('year').format('YYYYMMDD');
+}

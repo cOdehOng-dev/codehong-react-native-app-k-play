@@ -39,6 +39,7 @@ export const getPerformanceList = async (
       signgucodesub: props.signGuCodeSub,
       kidstate: props.kidState,
       shcate: props.genreCode,
+      shprfnm: props.keyword,
     },
     responseType: 'text',
   });

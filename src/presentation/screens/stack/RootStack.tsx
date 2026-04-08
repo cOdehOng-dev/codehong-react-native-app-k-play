@@ -6,10 +6,12 @@ import {
 import React from 'react';
 import DetailScreen from '../DetailScreen';
 import MainTab from './MainTab';
+import SearchScreen from '../SearchScreen';
 
 export type RootStackProps = {
   MainTab: undefined;
   Detail: { performanceId: string };
+  Search: undefined;
 };
 
 export type RootStackNavigationProp = NativeStackNavigationProp<RootStackProps>;
@@ -29,6 +31,11 @@ function RootStack() {
       <Stack.Screen
         name="Detail"
         component={DetailScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Search"
+        component={SearchScreen}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>
