@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
   rank: {
     position: 'absolute',
     bottom: 6,
-    left: 11,
+    left: 8,
     fontSize: 38,
     fontWeight: 'bold',
     color: '#FFFFFF',

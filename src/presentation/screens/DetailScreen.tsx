@@ -1,5 +1,4 @@
-import { KOKOR_CLIENT_ID } from '@env';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Alert,
   Platform,
@@ -21,11 +20,9 @@ import IconHeader from '../components/IconHeader';
 import IndicatorProgress from '../components/IndicatorProgress';
 import { Picker } from '../components/Picker';
 import { RootContainer } from '../components/RootContainer';
-import { useBookmark } from '../hooks/useBookmark';
-import { usePerformanceDetail } from '../hooks/usePerformanceDetail';
-import { usePlaceDetail } from '../hooks/usePlaceDetail';
 import { openInAppBrowser } from '../utils';
 import { RootStackScreenProps } from './stack/RootStack';
+import { useDetailViewModel } from '../mvi/detail/useDetailViewModel';
 
 type Props = RootStackScreenProps<'Detail'>;
 
@@ -34,45 +31,21 @@ function DetailScreen({ navigation, route }: Props) {
   const safeBottom = Platform.OS === 'ios' ? bottomInset : 0;
   const [pickerVisible, setPickerVisible] = useState(false);
 
-  const performaceDetailProps = useMemo(() => {
-    const { performanceId } = route.params;
-    if (!performanceId || performanceId.length === 0) {
-      Alert.alert('오류', '공연 ID가 없습니다.');
-    }
-
-    return {
-      servicekey: KOKOR_CLIENT_ID,
-      id: performanceId,
-    };
-  }, [route.params]);
-
   const {
-    result: performanceDetail,
-    loading: isLoadingPerformanceDetail,
-    error: errorPerformanceDetail,
-  } = usePerformanceDetail({ props: performaceDetailProps });
+    state,
+    onAction,
+    performanceDetail,
+    isLoadingPerformanceDetail,
+    errorPerformanceDetail,
+    isBookmarked,
+    placeDetail,
+    isLoadingPlaceDetail,
+    errorPlaceDetail,
+  } = useDetailViewModel();
 
-  const { isBookmarked, saveBookmark, removeBookmark } = useBookmark(
-    performanceDetail?.name,
-  );
-
-  const placeDetailProps = useMemo(() => {
-    const name = performanceDetail?.facilityName?.split(' ')?.[0];
-    console.log(`placeName = ${name}`);
-
-    return {
-      servicekey: KOKOR_CLIENT_ID,
-      currentPage: '1',
-      rowsPerPage: '10',
-      keyword: name ?? '',
-    };
-  }, [performanceDetail?.facilityName]);
-
-  const {
-    result: placeDetail,
-    loading: isLoadingPlaceDetail,
-    error: errorPlaceDetail,
-  } = usePlaceDetail({ props: placeDetailProps });
+  useEffect(() => {
+    onAction({ type: 'SET_PERFORMANCE_ID', id: route.params.performanceId });
+  }, [route.params.performanceId, onAction]);
 
   useEffect(() => {
     if (errorPerformanceDetail) {
@@ -105,18 +78,10 @@ function DetailScreen({ navigation, route }: Props) {
           }}
           isBookMark={isBookmarked}
           onBookmarkClick={() => {
-            if (!performanceDetail) return;
             if (isBookmarked) {
-              removeBookmark(performanceDetail.id ?? '');
+              onAction({ type: 'REMOVE_BOOKMARK' });
             } else {
-              saveBookmark({
-                id: performanceDetail.id,
-                name: performanceDetail.name,
-                posterUrl: performanceDetail.posterUrl,
-                startDate: performanceDetail.startDate,
-                endDate: performanceDetail.endDate,
-                facilityName: performanceDetail.facilityName,
-              });
+              onAction({ type: 'SAVE_BOOKMARK' });
             }
           }}
         />
