@@ -1,13 +1,6 @@
-import { KOKOR_CLIENT_ID } from '@env';
 import { NaverMapView } from '@mj-studio/react-native-naver-map';
 import { useNavigation } from '@react-navigation/native';
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import {
   ActivityIndicator,
   Animated,
@@ -16,44 +9,25 @@ import {
   View,
 } from 'react-native';
 import { PerformanceGroup } from '../../domain/model/performanceGroup';
-import { getCurrentMonthRange } from '../../domain/util/dateUtil';
 import MapMarker from '../components/MapMarker';
 import PerformanceModal from '../components/PerformanceModal';
-import { useMyAreaList } from '../hooks/useMyAreaList';
-import useMyRegion from '../hooks/useMyRegion';
-import { useMyZoneList } from '../hooks/useMyZoneList';
+import { useMyZoneViewModel } from '../mvi/myzone/useMyZoneViewModel';
 import { RootStackNavigationProp } from './stack/RootStack';
 
 function MyZoneScreen() {
-  const { myRegion } = useMyRegion();
-  const [selectedPin, setSelectedPin] = useState<PerformanceGroup | null>(null);
+  const {
+    state,
+    onAction,
+    myRegion,
+    myAreaList,
+    placeDetails,
+    isLoadingPlaceDetails,
+  } = useMyZoneViewModel();
   const handleSelectPin = useCallback((pin: PerformanceGroup) => {
-    setSelectedPin(pin);
+    onAction({ type: 'SET_SELECTED_PIN', payload: pin });
   }, []);
   const loadingRef = useRef(new Animated.Value(0)).current;
   const navigation = useNavigation<RootStackNavigationProp>();
-
-  const myZoneProps = useMemo(() => {
-    const { startDate, endDate } = getCurrentMonthRange();
-    return {
-      service: KOKOR_CLIENT_ID,
-      startDate,
-      endDate,
-      currentPage: '1',
-      rowsPerPage: '100',
-      signGuCode: myRegion?.regionCode?.code ?? '',
-    };
-  }, [myRegion?.regionCode?.code]);
-
-  const { result: myAreaList } = useMyAreaList({ props: myZoneProps });
-
-  const placeNameList = useMemo(
-    () => (myAreaList ?? []).map(p => p?.placeName ?? ''),
-    [myAreaList],
-  );
-
-  const { result: placeDetails, loading: isLoadingPlaceDetails } =
-    useMyZoneList({ placeNameList });
 
   useEffect(() => {
     Animated.timing(loadingRef, {
@@ -147,13 +121,13 @@ function MyZoneScreen() {
         </View>
       </Animated.View>
       <PerformanceModal
-        selectedPin={selectedPin}
-        onClose={() => setSelectedPin(null)}
+        selectedPin={state.selectedPin}
+        onClose={() => onAction({ type: 'SET_SELECTED_PIN', payload: null })}
         onSelectPerformance={id => {
           navigation.navigate('Detail', {
             performanceId: id,
           });
-          setSelectedPin(null);
+          onAction({ type: 'SET_SELECTED_PIN', payload: null });
         }}
       />
     </View>
