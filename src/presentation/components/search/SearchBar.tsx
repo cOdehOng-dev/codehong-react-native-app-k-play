@@ -1,5 +1,5 @@
-import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
-import React, { useState } from 'react';
+import { Pressable, StyleSheet, TextInput, View } from 'react-native';
+import React, { useRef } from 'react';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
 import { RootStackNavigationProp } from '../../screens/stack/RootStack';
@@ -8,11 +8,18 @@ import FastImage from '@d11/react-native-fast-image';
 type Props = {
   keyword: string;
   onSearch: (keyword: string) => void;
+  onChangeText: (keyword: string) => void;
 };
 
-const SearchBar = ({ keyword, onSearch }: Props) => {
+const SearchBar = ({ keyword, onSearch, onChangeText }: Props) => {
   const navigation = useNavigation<RootStackNavigationProp>();
-  const [searchKeyword, setSearchKeyword] = useState(keyword);
+  const inputRef = useRef<TextInput>(null);
+
+  const handleClear = () => {
+    onChangeText('');
+    inputRef.current?.focus();
+  };
+
   return (
     <View style={styles.root}>
       <Pressable
@@ -27,6 +34,7 @@ const SearchBar = ({ keyword, onSearch }: Props) => {
       <View style={styles.container}>
         <MaterialIcons name="search" size={22} color="#FF8224" />
         <TextInput
+          ref={inputRef}
           style={styles.text}
           placeholder="찾고 싶은 공연, 배우를 검색해보세요"
           numberOfLines={1}
@@ -36,12 +44,18 @@ const SearchBar = ({ keyword, onSearch }: Props) => {
           autoComplete="off"
           autoFocus={false}
           returnKeyType="search"
-          value={searchKeyword}
-          onChangeText={text => setSearchKeyword(text)}
-          onSubmitEditing={() => {
-            onSearch(searchKeyword);
-          }}
+          value={keyword}
+          onChangeText={onChangeText}
+          onSubmitEditing={() => onSearch(keyword)}
         />
+        {keyword.length > 0 && (
+          <Pressable onPress={handleClear} style={styles.clearButton}>
+            <FastImage
+              style={styles.clearIcon}
+              source={require('../../../assets/images/ic_20_close.png')}
+            />
+          </Pressable>
+        )}
       </View>
     </View>
   );
@@ -80,6 +94,13 @@ const styles = StyleSheet.create({
   icon: {
     width: 24,
     height: 24,
+  },
+  clearButton: {
+    padding: 4,
+  },
+  clearIcon: {
+    width: 20,
+    height: 20,
   },
 });
 

@@ -1,6 +1,6 @@
 import { BookmarkRepository } from '../../domain/repository/BookmarkRepository';
 import { BookMarkPerformance } from '../../domain/model/bookMarkPerformance';
-import { BookmarkLocalDataSource } from '../datasource/bookmarkLocalDataSource';
+import { BookmarkLocalDataSource } from '../datasource/local/bookmarkLocalDataSource';
 
 /**
  * BookmarkRepository 구현체 (Data 레이어)

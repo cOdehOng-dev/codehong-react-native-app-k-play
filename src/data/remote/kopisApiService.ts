@@ -4,9 +4,9 @@ import { PerformanceListProps } from '../../domain/model/apiprops/performanceLis
 import { PlaceDetailProps } from '../../domain/model/apiprops/placeDetailProps';
 import { kopisApi } from '../api/instance';
 import {
-  BoxOfficeResponseDto,
-  parseBoxOfficeResponseDto,
-} from '../model/boxoffice/BoxOfficeResponseDto';
+  BoxofficeResponseDto,
+  parseBoxofficeResponseDto,
+} from '../model/boxoffice/boxofficeResponseDto';
 import {
   parsePerformanceDetailResponseDto,
   PerformanceDetailResponseDto,
@@ -49,7 +49,7 @@ export const getPerformanceList = async (
 
 export async function getBoxoffice(
   props: BoxofficeProps,
-): Promise<BoxOfficeResponseDto> {
+): Promise<BoxofficeResponseDto> {
   const response = await kopisApi.get<string>('/openApi/restful/boxoffice', {
     params: {
       service: props.service,
@@ -60,7 +60,7 @@ export async function getBoxoffice(
     },
     responseType: 'text',
   });
-  return parseBoxOfficeResponseDto(response.data);
+  return parseBoxofficeResponseDto(response.data);
 }
 
 export async function getPerformanceDetail(

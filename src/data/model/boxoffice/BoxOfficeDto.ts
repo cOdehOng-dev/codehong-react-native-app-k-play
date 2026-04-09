@@ -1,4 +1,4 @@
-export interface BoxOfficeItemDto {
+export interface BoxofficeItemDto {
   category?: string;
   rank?: string;
   performanceName?: string;

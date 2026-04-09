@@ -1,17 +1,17 @@
-import { PlaceListResponseDto } from '../model/place/placeListResponseDto';
-import { PerformanceDetailProps } from '../../domain/model/apiprops/performanceDetailProps';
+import { PlaceListResponseDto } from '../../model/place/placeListResponseDto';
+import { PerformanceDetailProps } from '../../../domain/model/apiprops/performanceDetailProps';
 import {
   getFestivalList,
   getPerformanceDetail,
   getPerformanceList,
   getPlaceDetail,
   searchPlace,
-} from '../remote/kopisApiService';
-import { PerformanceListResponseDto } from '../model/performance/list/PerformanceListResponseDto';
-import { PerformanceListProps } from '../../domain/model/apiprops/performanceListProps';
-import { PerformanceDetailResponseDto } from '../model/detail/performanceDetailResponseDto';
-import { PlaceDetailProps } from '../../domain/model/apiprops/placeDetailProps';
-import { PlaceDetailResponseDto } from '../model/place/placeDetailResponseDto';
+} from '../../remote/kopisApiService';
+import { PerformanceListResponseDto } from '../../model/performance/list/PerformanceListResponseDto';
+import { PerformanceListProps } from '../../../domain/model/apiprops/performanceListProps';
+import { PerformanceDetailResponseDto } from '../../model/detail/performanceDetailResponseDto';
+import { PlaceDetailProps } from '../../../domain/model/apiprops/placeDetailProps';
+import { PlaceDetailResponseDto } from '../../model/place/placeDetailResponseDto';
 
 export class PerformanceRemoteDataSource {
   async getPerformanceList(

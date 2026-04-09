@@ -1,7 +1,7 @@
 import { Database, Q } from '@nozbe/watermelondb';
-import { BookmarkPerformanceEntity } from '../model/bookmark/BookmarkPerformanceEntity';
-import { BookMarkPerformance } from '../../domain/model/bookMarkPerformance';
-import { toBookmarkPerformance } from '../mapper/bookmarkPerformanceMapper';
+import { BookmarkPerformanceEntity } from '../../model/bookmark/BookmarkPerformanceEntity';
+import { BookMarkPerformance } from '../../../domain/model/bookMarkPerformance';
+import { toBookmarkPerformance } from '../../mapper/bookmarkPerformanceMapper';
 
 /**
  * 북마크 로컬 데이터소스
@@ -67,7 +67,9 @@ export class BookmarkLocalDataSource {
    */
   async remove(id: string): Promise<void> {
     await this.db.write(async () => {
-      const records = await this.collection.query(Q.where('performance_id', id)).fetch();
+      const records = await this.collection
+        .query(Q.where('performance_id', id))
+        .fetch();
       for (const record of records) {
         await record.destroyPermanently();
       }

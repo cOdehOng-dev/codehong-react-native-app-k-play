@@ -1,15 +1,15 @@
 import { XMLParser } from 'fast-xml-parser';
-import { BoxOfficeItemDto } from './BoxOfficeDto';
+import { BoxofficeItemDto } from './boxofficeDto';
 
-export interface BoxOfficeResponseDto {
-  boxOfficeList?: BoxOfficeItemDto[];
+export interface BoxofficeResponseDto {
+  boxOfficeList?: BoxofficeItemDto[];
 }
 
 const parser = new XMLParser({ ignoreAttributes: false });
 
-export const parseBoxOfficeResponseDto = (
+export const parseBoxofficeResponseDto = (
   xml: string,
-): BoxOfficeResponseDto => {
+): BoxofficeResponseDto => {
   const parsed = parser.parse(xml);
   const items = parsed?.boxofs?.boxof;
 

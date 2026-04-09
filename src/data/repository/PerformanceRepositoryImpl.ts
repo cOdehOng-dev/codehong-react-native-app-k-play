@@ -1,5 +1,5 @@
 import { PerformanceInfoItem } from '../../domain/model/performanceInfoItem';
-import { PerformanceRemoteDataSource } from '../datasource/performanceRemoteDataSource';
+import { PerformanceRemoteDataSource } from '../datasource/remote/performanceRemoteDataSource';
 import {
   toPerformanceDetail,
   toPerformanceItem,
