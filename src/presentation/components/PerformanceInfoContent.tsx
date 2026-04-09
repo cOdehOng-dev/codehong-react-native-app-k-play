@@ -1,12 +1,12 @@
-import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import FastImage from '@d11/react-native-fast-image';
 import React from 'react';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 import {
   getPeriod,
   PerformanceInfoItem,
 } from '../../domain/model/performanceInfoItem';
-import Badge from './Badge';
 import { extractParenthesesContent } from '../../domain/util/util';
-import FastImage from '@d11/react-native-fast-image';
+import Badge from './Badge';
 
 type Props = {
   item: PerformanceInfoItem;

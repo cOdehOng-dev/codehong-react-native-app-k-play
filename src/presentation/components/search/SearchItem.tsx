@@ -1,7 +1,7 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import { extractParenthesesContent } from '../../../domain/util/util';
-import CustomBadge from '../CustomBadge';
+import Badge from '../Badge';
 import {
   getPeriod,
   PerformanceInfoItem,
@@ -38,10 +38,7 @@ const SearchItem = ({ item }: { item: PerformanceInfoItem }) => {
           <Text style={styles.period}>{getPeriod(item)}</Text>
           <Text style={styles.place}>{item.placeName}</Text>
           <View style={styles.mt}>
-            <CustomBadge
-              text={extractParenthesesContent(item.genre)}
-              fontSize={9}
-            />
+            <Badge text={extractParenthesesContent(item.genre)} fontSize={9} />
           </View>
         </View>
       </View>

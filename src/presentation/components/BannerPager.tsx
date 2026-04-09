@@ -8,11 +8,6 @@ import {
   type NativeSyntheticEvent,
 } from 'react-native';
 
-// ─── Option Type ─────────────────────────────────────────────────────────────
-// Kotlin: HongHorizontalPagerOption
-
-// ─── Component ───────────────────────────────────────────────────────────────
-
 type Props<T> = {
   pageInfoList?: T[] | null;
   // Kotlin: Pair<Boolean, Boolean> — [forwardInfinite, backwardInfinite]
@@ -102,7 +97,6 @@ export function BannerPager<T>({
     setContainerWidth(e.nativeEvent.layout.width);
   };
 
-  // Kotlin: snapshotFlow { pagerState.currentPage }.collect { page -> ... }
   const handleScrollEnd = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
     if (snapInterval <= 0) return;
     const offsetX = e.nativeEvent.contentOffset.x;

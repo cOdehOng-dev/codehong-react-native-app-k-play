@@ -35,7 +35,7 @@ function GenreRankContent({
     [tabList],
   );
 
-  const renderItem = useCallback(
+  const rankItemContent = useCallback(
     ({ item }: { item: BoxofficeItem }) => (
       <RankPerformanceInfoContent
         item={item}
@@ -78,7 +78,7 @@ function GenreRankContent({
           horizontal
           showsHorizontalScrollIndicator={false}
           data={genreRankList}
-          renderItem={renderItem}
+          renderItem={rankItemContent}
           keyExtractor={keyExtractor}
         />
       )}

@@ -1,10 +1,24 @@
 import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 
-function Badge({ text }: { text: string }) {
+type Props = {
+  text: string;
+  paddingHorizontal?: number;
+  paddingVertical?: number;
+  fontSize?: number;
+};
+function Badge({ text, paddingHorizontal, paddingVertical, fontSize }: Props) {
   return (
-    <View style={styles.container}>
-      <Text style={styles.badgeText}>{text}</Text>
+    <View
+      style={[
+        styles.container,
+        paddingHorizontal !== undefined ? { paddingHorizontal } : {},
+        paddingVertical !== undefined ? { paddingVertical } : {},
+      ]}
+    >
+      <Text style={[styles.badgeText, fontSize ? { fontSize } : {}]}>
+        {text}
+      </Text>
     </View>
   );
 }

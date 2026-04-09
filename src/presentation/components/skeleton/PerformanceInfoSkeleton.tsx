@@ -1,35 +1,17 @@
 import React, { useEffect, useRef } from 'react';
 import { Animated, StyleSheet, View } from 'react-native';
+import Skeleton from './Skeleton';
 
 function PerformanceInfoSkeleton() {
-  const opacity = useRef(new Animated.Value(0.3)).current;
-
-  useEffect(() => {
-    Animated.loop(
-      Animated.sequence([
-        Animated.timing(opacity, {
-          toValue: 1,
-          duration: 700,
-          useNativeDriver: true,
-        }),
-        Animated.timing(opacity, {
-          toValue: 0.3,
-          duration: 700,
-          useNativeDriver: true,
-        }),
-      ]),
-    ).start();
-  }, [opacity]);
-
   return (
-    <Animated.View style={[styles.container, { opacity }]}>
+    <Skeleton>
       <View style={styles.thumbnail} />
       <View style={styles.titleLine} />
       <View style={styles.titleLineShort} />
       <View style={styles.subLine} />
       <View style={styles.periodLine} />
       <View style={styles.badge} />
-    </Animated.View>
+    </Skeleton>
   );
 }
 

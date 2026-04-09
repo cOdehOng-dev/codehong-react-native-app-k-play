@@ -1,9 +1,9 @@
+import FastImage from '@d11/react-native-fast-image';
 import React, { memo } from 'react';
-import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { BoxofficeItem } from '../../domain/model/boxofficeItem';
 import { extractParenthesesContent } from '../../domain/util/util';
 import Badge from './Badge';
-import FastImage from '@d11/react-native-fast-image';
 
 type Props = {
   item: BoxofficeItem;
@@ -13,15 +13,18 @@ type Props = {
 function RankPerformanceInfoContent({ item, onClick }: Props) {
   return (
     <Pressable style={styles.container} onPress={onClick}>
-      <FastImage
-        source={{
-          uri: item.posterUrl ?? '',
-          priority: FastImage.priority.normal,
-          cache: FastImage.cacheControl.immutable,
-        }}
-        style={styles.thumbnail}
-        resizeMode={FastImage.resizeMode.cover}
-      />
+      <View style={styles.thumbnailWrapper}>
+        <FastImage
+          source={{
+            uri: item.posterUrl ?? '',
+            priority: FastImage.priority.normal,
+            cache: FastImage.cacheControl.immutable,
+          }}
+          style={styles.thumbnail}
+          resizeMode={FastImage.resizeMode.cover}
+        />
+        {item.rank && <Text style={styles.rank}>{item.rank}</Text>}
+      </View>
       <Text style={styles.prdName} numberOfLines={2} ellipsizeMode="tail">
         {item.performanceName}
       </Text>
@@ -48,11 +51,26 @@ const styles = StyleSheet.create({
     width: 130,
     height: '100%',
   },
+  thumbnailWrapper: {
+    width: 130,
+    height: 170,
+  },
   thumbnail: {
     width: 130,
     height: 170,
     borderRadius: 8,
     backgroundColor: 'white',
+  },
+  rank: {
+    position: 'absolute',
+    bottom: 6,
+    left: 11,
+    fontSize: 38,
+    fontWeight: 'bold',
+    color: '#FFFFFF',
+    textShadowColor: 'rgba(0, 0, 0, 0.5)',
+    textShadowOffset: { width: 1, height: 1 },
+    textShadowRadius: 4,
   },
   prdName: {
     width: 130,
