@@ -1881,6 +1881,11 @@
     redux-thunk "^3.1.0"
     reselect "^5.1.0"
 
+"@shopify/flash-list@^2.3.1":
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/@shopify/flash-list/-/flash-list-2.3.1.tgz#d4f90b1471a741a97c07d9aadbfaf200e92c86f7"
+  integrity sha512-7oktg2NQR7KAODjFoDaWe8/OBzyYbdTE3zQTrUBMxjIbxHTHN7UXRX1hX3DHk8KvtkgQdRfZOV8Gjj2l4fGrXw==
+
 "@sideway/address@^4.1.5":
   version "4.1.5"
   resolved "https://registry.npmjs.org/@sideway/address/-/address-4.1.5.tgz"

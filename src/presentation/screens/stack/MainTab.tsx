@@ -7,7 +7,7 @@ import BookmarkScreen from '../BookmarkScreen';
 import HomeScreen from '../HomeScreen';
 import MyZoneScreen from '../MyZoneScreen';
 import SettingScreen from '../SettingScreen';
-import { MainTabProps } from './StackProps';
+import { MainTabProps } from './MainTabProps';
 
 const Tab = createBottomTabNavigator<MainTabProps>();
 

@@ -1,5 +1,6 @@
-import React from 'react';
-import { Alert, ScrollView, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { Alert, Pressable, ScrollView, StyleSheet, Text } from 'react-native';
+import CalendarModal from '../components/calendar/CalendarModal';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { GenreCodeItem, genreCodeList } from '../../domain/type/genreCode';
 import { RankTabItem, rankTabList } from '../../domain/type/rankTab';
@@ -15,6 +16,8 @@ import { useHomeViewModel } from '../mvi/home/useHomeViewModel';
 import HomeSearchBar from '../components/HomeSearchBar';
 
 function HomeScreen() {
+  const [calendarVisible, setCalendarVisible] = useState(false);
+
   const {
     state,
     onAction,
@@ -32,8 +35,21 @@ function HomeScreen() {
 
   return (
     <SafeAreaView style={styles.block} edges={['top']}>
+      <CalendarModal
+        visible={calendarVisible}
+        onConfirm={(start, end) => {
+          console.log('선택된 날짜:', start, end);
+        }}
+        onDismiss={() => setCalendarVisible(false)}
+      />
       <ScrollView>
         <HomeSearchBar />
+        <Pressable
+          style={styles.testButton}
+          onPress={() => setCalendarVisible(true)}
+        >
+          <Text style={styles.testButtonText}>캘린더 테스트</Text>
+        </Pressable>
         <TopBannerContent
           isLoading={isMonthRankListLoading}
           bannerList={monthRankList.slice(0, 6)}
@@ -103,6 +119,19 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     backgroundColor: '#FFFFFF',
+  },
+  testButton: {
+    marginHorizontal: 16,
+    marginVertical: 8,
+    paddingVertical: 12,
+    backgroundColor: '#FF8224',
+    borderRadius: 8,
+    alignItems: 'center',
+  },
+  testButtonText: {
+    color: '#ffffff',
+    fontSize: 14,
+    fontWeight: 'bold',
   },
 });
 

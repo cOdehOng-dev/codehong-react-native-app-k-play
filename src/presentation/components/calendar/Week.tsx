@@ -31,7 +31,7 @@ function WeekComponent({
         if (!day) {
           return <View key={i} style={styles.dayWrapper} />;
         }
-        const yyyyMMdd = CalendarUtils.dateToYMD(day);
+        const yyyyMMdd = CalendarUtils.dateToYYYYMMDD(day);
         const isPast = CalendarUtils.isPast(day, todayDate);
         const isStart = startYYYYmmDD === yyyyMMdd;
         const isEnd = endYYYYmmDD === yyyyMMdd;

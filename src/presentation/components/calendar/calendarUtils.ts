@@ -15,7 +15,7 @@ export const CalendarUtils = {
     return date;
   },
 
-  dateToYMD: (date: Date): string => {
+  dateToYYYYMMDD: (date: Date): string => {
     const y = date.getFullYear();
     const m = String(date.getMonth() + 1).padStart(2, '0');
     const d = String(date.getDate()).padStart(2, '0');
@@ -59,5 +59,14 @@ export const CalendarUtils = {
     }
     while (days.length % 7 !== 0) days.push(null);
     return days;
+  },
+
+  isDateBefore: (a: Date, b: Date): boolean => {
+    return (
+      a.getFullYear() < b.getFullYear() ||
+      (a.getFullYear() === b.getFullYear() &&
+        (a.getMonth() < b.getMonth() ||
+          (a.getMonth() === b.getMonth() && a.getDate() < b.getDate())))
+    );
   },
 };
