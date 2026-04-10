@@ -1,51 +1,13 @@
-import {
-  NavigationProp,
-  useFocusEffect,
-  useNavigation,
-} from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import React, { useCallback } from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import BookmarkPerformance from '../components/bookmark/BookmarkPerformance';
+import MainHeader from '../components/MainHeader';
 import SwipeContainer from '../components/SwipeContainer';
 import { useBookmark } from '../hooks/useBookmark';
 import { RootStackNavigationProp } from './stack/RootStack';
-import FastImage from '@d11/react-native-fast-image';
-import MainHeader from '../components/MainHeader';
-import { BookMarkPerformance } from '../../domain/model/bookMarkPerformance';
 
-// ─────────────────────────────────────────────
-// BookmarkScreen
-// ─────────────────────────────────────────────
-const Item = ({ item }: { item: BookMarkPerformance }) => {
-  return (
-    <>
-      {item.posterUrl ? (
-        <FastImage
-          style={styles.poster}
-          source={{
-            uri: item.posterUrl ?? '',
-            priority: FastImage.priority.normal,
-            cache: FastImage.cacheControl.immutable,
-          }}
-          resizeMode="cover"
-        />
-      ) : (
-        <View style={[styles.poster, styles.posterPlaceholder]} />
-      )}
-      <View style={styles.infoContainer}>
-        <Text style={styles.itemName} numberOfLines={2}>
-          {item.name ?? '-'}
-        </Text>
-        <Text style={styles.itemDate}>
-          {item.startDate} ~ {item.endDate}
-        </Text>
-        <Text style={styles.itemFacility} numberOfLines={1}>
-          {item.facilityName ?? '-'}
-        </Text>
-      </View>
-    </>
-  );
-};
 function BookmarkScreen() {
   const { bookmarks, removeBookmark, loadBookmarks } = useBookmark();
   const navigation = useNavigation<RootStackNavigationProp>();
@@ -80,7 +42,7 @@ function BookmarkScreen() {
                 })
               }
             >
-              <Item item={item} />
+              <BookmarkPerformance item={item} />
             </SwipeContainer>
           )}
           contentContainerStyle={styles.listContent}
@@ -109,7 +71,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#9E9E9E',
   },
-  // ── 스와이프 컨테이너 ──
   swipeContainer: {
     position: 'relative',
     marginHorizontal: 16,
@@ -117,40 +78,10 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     overflow: 'hidden',
   },
-  // ── 아이템 카드 ──
   itemCard: {
     flexDirection: 'row',
     backgroundColor: '#FFFFFF',
     alignItems: 'center',
-  },
-  poster: {
-    width: 100,
-    height: 130,
-    borderRadius: 8,
-    backgroundColor: '#FFFFFF',
-    marginStart: 16,
-  },
-  posterPlaceholder: {
-    backgroundColor: '#E0E0E0',
-  },
-  infoContainer: {
-    flex: 1,
-    marginLeft: 12,
-    marginEnd: 16,
-    gap: 4,
-  },
-  itemName: {
-    fontSize: 15,
-    fontWeight: 'bold',
-    color: '#000000',
-  },
-  itemDate: {
-    fontSize: 12,
-    color: '#757575',
-  },
-  itemFacility: {
-    fontSize: 12,
-    color: '#9E9E9E',
   },
   buttonContainer: {
     position: 'absolute',

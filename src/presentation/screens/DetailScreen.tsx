@@ -20,9 +20,9 @@ import IconHeader from '../components/IconHeader';
 import IndicatorProgress from '../components/IndicatorProgress';
 import { Picker } from '../components/Picker';
 import { RootContainer } from '../components/RootContainer';
-import { openInAppBrowser } from '../utils';
 import { RootStackScreenProps } from './stack/RootStack';
 import { useDetailViewModel } from '../mvi/detail/useDetailViewModel';
+import { Utils } from '../utils';
 
 type Props = RootStackScreenProps<'Detail'>;
 
@@ -73,7 +73,7 @@ function DetailScreen({ navigation, route }: Props) {
             if (list.length > 1) {
               setPickerVisible(true);
             } else {
-              openInAppBrowser(list[0]?.url ?? '');
+              Utils.openInAppBrowser(list[0]?.url ?? '');
             }
           }}
           isBookMark={isBookmarked}
@@ -97,7 +97,7 @@ function DetailScreen({ navigation, route }: Props) {
         selectorColorHex="#FFF0E5"
         onDismiss={() => setPickerVisible(false)}
         onConfirm={selectOption => {
-          openInAppBrowser(
+          Utils.openInAppBrowser(
             performanceDetail?.ticketSiteList?.[selectOption[0]]?.url ?? '',
           );
           setPickerVisible(false);
