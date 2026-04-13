@@ -28,11 +28,7 @@ import { KOKOR_CLIENT_ID } from '@env';
 import { useCallback, useEffect, useMemo, useReducer } from 'react';
 import { Alert } from 'react-native';
 import { nameToRegionCode, RegionCode } from '../../../domain/type/regionCode';
-import {
-  getCurrentMonthRange,
-  getPreviousMonthFirstDay,
-  getPreviousMonthLastDay,
-} from '../../../domain/util/dateUtil';
+import { DateUtil } from '../../../domain/util/dateUtil';
 import {
   checkLocationPermission,
   getAddressFromCoords,
@@ -106,7 +102,7 @@ export const useHomeViewModel = () => {
 
   // 내 지역 공연 리스트: state.myAreaSignGuCode가 바뀔 때마다 재조회
   const myAreaListProps = useMemo(() => {
-    const { startDate, endDate } = getCurrentMonthRange();
+    const { startDate, endDate } = DateUtil.getCurrentMonthRange();
     return {
       service: KOKOR_CLIENT_ID,
       startDate,
@@ -157,8 +153,8 @@ export const useHomeViewModel = () => {
   const monthRankListProps = useMemo(
     () => ({
       service: KOKOR_CLIENT_ID,
-      startDate: getPreviousMonthFirstDay('YYYYMMDD'),
-      endDate: getPreviousMonthLastDay('YYYYMMDD'),
+      startDate: DateUtil.getPreviousMonthFirstDay('YYYYMMDD'),
+      endDate: DateUtil.getPreviousMonthLastDay('YYYYMMDD'),
     }),
     [],
   );
@@ -169,8 +165,8 @@ export const useHomeViewModel = () => {
   const localListProps = useMemo(
     () => ({
       service: KOKOR_CLIENT_ID,
-      startDate: getPreviousMonthFirstDay('YYYYMMDD'),
-      endDate: getPreviousMonthLastDay('YYYYMMDD'),
+      startDate: DateUtil.getPreviousMonthFirstDay('YYYYMMDD'),
+      endDate: DateUtil.getPreviousMonthLastDay('YYYYMMDD'),
       currentPage: '1',
       rowsPerPage: '10',
       signGuCode: state.selectedLocalTab.code,
@@ -185,8 +181,8 @@ export const useHomeViewModel = () => {
   const festivalListProps = useMemo(
     () => ({
       service: KOKOR_CLIENT_ID,
-      startDate: getPreviousMonthFirstDay('YYYYMMDD'),
-      endDate: getPreviousMonthLastDay('YYYYMMDD'),
+      startDate: DateUtil.getPreviousMonthFirstDay('YYYYMMDD'),
+      endDate: DateUtil.getPreviousMonthLastDay('YYYYMMDD'),
       currentPage: '1',
       rowsPerPage: '10',
       signGuCode: state.selectedFestivalTab.code,
@@ -201,8 +197,8 @@ export const useHomeViewModel = () => {
   const genreRankListProps = useMemo(
     () => ({
       service: KOKOR_CLIENT_ID,
-      startDate: getPreviousMonthFirstDay('YYYYMMDD'),
-      endDate: getPreviousMonthLastDay('YYYYMMDD'),
+      startDate: DateUtil.getPreviousMonthFirstDay('YYYYMMDD'),
+      endDate: DateUtil.getPreviousMonthLastDay('YYYYMMDD'),
       genreCode: state.selectedGenreRankTab.code,
     }),
     [state.selectedGenreRankTab],

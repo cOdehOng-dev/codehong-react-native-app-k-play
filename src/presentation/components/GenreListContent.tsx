@@ -1,8 +1,10 @@
-import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
-import React from 'react';
-import { GenreCodeItem } from '../../domain/type/genreCode';
-import { chunk } from '../../domain/util/util';
 import FastImage from '@d11/react-native-fast-image';
+import { useNavigation } from '@react-navigation/native';
+import React from 'react';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { GenreCodeItem } from '../../domain/type/genreCode';
+import { RootStackNavigationProp } from '../screens/stack/RootStack';
+import { Utils } from '../utils';
 
 type Props = {
   genreList: GenreCodeItem[];
@@ -26,7 +28,8 @@ const GenreContent = ({
 };
 
 function GenreListContent({ genreList, onClickGenre }: Props) {
-  const rows = chunk(genreList, 5);
+  const navigation = useNavigation<RootStackNavigationProp>();
+  const rows = Utils.chunk(genreList, 5);
 
   return (
     <View style={styles.column}>
@@ -35,7 +38,11 @@ function GenreListContent({ genreList, onClickGenre }: Props) {
           {row.map(genreCode => (
             <GenreContent
               genreCode={genreCode}
-              onClick={() => onClickGenre(genreCode)}
+              onClick={() => {
+                navigation.navigate('GenreRankList', {
+                  genreCode: genreCode.code,
+                });
+              }}
               key={genreCode.code}
             />
           ))}

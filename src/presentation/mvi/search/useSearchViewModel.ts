@@ -1,9 +1,6 @@
+import { DateUtil } from './../../../domain/util/dateUtil';
 import { KOKOR_CLIENT_ID } from '@env';
 import { useCallback, useEffect, useMemo, useReducer } from 'react';
-import {
-  getCurrentYearLastDay,
-  getPreviousMonthFirstDay,
-} from '../../../domain/util/dateUtil';
 import { useRecentKeyword } from '../../hooks/useRecentKeyword';
 import { useSearch } from '../../hooks/useSearch';
 import { SearchAction } from './searchAction';
@@ -23,8 +20,8 @@ export const useSearchViewModel = () => {
   const searchProps = useMemo(() => {
     return {
       service: KOKOR_CLIENT_ID,
-      startDate: getPreviousMonthFirstDay('YYYYMMDD'),
-      endDate: getCurrentYearLastDay(),
+      startDate: DateUtil.getPreviousMonthFirstDay('YYYYMMDD'),
+      endDate: DateUtil.getCurrentYearLastDay(),
       currentPage: '1',
       rowsPerPage: '20',
       keyword: state.keyword,

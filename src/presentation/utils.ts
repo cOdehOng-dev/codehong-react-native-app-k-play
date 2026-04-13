@@ -58,4 +58,24 @@ export const Utils = {
       this.showError('브라우저를 열 수 없습니다.');
     }
   },
+
+  formatToMMdd: (date: string | null | undefined): string => {
+    if (!date) return '';
+    if (date.length !== 8) return date;
+    const month = date.substring(4, 6);
+    const day = date.substring(6, 8);
+    return `${month}.${day}`;
+  },
+
+  formatDateRangeDisplay: (
+    startDate: string | null | undefined,
+    endDate: string | null | undefined,
+  ): string => {
+    return `${Utils.formatToMMdd(startDate)} ~ ${Utils.formatToMMdd(endDate)}`;
+  },
+
+  chunk: <T>(arr: T[], size: number): T[][] =>
+    Array.from({ length: Math.ceil(arr.length / size) }, (_, i) =>
+      arr.slice(i * size, i * size + size),
+    ),
 };

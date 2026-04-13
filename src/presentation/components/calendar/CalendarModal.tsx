@@ -16,6 +16,8 @@ import { CalendarUtils } from './calendarUtils';
 
 type Props = {
   visible: boolean;
+  initialStartDate?: string;
+  initialEndDate?: string;
   onConfirm: (startDate: string | null, endDate: string | null) => void;
   onDismiss: () => void;
 };
@@ -25,7 +27,13 @@ const SHEET_HEIGHT = Dimensions.get('window').height * 0.85;
 
 // ─── iOS: presentationStyle="pageSheet" 사용 ────────────────────────────────
 // iOS 네이티브가 dim + slide-up 애니메이션을 직접 처리
-const IOSCalendarModal = ({ visible, onConfirm, onDismiss }: Props) => {
+const IOSCalendarModal = ({
+  visible,
+  initialStartDate,
+  initialEndDate,
+  onConfirm,
+  onDismiss,
+}: Props) => {
   const { bottom } = useSafeAreaInsets();
 
   const [selectedStartDate, setSelectedStartDate] = useState<string | null>(
@@ -53,6 +61,8 @@ const IOSCalendarModal = ({ visible, onConfirm, onDismiss }: Props) => {
           </Pressable>
         </View>
         <Calendar
+          initialStartDate={initialStartDate}
+          initialEndDate={initialEndDate}
           onSelected={(startDate, endDate) => {
             setSelectedStartDate(
               startDate ? CalendarUtils.dateToYYYYMMDD(startDate) : null,
@@ -72,7 +82,13 @@ const IOSCalendarModal = ({ visible, onConfirm, onDismiss }: Props) => {
 
 // ─── Android: animationType="none" + Animated로 직접 처리 ────────────────────
 // transparent Modal + useNativeDriver로 네이티브 스레드에서 애니메이션 실행
-const AndroidCalendarModal = ({ visible, onConfirm, onDismiss }: Props) => {
+const AndroidCalendarModal = ({
+  visible,
+  initialStartDate,
+  initialEndDate,
+  onConfirm,
+  onDismiss,
+}: Props) => {
   const { bottom } = useSafeAreaInsets();
   const translateY = useRef(new Animated.Value(SHEET_HEIGHT)).current;
   const overlayOpacity = useRef(new Animated.Value(0)).current;
@@ -147,6 +163,8 @@ const AndroidCalendarModal = ({ visible, onConfirm, onDismiss }: Props) => {
           </Pressable>
         </View>
         <Calendar
+          initialStartDate={initialStartDate}
+          initialEndDate={initialEndDate}
           onSelected={(startDate, endDate) => {
             setSelectedStartDate(
               startDate ? CalendarUtils.dateToYYYYMMDD(startDate) : null,

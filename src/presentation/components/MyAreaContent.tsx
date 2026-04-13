@@ -8,6 +8,7 @@ import {
   Text,
   View,
 } from 'react-native';
+import { FlashList } from '@shopify/flash-list';
 import { PerformanceInfoItem } from '../../domain/model/performanceInfoItem';
 import { RootStackNavigationProp } from '../screens/stack/RootStack';
 import PerformanceInfoContent from './PerformanceInfoContent';
