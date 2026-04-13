@@ -60,7 +60,7 @@ function DetailScreen({ navigation, route }: Props) {
     <RootContainer
       topBar={
         <IconHeader
-          title={performanceDetail?.name ?? '공연 상세'}
+          title={performanceDetail?.name ?? ''}
           onClick={() => navigation.goBack()}
         />
       }

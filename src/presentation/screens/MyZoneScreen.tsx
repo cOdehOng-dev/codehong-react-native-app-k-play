@@ -11,7 +11,7 @@ import {
 import { PerformanceGroup } from '../../domain/model/performanceGroup';
 import MapMarker from '../components/MapMarker';
 import PerformanceModal from '../components/PerformanceModal';
-import { useMyZoneViewModel } from '../mvi/myzone/useMyZoneViewModel';
+import { useMyZoneViewModel } from '../mvi/my-zone/useMyZoneViewModel';
 import { RootStackNavigationProp } from './stack/RootStack';
 
 function MyZoneScreen() {

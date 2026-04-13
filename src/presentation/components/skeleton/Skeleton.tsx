@@ -2,10 +2,11 @@ import React, { useEffect, useRef } from 'react';
 import { Animated, StyleSheet, View } from 'react-native';
 
 type Props = {
+  width?: number;
   children: React.ReactNode;
 };
 
-function Skeleton({ children }: Props) {
+function Skeleton({ width, children }: Props) {
   const opacity = useRef(new Animated.Value(0.3)).current;
 
   useEffect(() => {
@@ -26,7 +27,9 @@ function Skeleton({ children }: Props) {
   }, [opacity]);
 
   return (
-    <Animated.View style={[styles.container, { opacity }]}>
+    <Animated.View
+      style={[styles.container, { opacity, width: width ?? '100%' }]}
+    >
       {children}
     </Animated.View>
   );
@@ -34,7 +37,6 @@ function Skeleton({ children }: Props) {
 
 const styles = StyleSheet.create({
   container: {
-    width: 130,
     flexDirection: 'column',
   },
 });

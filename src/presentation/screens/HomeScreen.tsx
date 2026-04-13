@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
-import { Alert, Pressable, ScrollView, StyleSheet, Text } from 'react-native';
+import React from 'react';
+import { Alert, ScrollView, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { GenreCodeItem, genreCodeList } from '../../domain/type/genreCode';
 import { RankTabItem, rankTabList } from '../../domain/type/rankTab';
 import { RegionCode, regionCodeList } from '../../domain/type/regionCode';
 import { DateUtil } from '../../domain/util/dateUtil';
-import CalendarModal from '../components/calendar/CalendarModal';
 import GenreListContent from '../components/GenreListContent';
 import GenreRankContent from '../components/GenreRankContent';
 import HomeSearchBar from '../components/HomeSearchBar';

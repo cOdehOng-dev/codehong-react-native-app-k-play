@@ -5,15 +5,24 @@ import { toRegionCode } from '../../domain/type/regionCode';
 
 type Props = {
   props: PerformanceListProps;
+  enabled?: boolean;
 };
 
-export const useLocalList = ({ props }: Props) => {
+export const useLocalList = ({ props, enabled = true }: Props) => {
   const { performanceUseCase } = useDI();
   const code = toRegionCode(props.signGuCode);
 
   const { data, isFetching, error } = useQuery({
-    queryKey: ['localList', code],
+    queryKey: [
+      'localList',
+      code,
+      props.currentPage,
+      props.genreCode,
+      props.startDate,
+      props.endDate,
+    ],
     queryFn: () => performanceUseCase.getPerformanceList(props),
+    enabled,
     staleTime: 1000 * 60 * 5,
   });
 

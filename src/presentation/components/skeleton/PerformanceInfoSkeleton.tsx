@@ -1,10 +1,10 @@
-import React, { useEffect, useRef } from 'react';
-import { Animated, StyleSheet, View } from 'react-native';
+import React from 'react';
+import { StyleSheet, View } from 'react-native';
 import Skeleton from './Skeleton';
 
 function PerformanceInfoSkeleton() {
   return (
-    <Skeleton>
+    <Skeleton width={130}>
       <View style={styles.thumbnail} />
       <View style={styles.titleLine} />
       <View style={styles.titleLineShort} />
