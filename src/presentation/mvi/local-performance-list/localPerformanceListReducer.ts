@@ -1,13 +1,11 @@
-import { GenreRankListAction } from './genreRankListAction';
-import { GenreRankListState } from './genreRankListState';
+import { LocalPerformanceListAction } from './localPerformanceListAction';
+import { LocalPerformanceListState } from './localPerformanceListState';
 
-export const genreRankListReducer = (
-  state: GenreRankListState,
-  action: GenreRankListAction,
-): GenreRankListState => {
+export const localPerformanceListReducer = (
+  state: LocalPerformanceListState,
+  action: LocalPerformanceListAction,
+): LocalPerformanceListState => {
   switch (action.type) {
-    case 'GENRE_CODE':
-      return { ...state, genreCode: action.payload };
     case 'SELECTED_REGION_CODE':
       return { ...state, selectedRegionCode: action.payload };
     case 'SELECTED_START_DATE':
@@ -31,8 +29,6 @@ export const genreRankListReducer = (
       return { ...state, isLoadMore: action.payload };
     case 'NO_MORE_DATA':
       return { ...state, noMoreData: action.payload };
-    case 'SET_FETCHED':
-      return { ...state, isFetched: action.payload };
     default:
       return state;
   }

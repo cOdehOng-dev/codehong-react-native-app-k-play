@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useCallback, useEffect } from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
+import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { PerformanceInfoItem } from '../../domain/model/performanceInfoItem';
 import { DateUtil } from '../../domain/util/dateUtil';
 import ChangeDateButton from '../components/ChangeDateButton';
@@ -94,7 +94,7 @@ const GenreRankListScreen = ({ route }: Props) => {
             onAction({ type: 'SET_VISIBLE_CALENDAR', payload: true });
           }}
         />
-        {state.isInitialInit ? (
+        {state.isInitialInit && isLoadingGenreRankList ? (
           <>
             {Array.from({ length: 6 }).map((_, i) => (
               <PerformanceListInfoSkeleton key={i} />
@@ -110,6 +110,13 @@ const GenreRankListScreen = ({ route }: Props) => {
             onEndReached={state.noMoreData ? undefined : loadMore}
             onEndReachedThreshold={0.1}
             showsVerticalScrollIndicator={false}
+            ListEmptyComponent={
+              state.isFetched && !state.isInitialInit && !isLoadingGenreRankList ? (
+                <View style={styles.emptyContainer}>
+                  <Text style={styles.emptyText}>{'공연이 없어요:('}</Text>
+                </View>
+              ) : null
+            }
           />
         )}
       </View>
@@ -141,5 +148,15 @@ const styles = StyleSheet.create({
     bottom: 0,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  emptyContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  emptyText: {
+    fontSize: 16,
+    color: '#000000',
+    fontWeight: 'bold',
   },
 });

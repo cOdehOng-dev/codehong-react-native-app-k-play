@@ -3,8 +3,7 @@ import { RegionCode } from '../../../domain/type/regionCode';
 import { DateUtil } from '../../../domain/util/dateUtil';
 import { PerformanceInfoItem } from '../../../domain/model/performanceInfoItem';
 
-export type GenreRankListState = {
-  genreCode: GenreCodeItem | null;
+export type LocalPerformanceListState = {
   selectedRegionCode: RegionCode;
   startDate: string;
   endDate: string;
@@ -14,11 +13,9 @@ export type GenreRankListState = {
   isInitialInit: boolean;
   isLoadMore: boolean;
   noMoreData: boolean;
-  isFetched: boolean;
 };
 
-export const initialGenreRankListState: GenreRankListState = {
-  genreCode: null,
+export const initialLocalPerformanceListState: LocalPerformanceListState = {
   selectedRegionCode: RegionCode.SEOUL,
   startDate: DateUtil.getToday('YYYYMMDD'),
   endDate: DateUtil.getOneMonthLater('YYYYMMDD'),
@@ -28,5 +25,4 @@ export const initialGenreRankListState: GenreRankListState = {
   isInitialInit: true,
   isLoadMore: false,
   noMoreData: false,
-  isFetched: false,
 };
